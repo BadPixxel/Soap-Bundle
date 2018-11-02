@@ -1,0 +1,64 @@
+{
+    "name": "splash/soap",
+    "description": "Splash Soap Connector",
+
+    "license": "MIT",
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+
+    "authors": [
+        {
+            "name":"Splash Sync",
+            "email":"contact@splashsync.com"
+        },
+        {
+            "name": "Bernard Paquier",
+            "email": "eshop.bpaquier@gmail.com"
+        }
+    ],
+
+    "autoload": {
+        "psr-4": { 
+            "Splash\\Connectors\\SoapBundle\\":     "src/"
+        }
+    },
+    
+    "autoload-dev": {
+        "classmap": [ "tests/Kernel.php" ],
+        "files":    [ 
+            "vendor/splash/phpcore/inc/Splash.Inc.php",
+            "vendor/splash/php-bundle/src/Tests/KernelTestCase.php"
+        ]
+    },
+    
+    
+    "require": {
+        "php":                                          "^7.0",
+        "splash/php-bundle":                            "*"
+    },
+    
+    "require-dev": {
+        "splash/php-bundle":                            "dev-master",
+        
+        "phpunit/phpunit":                              ">7",
+        
+        "symfony/symfony":                              "~3.4",
+        "symfony/monolog-bundle":                       ">=2.1",
+        
+        "composer/composer":                            "^1.5",
+        "j13k/yaml-lint":                               "^1.1",
+        "jakub-onderka/php-parallel-lint":              "^1.0",
+        "phpmd/phpmd":                                  "^2.6",
+        "phpro/grumphp":                                "^0.14.0",
+        "sclable/xml-lint":                             "^0.2.4",
+        "sebastian/phpcpd":                             ">3.0",
+        "seld/jsonlint":                                "^1.7",
+        "sensiolabs/security-checker":                  "^4.1",
+        "squizlabs/php_codesniffer":                    "^3.2",
+        "phpstan/phpstan-shim":                         "^0.10"
+    },
+    
+    "config": {
+        "bin-dir": "bin"
+    }   
+}
