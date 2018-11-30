@@ -1,0 +1,9 @@
+services:
+    ################################################################################
+    # SPLASH SOAP Connector 
+    splash.connectors.soap:
+        class: Splash\Connectors\Soap\Services\SoapConnector
+        tags:       [ "splash.connector" ]
+        arguments:  [ "@event_dispatcher" ]
+        
+            

@@ -1,0 +1,128 @@
+<!--
+/**
+ * 
+ * Copyright (C) 2015 Bernard Paquier       <bernard.paquier@gmail.com>
+ * 
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * 
+ * @author      Bernard Paquier       <bernard.paquier@gmail.com>
+ * @copyright   2011-2015 Bernard Paquier
+ * @version     $Id: osws-server.php 137 2014-10-13 15:02:13Z Nanard33 $
+ * @revision    $Revision: 137 $
+ * @package     OsWs Server - WebServiceBundle
+ * @abstract    Webservice definition for Connect Opetarions
+*/
+-->
+
+<definitions 
+    xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:SOAP-ENC="http://schemas.xmlsoap.org/soap/encoding/"
+    xmlns:tns="urn:arnleadservicewsdl"
+    xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"     
+    xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+    xmlns="http://schemas.xmlsoap.org/wsdl/"
+    targetNamespace="urn:splashservicewsdl" xmlns:ns="urn:splashservicewsdl" xmlns:plnk="http://docs.oasis-open.org/wsbpel/2.0/plnktype" xmlns:ns0="urn:connectwsdl">
+    <types>
+        <xsd:schema targetNamespace="urn:splashwsdl">
+            <xsd:import namespace="http://schemas.xmlsoap.org/soap/encoding/" />
+            <xsd:import namespace="http://schemas.xmlsoap.org/wsdl/" />
+        </xsd:schema>
+    </types>
+    <message name="stdRequest" >
+        <part name="id" type="xsd:string" />
+        <part name="data" type="xsd:string" />
+    </message>
+    <message name="stdResponse">
+        <part name="return" type="xsd:string" />
+    </message>
+     <portType name="SplashPort">
+        <operation name="Ping">
+            <documentation>Verify Server Availability. No Encoding for this response.</documentation>
+            <input message="ns:stdRequest"/>
+            <output message="ns:stdResponse"/>
+        </operation>
+        <operation name="Connect">
+            <documentation>Connection Request for Existing USer. Verify Remote Node is registered and share configuratin parameters.</documentation>
+            <input message="ns:stdRequest"/>
+            <output message="ns:stdResponse"/>
+        </operation>
+        <operation name="Objects">
+            <documentation>Objects Transaction Service. Commit changes, Get Updates, get Data.</documentation>
+            <input message="ns:stdRequest"/>
+            <output message="ns:stdResponse"/>
+        </operation>        
+        <operation name="Files">
+            <documentation>Files Transaction Service. Files and Images Reading from Nodes.</documentation>
+            <input message="ns:stdRequest"/>
+            <output message="ns:stdResponse"/>
+        </operation>        
+    </portType>
+     
+     
+    <binding name="SplashWebService" type="ns:SplashPort"> 
+        <soap:binding style="rpc" 
+                      transport="http://schemas.xmlsoap.org/soap/http" />
+        <operation name="Ping">
+            
+            <soap:operation soapAction="urn:arnleadservicewsdl#ping" style="rpc"/>
+            <input>
+                <soap:body use="encoded" namespace="urn:splashwsdl" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+            </input>
+            <output>
+                <soap:body use="encoded" namespace="urn:splashwsdl" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+            </output>
+        </operation>
+        <operation name="Connect">
+            <soap:operation soapAction="urn:arnleadservicewsdl#connect" style="rpc"/>
+            <input>
+                <soap:body use="encoded" namespace="urn:splashwsdl" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+            </input>
+            <output>
+                <soap:body use="encoded" namespace="urn:splashwsdl" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+            </output>
+        </operation>
+        <operation name="Objects">
+            <soap:operation soapAction="urn:arnleadservicewsdl#objects" style="rpc"/>
+            <input>
+                <soap:body use="encoded" namespace="urn:splashwsdl" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+            </input>
+            <output>
+                <soap:body use="encoded" namespace="urn:splashwsdl" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+            </output>
+        </operation>        
+        <operation name="Files">
+            <soap:operation soapAction="urn:arnleadservicewsdl#files" style="rpc"/>
+            <input>
+                <soap:body use="encoded" namespace="urn:splashwsdl" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+            </input>
+            <output>
+                <soap:body use="encoded" namespace="urn:splashwsdl" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+            </output>
+        </operation>        
+    </binding>
+    
+    <service name="splashwsdl">
+        <port name="splashwsdlPort" binding="ns:SplashWebService"> 
+            <soap:address location="http://www.blackcloud.local/app_dev.php/ws/soap" />
+        </port>
+    </service>     
+     
+     <plnk:partnerLinkType name="Splash" ns:ddd="">
+          <plnk:role name="SplashWebService" portType="ns:SplashPort"/>
+     </plnk:partnerLinkType>
+</definitions>
+

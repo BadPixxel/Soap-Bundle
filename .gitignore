@@ -6,3 +6,4 @@
 /vendor/
 ###< symfony/framework-bundle ###
 /bin/
+/.php_cs.cache
