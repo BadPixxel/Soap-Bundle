@@ -17,6 +17,9 @@ namespace Splash\Connectors\Soap;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
+/**
+ * Splash Soap Connector Bundle
+ */
 class SoapBundle extends Bundle
 {
 }

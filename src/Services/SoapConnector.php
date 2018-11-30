@@ -42,11 +42,11 @@ final class SoapConnector extends AbstractConnector
     {
         //====================================================================//
         // Create Webservice Componant
-        $Webservice =   (new Webservice())->configure($this->getConfiguration());
+        $webservice =   (new Webservice())->configure($this->getConfiguration());
         //====================================================================//
         // Perform Ping Test
-        $Response = $Webservice->call(SPL_S_PING, null, true);
-        if (isset($Response["result"]) && !empty($Response["result"])) {
+        $response = $webservice->call(SPL_S_PING, null, true);
+        if (isset($response["result"]) && !empty($response["result"])) {
             return true;
         }
 
@@ -60,11 +60,11 @@ final class SoapConnector extends AbstractConnector
     {
         //====================================================================//
         // Create Webservice Componant
-        $Webservice =   (new Webservice())->configure($this->getConfiguration());
+        $webservice =   (new Webservice())->configure($this->getConfiguration());
         //====================================================================//
         // Perform Connect Test
-        $Response = $Webservice->call(SPL_S_CONNECT);
-        if (isset($Response["result"]) && !empty($Response["result"])) {
+        $response = $webservice->call(SPL_S_CONNECT);
+        if (isset($response["result"]) && !empty($response["result"])) {
             return true;
         }
 
@@ -75,28 +75,28 @@ final class SoapConnector extends AbstractConnector
      * {@inheritdoc}
      * @SuppressWarnings(PHPMD.ElseExpression)
      */
-    public function informations(ArrayObject  $Informations) : ArrayObject
+    public function informations(ArrayObject  $informations) : ArrayObject
     {
         //====================================================================//
         // Execute Generic WebService Action
-        $Response   =   $this->GenericAction(
-                $this->getConfiguration(),                      // WebService Configuration
-                SPL_S_ADMIN,                                  // Request Service
-                SPL_F_GET_INFOS,                                // Requested Function
-                "Read Server Infos"                             // Action Description Translator Tag
-            );
+        $response   =   $this->doGeneric(
+            $this->getConfiguration(),                      // WebService Configuration
+            SPL_S_ADMIN,                                  // Request Service
+            SPL_F_GET_INFOS,                                // Requested Function
+            "Read Server Infos"                             // Action Description Translator Tag
+        );
         //====================================================================//
         // Check Response
-        if (!$Response) {
-            return $Informations;
+        if (!$response) {
+            return $informations;
         }
         //====================================================================//
         // Import Response Object
-        foreach ($Response as $Key => $Value) {
-            $Informations->offsetSet($Key, $Value);
+        foreach ($response as $key => $value) {
+            $informations->offsetSet($key, $value);
         }
 
-        return $Informations;
+        return $informations;
     }
     
     /**
@@ -106,12 +106,12 @@ final class SoapConnector extends AbstractConnector
     {
         //====================================================================//
         // Execute Generic WebService Action
-        return $this->GenericAction(
-                $this->getConfiguration(),                      // WebService Configuration
-                SPL_S_ADMIN,                                    // Request Service
-                SPL_F_GET_SELFTEST,                             // Requested Function
-                "Read Server SelfTest"                          // Action Description Translator Tag
-            );
+        return $this->doGeneric(
+            $this->getConfiguration(),                      // WebService Configuration
+            SPL_S_ADMIN,                                    // Request Service
+            SPL_F_GET_SELFTEST,                             // Requested Function
+            "Read Server SelfTest"                          // Action Description Translator Tag
+        );
     }
     
     //====================================================================//
@@ -125,156 +125,160 @@ final class SoapConnector extends AbstractConnector
     {
         //====================================================================//
         // Execute Generic WebService Action
-        $response   =   $this->GenericAction(
-                $this->getConfiguration(),                      // WebService Configuration
-                SPL_S_OBJECTS,                                  // Request Service
-                SPL_F_OBJECTS,                                  // Requested Function
-                "Read Objects List"                             // Action Description
-            );
+        $response   =   $this->doGeneric(
+            $this->getConfiguration(),                      // WebService Configuration
+            SPL_S_OBJECTS,                                  // Request Service
+            SPL_F_OBJECTS,                                  // Requested Function
+            "Read Objects List"                             // Action Description
+        );
+
         return (false === $response) ? array() : $response;
     }
     
     /**
      * {@inheritdoc}
      */
-    public function getObjectDescription(string $ObjectType) : array
+    public function getObjectDescription(string $objectType) : array
     {
         //====================================================================//
         // Initiate Tasks parameters array
-        $Parameters = array(
-            "type"  =>  $ObjectType
+        $parameters = array(
+            "type"  =>  $objectType,
         );
         //====================================================================//
         // Execute Generic WebService Action
-        return $this->GenericAction(
-                $this->getConfiguration(),                      // WebService Configuration
-                SPL_S_OBJECTS,                                  // Request Service
-                SPL_F_DESC,                                     // Requested Function
-                "Read Object Description",                      // Action Description
-                $Parameters                                     // Requets Parameters Array
-            );
+        return $this->doGeneric(
+            $this->getConfiguration(),                      // WebService Configuration
+            SPL_S_OBJECTS,                                  // Request Service
+            SPL_F_DESC,                                     // Requested Function
+            "Read Object Description",                      // Action Description
+            $parameters                                     // Requets Parameters Array
+        );
     }
       
     /**
      * {@inheritdoc}
      */
-    public function getObjectFields(string $ObjectType) : array
+    public function getObjectFields(string $objectType) : array
     {
         //====================================================================//
         // Initiate Tasks parameters array
-        $Parameters = array(
-            "type"  =>  $ObjectType
+        $parameters = array(
+            "type"  =>  $objectType,
         );
         //====================================================================//
         // Execute Generic WebService Action
-        return $this->GenericAction(
-                $this->getConfiguration(),                      // WebService Configuration
-                SPL_S_OBJECTS,                                  // Request Service
-                SPL_F_FIELDS,                                   // Requested Function
-                "Read Object Fields",                           // Action Description Translator Tag
-                $Parameters                                     // Requets Parameters Array
-            );
-    }
-    
-    public function getObjectList(string $ObjectType, string $Filter = null, array $Params = array()) : array
-    {
-        //====================================================================//
-        // Initiate Tasks parameters array
-        $Parameters = array(
-            "type"      =>  $ObjectType,
-            "filters"   =>  $Filter,
-            "params"    =>  $Params
+        return $this->doGeneric(
+            $this->getConfiguration(),                      // WebService Configuration
+            SPL_S_OBJECTS,                                  // Request Service
+            SPL_F_FIELDS,                                   // Requested Function
+            "Read Object Fields",                           // Action Description Translator Tag
+            $parameters                                     // Requets Parameters Array
         );
-        //====================================================================//
-        // Execute Generic WebService Action
-        return $this->GenericAction(
-                $this->getConfiguration(),                      // WebService Configuration
-                SPL_S_OBJECTS,                                  // Request Service
-                SPL_F_LIST,                                     // Requested Function
-                "Read Objects List",                            // Action Description Translator Tag
-                $Parameters                                     // Requets Parameters Array
-            );
     }
     
     /**
      * {@inheritdoc}
      */
-    public function getObject(string $ObjectType, $ObjectIds, array $List)
+    public function getObjectList(string $objectType, string $filter = null, array $parameters = array()) : array
+    {
+        //====================================================================//
+        // Initiate Tasks parameters array
+        $parameters = array(
+            "type"      =>  $objectType,
+            "filters"   =>  $filter,
+            "params"    =>  $parameters,
+        );
+        //====================================================================//
+        // Execute Generic WebService Action
+        return $this->doGeneric(
+            $this->getConfiguration(),                      // WebService Configuration
+            SPL_S_OBJECTS,                                  // Request Service
+            SPL_F_LIST,                                     // Requested Function
+            "Read Objects List",                            // Action Description Translator Tag
+            $parameters                                     // Requets Parameters Array
+        );
+    }
+    
+    /**
+     * {@inheritdoc}
+     */
+    public function getObject(string $objectType, $objectIds, array $fieldsList)
     {
         //====================================================================//
         // Safety Checks
-        if (empty($ObjectType)) {
+        if (empty($objectType)) {
             return false;
         }
         //====================================================================//
         // Take Care of Single Read Requests
-        if (is_scalar($ObjectIds)) {
-            return $this->getOneObject($ObjectType, $ObjectIds, $List);
+        if (is_scalar($objectIds)) {
+            return $this->getOneObject($objectType, (string) $objectIds, $fieldsList);
         }
         //====================================================================//
         // Initiate Tasks parameters array
-        $Parameters = array();
-        foreach ($ObjectIds as $ObjectId) {
-            $Parameters[] = array(
-                "type"      =>  $ObjectType,
-                "id"        =>  $ObjectId,
-                "fields"    =>  $List
+        $parameters = array();
+        foreach ($objectIds as $objectId) {
+            $parameters[] = array(
+                "type"      =>  $objectType,
+                "id"        =>  $objectId,
+                "fields"    =>  $fieldsList,
             );
         }
         //====================================================================//
         // Execute Combo WebService Action
-        return $this->ComboAction(
-                $this->getConfiguration(),                      // WebService Configuration
-                SPL_S_OBJECTS,                                  // Request Service
-                SPL_F_GET,                                      // Requested Function
-                "Read Object Data",                             // Action Description Translator Tag
-                $Parameters                                     // Requets Parameters Array
-            );
+        return $this->doCombo(
+            $this->getConfiguration(),                      // WebService Configuration
+            SPL_S_OBJECTS,                                  // Request Service
+            SPL_F_GET,                                      // Requested Function
+            "Read Object Data",                             // Action Description Translator Tag
+            $parameters                                     // Requets Parameters Array
+        );
     }
 
     /**
      * {@inheritdoc}
      */
-    public function setObject(string $ObjectType, string $ObjectId = null, array $Data = array())
+    public function setObject(string $objectType, string $objectId = null, array $objectData = array())
     {
         //====================================================================//
         // Initiate Tasks parameters array
-        $Parameters = array(
-            "type"      =>  $ObjectType,
-            "id"        =>  $ObjectId,
-            "fields"    =>  $Data
+        $parameters = array(
+            "type"      =>  $objectType,
+            "id"        =>  $objectId,
+            "fields"    =>  $objectData,
         );
         //====================================================================//
         // Execute Generic WebService Action
-        return $this->GenericAction(
-                $this->getConfiguration(),                      // WebService Configuration
-                SPL_S_OBJECTS,                                  // Request Service
-                SPL_F_SET,                                      // Requested Function
-                "Write Object Data",                            // Action Description Translator Tag
-                $Parameters                                     // Requets Parameters Array
-            );
+        return $this->doGeneric(
+            $this->getConfiguration(),                      // WebService Configuration
+            SPL_S_OBJECTS,                                  // Request Service
+            SPL_F_SET,                                      // Requested Function
+            "Write Object Data",                            // Action Description Translator Tag
+            $parameters                                     // Requets Parameters Array
+        );
     }
 
     /**
      * {@inheritdoc}
      */
-    public function deleteObject(string $ObjectType, string $ObjectId) : bool
+    public function deleteObject(string $objectType, string $objectId) : bool
     {
         //====================================================================//
         // Initiate Tasks parameters array
-        $Parameters = array(
-            "type"      =>  $ObjectType,
-            "id"        =>  $ObjectId,
+        $parameters = array(
+            "type"      =>  $objectType,
+            "id"        =>  $objectId,
         );
         //====================================================================//
         // Execute Generic WebService Action
-        return $this->GenericAction(
-                $this->getConfiguration(),                      // WebService Configuration
-                SPL_S_OBJECTS,                                  // Request Service
-                SPL_F_DEL,                                      // Requested Function
-                "Delete Object",                                // Action Description Translator Tag
-                $Parameters                                     // Requets Parameters Array
-            );
+        return $this->doGeneric(
+            $this->getConfiguration(),                      // WebService Configuration
+            SPL_S_OBJECTS,                                  // Request Service
+            SPL_F_DEL,                                      // Requested Function
+            "Delete Object",                                // Action Description Translator Tag
+            $parameters                                     // Requets Parameters Array
+        );
     }
 
     //====================================================================//
@@ -284,28 +288,28 @@ final class SoapConnector extends AbstractConnector
     /**
      * {@inheritdoc}
      */
-    public function getFile(string $Path, string $Md5)
+    public function getFile(string $filePath, string $fileMd5)
     {
         //====================================================================//
         // Safety Checks
-        if (empty($Path) || empty($Md5)) {
+        if (empty($filePath) || empty($fileMd5)) {
             return array();
         }
         //====================================================================//
         // Initiate Tasks parameters array
-        $Parameters = array(
-            "path"      =>  $Path,
-            "md5"       =>  $Md5,
+        $parameters = array(
+            "path"      =>  $filePath,
+            "md5"       =>  $fileMd5,
         );
         //====================================================================//
         // Execute Generic WebService Action
-        return $this->GenericAction(
-                $this->getConfiguration(),                      // WebService Configuration
-                SPL_S_FILE,                                     // Request Service
-                SPL_F_GETFILE,                                  // Requested Function
-                "Read File",                                    // Action Description Translator Tag
-                $Parameters                                     // Requets Parameters Array
-            );
+        return $this->doGeneric(
+            $this->getConfiguration(),                      // WebService Configuration
+            SPL_S_FILE,                                     // Request Service
+            SPL_F_GETFILE,                                  // Requested Function
+            "Read File",                                    // Action Description Translator Tag
+            $parameters                                     // Requets Parameters Array
+        );
     }
     
     //====================================================================//
@@ -319,65 +323,65 @@ final class SoapConnector extends AbstractConnector
     {
         //====================================================================//
         // Execute Generic WebService Action
-        $response = $this->GenericAction(
-                $this->getConfiguration(),                      // WebService Configuration
-                SPL_S_WIDGETS,                                  // Request Service
-                SPL_F_WIDGET_LIST,                              // Requested Function
-                "Read Widgets List"                             // Action Description Translator Tag
-            );
+        $response = $this->doGeneric(
+            $this->getConfiguration(),                      // WebService Configuration
+            SPL_S_WIDGETS,                                  // Request Service
+            SPL_F_WIDGET_LIST,                              // Requested Function
+            "Read Widgets List"                             // Action Description Translator Tag
+        );
         
-        return (false === $response) ? array() : $response;        
+        return (false === $response) ? array() : $response;
     }
     
     /**
      * {@inheritdoc}
      */
-    public function getWidgetDescription(string $WidgetType) : array
+    public function getWidgetDescription(string $widgetType) : array
     {
         //====================================================================//
         // Initiate Tasks parameters array
-        $Parameters = array(
-            "type"      =>  $WidgetType,
+        $parameters = array(
+            "type"      =>  $widgetType,
         );
         //====================================================================//
         // Execute Generic WebService Action
-        return $this->GenericAction(
-                $this->getConfiguration(),                      // WebService Configuration
-                SPL_S_WIDGETS,                                  // Request Service
-                SPL_F_WIDGET_DEFINITION,                        // Requested Function
-                "Read Widget Definition",                       // Action Description Translator Tag
-                $Parameters                                     // Requets Parameters Array
-            );
+        return $this->doGeneric(
+            $this->getConfiguration(),                      // WebService Configuration
+            SPL_S_WIDGETS,                                  // Request Service
+            SPL_F_WIDGET_DEFINITION,                        // Requested Function
+            "Read Widget Definition",                       // Action Description Translator Tag
+            $parameters                                     // Requets Parameters Array
+        );
     }
     
     /**
      * {@inheritdoc}
      */
-    public function getWidgetContents(string $WidgetType, array $WidgetConfig = array())
-    {    
+    public function getWidgetContents(string $widgetType, array $widgetConfig = array())
+    {
         //====================================================================//
         // Convert Dates to Splash String Format
-        if (isset($WidgetConfig["DateStart"]) && is_a($WidgetConfig["DateStart"], "DateTime")) {
-            $WidgetConfig["DateStart"] = $WidgetConfig["DateStart"]->format(SPL_T_DATETIMECAST);
+        if (isset($widgetConfig["DateStart"]) && is_a($widgetConfig["DateStart"], "DateTime")) {
+            $widgetConfig["DateStart"] = $widgetConfig["DateStart"]->format(SPL_T_DATETIMECAST);
         }
-        if (isset($WidgetConfig["DateEnd"]) && is_a($WidgetConfig["DateEnd"], "DateTime")) {
-            $WidgetConfig["DateEnd"] = $WidgetConfig["DateEnd"]->format(SPL_T_DATETIMECAST);
+        if (isset($widgetConfig["DateEnd"]) && is_a($widgetConfig["DateEnd"], "DateTime")) {
+            $widgetConfig["DateEnd"] = $widgetConfig["DateEnd"]->format(SPL_T_DATETIMECAST);
         }
         //====================================================================//
         // Initiate Tasks parameters array
-        $Parameters = array(
-            "type"      =>  $WidgetType,
-            "params"    =>  $WidgetConfig,
+        $parameters = array(
+            "type"      =>  $widgetType,
+            "params"    =>  $widgetConfig,
         );
         //====================================================================//
         // Execute Generic WebService Action
-        return $this->GenericAction(
-                $this->getConfiguration(),                      // WebService Configuration
-                SPL_S_WIDGETS,                                  // Request Service
-                SPL_F_WIDGET_GET,                               // Requested Function
-                "Read Widget Contents",                         // Action Description Translator Tag
-                $Parameters                                     // Requets Parameters Array
-            );
+        return $this->doGeneric(
+            $this->getConfiguration(),                      // WebService Configuration
+            SPL_S_WIDGETS,                                  // Request Service
+            SPL_F_WIDGET_GET,                               // Requested Function
+            "Read Widget Contents",                         // Action Description Translator Tag
+            $parameters                                     // Requets Parameters Array
+        );
     }
     
     //====================================================================//
@@ -386,6 +390,7 @@ final class SoapConnector extends AbstractConnector
     
     /**
      * @abstract   Get Connector Profile Informations
+     *
      * @return  array
      */
     public function getProfile() : array
@@ -456,99 +461,99 @@ final class SoapConnector extends AbstractConnector
     /**
      * @abstract   Perform Generic Soap Action
      *
-     * @param      array    $Config             WebService Configuration
-     * @param      string   $Service            Service Method to reach
-     * @param      string   $Action             Service Action to perform
-     * @param      string   $Description        Action Description for Information
-     * @param      array    $Parameters         Action Parameters.
+     * @param      array  $config      WebService Configuration
+     * @param      string $service     Service Method to reach
+     * @param      string $action      Service Action to perform
+     * @param      string $description Action Description for Information
+     * @param      array  $parameters  Action Parameters.
      *
      * @return     mixed
      */
-    protected function GenericAction(array $Config, string $Service, string $Action, string $Description, array $Parameters = array())
+    private function doGeneric(array $config, string $service, string $action, string $description, array $parameters = array())
     {
         //====================================================================//
         // Create Webservice Componant
-        $Webservice =   (new Webservice())->configure($Config);
+        $webservice =   (new Webservice())->configure($config);
         //====================================================================//
         // Add Task To Queue
-        $Webservice->addTask($Action, $Parameters, $Description);
+        $webservice->addTask($action, $parameters, $description);
         //====================================================================//
         // Perform Request
-        $Response   =   $Webservice->call($Service);
+        $response   =   $webservice->call($service);
         //====================================================================//
         // Verify Response is Ok
-        if (!isset($Response->result) || empty($Response->result) || empty($Response->tasks)) {
+        if (!isset($response->result) || empty($response->result) || empty($response->tasks)) {
             return false;
         }
         //====================================================================//
         // Get Next Task Result
-        $Tasks = $Response->tasks->getArrayCopy();
-        $Task = array_shift($Tasks);
+        $tasks = $response->tasks->getArrayCopy();
+        $task = array_shift($tasks);
         //====================================================================//
         // Return Task Data
-        return Webservice::extractData($Task);
+        return Webservice::extractData($task);
     }
     
     /**
      * @abstract   Perform Multiple Soap Action
      *
-     * @param      array    $Config             WebService Configuration
-     * @param      string   $Service            Service Method to reach
-     * @param      string   $Action             Service Action to perform
-     * @param      string   $Description        Action Description for Information
-     * @param      array    $Parameters         Array of Action Parameters.
+     * @param      array  $config      WebService Configuration
+     * @param      string $service     Service Method to reach
+     * @param      string $action      Service Action to perform
+     * @param      string $description Action Description for Information
+     * @param      array  $parameters  Array of Action Parameters.
      *
      * @return     mixed
      */
-    protected function ComboAction(array $Config, string $Service, string $Action, string $Description, array $Parameters = array())
+    private function doCombo(array $config, string $service, string $action, string $description, array $parameters = array())
     {
         //====================================================================//
         // Create Webservice Componant
-        $Webservice =   (new Webservice())->configure($Config);
+        $webservice =   (new Webservice())->configure($config);
         //====================================================================//
         // Add Task To Queue
-        foreach ($Parameters as $Params) {
-            $Webservice->addTask($Action, $Params, $Description);
+        foreach ($parameters as $params) {
+            $webservice->addTask($action, $params, $description);
         }
         //====================================================================//
         // Perform Request
-        $Response   =   $Webservice->call($Service);
+        $response   =   $webservice->call($service);
         //====================================================================//
         // Verify Response is Ok
-        if (!isset($Response->result) || empty($Response->result) || empty($Response->tasks)) {
+        if (!isset($response->result) || empty($response->result) || empty($response->tasks)) {
             return false;
         }
         //====================================================================//
         // Get Tasks Results
-        $Results = array();
-        foreach ($Response->tasks as $Task) {
-            $Results[]   =   Webservice::extractData($Task);
+        $results = array();
+        foreach ($response->tasks as $task) {
+            $results[]   =   Webservice::extractData($task);
         }
         //====================================================================//
         // Return Tasks Results
-        return   $Results;
+        return   $results;
     }
     
     /**
      * {@inheritdoc}
      */
-    private function getOneObject(string $ObjectType, string $ObjectId, array $List)
+    private function getOneObject(string $objectType, string $objectId, array $fieldsList)
     {
         //====================================================================//
         // Initiate Tasks parameters array
-        $Parameters = array(
-            "type"      =>  $ObjectType,
-            "id"        =>  $ObjectId,
-            "fields"    =>  $List
+        $parameters = array(
+            "type"      =>  $objectType,
+            "id"        =>  $objectId,
+            "fields"    =>  $fieldsList,
         );
         //====================================================================//
         // Execute Generic WebService Action
-        return $this->GenericAction(
-                $this->getConfiguration(),                      // WebService Configuration
-                SPL_S_OBJECTS,                                  // Request Service
-                SPL_F_GET,                                      // Requested Function
-                "Read Object Data",                             // Action Description Translator Tag
-                $Parameters                                     // Requets Parameters Array
-            );
+        return $this->doGeneric(
+            $this->getConfiguration(),                      // WebService Configuration
+            SPL_S_OBJECTS,                                  // Request Service
+            SPL_F_GET,                                      // Requested Function
+            "Read Object Data",                             // Action Description Translator Tag
+            $parameters                                     // Requets Parameters Array
+        );
     }
 }

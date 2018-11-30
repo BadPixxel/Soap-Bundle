@@ -30,6 +30,7 @@ final class Webservice extends BaseWebservice
 
     /**
      * @abstract   Override Setup Function
+     *
      * @return  false
      */
     public function setup()
@@ -39,22 +40,24 @@ final class Webservice extends BaseWebservice
     
     /**
      * @abstract   Initialise Webservice Parameters
-     * @param   array   $Config         Connector Configuration
+     *
+     * @param   array $config Connector Configuration
+     *
      * @return  $this
      */
-    public function configure(array $Config)
+    public function configure(array $config)
     {
         //====================================================================//
         // Read Parameters
-        $this->id       =   $Config['WsIdentifier'];
-        $this->key      =   $Config['WsEncryptionKey'];
+        $this->id       =   $config['WsIdentifier'];
+        $this->key      =   $config['WsEncryptionKey'];
         //====================================================================//
         // Detect Server Host Address
         $this->host     =   self::getNormalizedHostUrl(
-                $Config['WsHost'],
-                $Config['WsPath'],
-                isset($Config['EnableHttps']) ? $Config['EnableHttps'] : true
-            );
+            $config['WsHost'],
+            $config['WsPath'],
+            isset($config['EnableHttps']) ? $config['EnableHttps'] : true
+        );
         //====================================================================//
         //  Load Translation File
         Splash::translator()->load("ws");
@@ -65,43 +68,43 @@ final class Webservice extends BaseWebservice
     /**
      * @abstract   Extract Data from Task response
      *
-     * @param      ArrayObject    $Task         WebService Response Task
+     * @param      ArrayObject $task WebService Response Task
      *
      * @return     array|false
      */
-    public static function extractData(ArrayObject $Task)
+    public static function extractData(ArrayObject $task)
     {
-        if (!isset($Task["data"])) {
+        if (!isset($task["data"])) {
             return false;
         }
-        if (is_a($Task["data"], ArrayObject::class)) {
-            return $Task["data"]->getArrayCopy();
+        if (is_a($task["data"], ArrayObject::class)) {
+            return $task["data"]->getArrayCopy();
         }
 
-        return $Task["data"];
+        return $task["data"];
     }
     
     /**
      * @abstract   Prepare & Normalize Host Url From Current Server
      *
-     * @param   string  $WsHost         Server Host Url
-     * @param   string  $WsPath         Server Path
-     * @param   bool    $EnHttps        Force Https Url if no Schema Defined
+     * @param   string $wsHost  Server Host Url
+     * @param   string $wsPath  Server Path
+     * @param   bool   $enHttps Force Https Url if no Schema Defined
      *
      * @return  string
      */
-    private static function getNormalizedHostUrl(string $WsHost, string $WsPath, bool $EnHttps = true)
+    private static function getNormalizedHostUrl(string $wsHost, string $wsPath, bool $enHttps = null)
     {
-        $Schema =   null;
+        $schema =   null;
         //====================================================================//
         // If Given Url Doesn't include Prefix
-        if ((false === strpos($WsHost, "http://")) && (false === strpos($WsHost, "https://"))) {
+        if ((false === strpos($wsHost, "http://")) && (false === strpos($wsHost, "https://"))) {
             //====================================================================//
             // If Https Mode is Enabled
-            $Schema = $EnHttps ? 'https://' : 'http://';
+            $schema = (false !== $enHttps) ? 'https://' : 'http://';
         }
         //====================================================================//
         // If Given Url include Prefix
-        return  $Schema . $WsHost . $WsPath;
+        return  $schema.$wsHost.$wsPath;
     }
 }

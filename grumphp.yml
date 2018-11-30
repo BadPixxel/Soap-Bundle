@@ -1,72 +1,21 @@
-parameters:
-    git_dir:        .
-    bin_dir:        bin
-    ascii:
-        failed:     "./vendor/splash/phpcore/Resources/ascii/grumphp-grumpy.txt"
-        succeeded:  "./vendor/splash/phpcore/Resources/ascii/grumphp-happy.txt"
-    tasks:
-        
-        composer:
-            file:           "./composer.json"
-            
-        phplint:
-            exclude: [ "app", "bin", "docs", "vendor", "var" ]
-            triggered_by: ['php']
-            
-        phpcs:
-            standard:       "PSR2"
-            triggered_by:   [php]
-            whitelist_patterns:
-              - /^src\/(.*)/
+################################################################################
+#
+# * This file is part of SplashSync Project.
+# *
+# * Copyright (C) Splash Sync <www.splashsync.com>
+# *
+# * This program is distributed in the hope that it will be useful,
+# * but WITHOUT ANY WARRANTY; without even the implied warranty of
+# * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+# *
+# * For the full copyright and license information, please view the LICENSE
+# * file that was distributed with this source code.
+# *
+# * @author Bernard Paquier <contact@splashsync.com>
+#
+################################################################################
 
-        git_blacklist:
-            keywords:
-                - "var_dump"
-                - "dump("
-                - "console.log"
-                - "print_r"
-                - "die("
-            triggered_by: [php, js, twig]
-            
-        jsonlint:
-            detect_key_conflicts: true
-            ignore_patterns: ['vendor']
-            
-        xmllint: ~
-        yamllint: 
-            parse_custom_tags: true
-        
-        phpmd:
-            ruleset:        ["./tests/phpmd.xml"]
-            exclude:        
-                - "archives"
-                - "vendor"
-                
-        securitychecker: ~
-        phpcpd: 
-            exclude:
-                - "archives"
-                - "var"               
-                - "vendor"               
-                
-        phpstan: 
-            level:  1
-            ignore_patterns:
-                - "archives/"
-
-    testsuites:
-        travis:
-            tasks:
-                - composer
-                - phplint
-                - phpcs 
-                - git_blacklist
-                - jsonlint
-                - phpmd
-                - phpcpd
-                - xmllint
-                - yamllint
-                
-        phpstan:
-            tasks: 
-                - phpstan
+#############################################        
+# Import Config. from Generic Bundle
+imports:
+    - { resource: "./vendor/splash/php-bundle/src/Resources/grumphp/grumphp.base.yml" }

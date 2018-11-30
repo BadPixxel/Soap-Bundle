@@ -13,11 +13,20 @@
  *  file that was distributed with this source code.
  */
 
+// phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
+
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\HttpKernel\Kernel as BaseKernel;
 
+/**
+ * Symfony Kernel for testing
+ */
 class Kernel extends BaseKernel
 {
+    /**
+     * Register System Bundle
+     * @return array
+     */
     public function registerBundles()
     {
         //==============================================================================
@@ -28,16 +37,12 @@ class Kernel extends BaseKernel
         $bundles[] = new Symfony\Bundle\MonologBundle\MonologBundle();
         
         //==============================================================================
-        // DOCTRINE CORE
-        $bundles[] = new Doctrine\Bundle\DoctrineBundle\DoctrineBundle();
-        
-        //==============================================================================
         // SPLASH PHP BUNDLE
         $bundles[] = new Splash\Bundle\SplashBundle();
 
         //==============================================================================
         // SPLASH CONNECTORS BUNDLE
-        $bundles[] = new Splash\Connectors\SoapBundle\SplashSoapBundle();
+        $bundles[] = new Splash\Connectors\Soap\SoapBundle();
         
         //==============================================================================
         // TEST & DEV BUNDLES
@@ -56,21 +61,35 @@ class Kernel extends BaseKernel
         return $bundles;
     }
 
+    /**
+     * @return string
+     */
     public function getRootDir()
     {
         return __DIR__;
     }
 
+    /**
+     * @return string
+     */
     public function getCacheDir()
     {
         return dirname(__DIR__).'/var/cache/'.$this->getEnvironment();
     }
 
+    /**
+     * @return string
+     */
     public function getLogDir()
     {
         return dirname(__DIR__).'/var/logs';
     }
 
+    /**
+     * Register Requiered Bundles
+     *
+     * @param LoaderInterface $loader
+     */
     public function registerContainerConfiguration(LoaderInterface $loader)
     {
         if ("test" == $this->getEnvironment()) {
