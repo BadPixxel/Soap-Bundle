@@ -1,0 +1,88 @@
+
+# Parameters
+form:
+    
+    id:     
+        label:  Identifiant
+        desc:   Identifiant unique de votre Server. Cet identifiant est utilisé pour identifier votre serveur lorsque qu'il se connecte. 
+        
+    key: 
+        label:      Clé de cryptage         
+        desc:       La clé de cryptage est unique est c'est à vous de la saisir sur votre serveur. Elle n'est jamais partagée lors des échanges avec vos serveurs.
+        undefined:  La clé de cryptage du serveur est vide. 
+        tooshort:   La clé de cryptage du serveur est trop courte.
+        
+    encrypt:
+        label:  Cryptage des Données
+        desc:   Sélectionnez la méthode de cryptage de votre Serveur (AES-256 par défaut)
+        yes:    Les messages sont cryptés (AES-256-CBC)
+        no:     Les messages ne sont PAS cryptés
+        
+    host:   
+        label:  Domaine
+        desc:   Le nom de dommaine de votre serveur, assurez-vous que c'est le bon! 
+        undefined:  L'Addresse de connexion au Serveur Distant n'est pas définie.
+        
+    folder:   
+        label:  Chemin du Web-service
+        desc:   Le chemin du web-service Splash, assurez-vous que c'est le bon!     
+        undefined:  Le dossier de connexion au Seerveur Distant est vide.
+        
+    https:
+        label:  Https
+        desc:   Activer le protocole Https si requis par votre server
+    httpauth:
+        label:  Authentification Http 
+        desc:   Activez cette option si votre serveur nécéssite une Authentification Http pour ce connecter au module Splash
+    httpuser:
+        label:  Utilisateur Http
+        undef:  Le nom d'utilisateur est requis pour l'authentification Http
+        
+    httppwd:
+        label:  Mot de Passe Http
+        undef:  Le Mot de Passe est requis pour l'authentification Http
+
+# Profile
+show:
+    title:      Détails du Serveur
+    created:    Depuis 
+    info:
+        webserviceurl:  Webservice Url
+        servertype:     Type
+        serverurl:      Url
+        author:         Auteur
+        version:        Version
+        company:        Infos Société
+        longdesc:       Description
+        server:         Infos Serveur
+        security:       Sécurité
+    
+    no_node_defined : Aucun Serveur Enregistré 
+    messages:
+        new:        <h5> Ce Serveur n'est pas connecté pour le moment.</h5> <p>Pour le connecter, saisissez les information d'authentification sur votre serveur et demandez lui de ce connecter.</p>
+        declared:   <h5> Serveur déclaré </h5> <p> Il ne vous reste plus qu'à rafraichir ces données pour le mettre en service.</p>
+        offline:    <h5> Serveur Inaccessible </h5> <p> Les dernières tentatives n'ont pas permis de contacter ce serveur. Il est possible qu'il soit en erreur ou tout simplement hors ligne. </p>
+        deleted :   <h5> Ce serveur a été supprimé... </h5> <p> Pour le restaurer, clicquez sur la corbeille et ré-activez le.</p>
+
+faults:
+    title:          Résoudre les problèmes de connexion
+    server_url:     <h5> Vérifiez l'adresse du Serveur </h5> Si vous avez déplaçé votre serveur, changé de nom de domaine, ou encore placé votre application dans un autre dossier, il se peut que le module ne soit plus accéssible à la même adresse. 
+    server_ko:      <h5> Vérifiez la configuration du Serveur </h5> Si votre serveur n'est pas correctement configuré, il peu ne pas réagir comme attendu. </br></br> Rendez-vous sur la page de configuration de votre module et vérifiez que l'ensemble des paramètres requis sont correctement configurés, mais aussi que tous les tests automatiques ont étés passés.    
+
+newkeys:    
+    title:      Générer de nouvelles clés de sécurité
+    label:      Effacer les clés et en générer de nouvelles
+    confirm:    Cette opération effacera les clés de sécurité de votre serveur et en génèrera de nouvelles. Par conséquence, vous devrez ensuite manuellement mettre à jour la configuration de votre serveur. 
+    success:    Un nouveau jeu de clés a été généré
+    error:      Impossible de générer un nouveau jeu de clés
+
+new_host:    
+    label:      Mettre à jour les informations de connexion
+    confirm:    Cette opération mettra votre serveur en attente d\'une nouvelle connexion depuis le module client afin de mettre à jour les informations de contact. </br>Par conséquence, vous devrez ensuite manuellement realiser une test de connexion depuis votre serveur. 
+    success:    Serveur en attente de connexion client
+    error:      Impossible modifier le status du serveur
+    
+messages:
+    copyId:     Identifiant copié dans le presse-papier
+    copyKey:    Clé de cryptage copiée dans le presse-papier
+    

@@ -26,10 +26,13 @@ use Splash\Connectors\Soap\Componants\Webservice;
 use Splash\Core\SplashCore as Splash;
 use Splash\Models\AbstractObject;
 
-//use Symfony\Component\DependencyInjection\ContainerAwareTrait;
+use Splash\Connectors\Soap\Form\SimpleSoapType;
+use Splash\Connectors\Soap\Form\CompleteSoapType;
 
 /**
  * @abstract Splash Soap Connector
+ * 
+ * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
  */
 final class SoapConnector extends AbstractConnector
 {
@@ -40,6 +43,11 @@ final class SoapConnector extends AbstractConnector
      */
     public function ping() : bool
     {
+        //====================================================================//
+        // Safety Check => Verify Selftest Pass
+        if (!$this->selfTest()) {
+            return false;
+        }
         //====================================================================//
         // Create Webservice Componant
         $webservice =   (new Webservice())->configure($this->getConfiguration());
@@ -59,6 +67,11 @@ final class SoapConnector extends AbstractConnector
     public function connect() : bool
     {
         //====================================================================//
+        // Safety Check => Verify Selftest Pass
+        if (!$this->selfTest()) {
+            return false;
+        }
+        //====================================================================//
         // Create Webservice Componant
         $webservice =   (new Webservice())->configure($this->getConfiguration());
         //====================================================================//
@@ -77,6 +90,11 @@ final class SoapConnector extends AbstractConnector
      */
     public function informations(ArrayObject  $informations) : ArrayObject
     {
+        //====================================================================//
+        // Safety Check => Verify Selftest Pass
+        if (!$this->selfTest()) {
+            return $informations;
+        }
         //====================================================================//
         // Execute Generic WebService Action
         $response   =   $this->doGeneric(
@@ -104,14 +122,35 @@ final class SoapConnector extends AbstractConnector
      */
     public function selfTest() : bool
     {
+        $config = $this->getConfiguration();
+        Splash::translator()->load("ws");
+        
         //====================================================================//
-        // Execute Generic WebService Action
-        return $this->doGeneric(
-            $this->getConfiguration(),                      // WebService Configuration
-            SPL_S_ADMIN,                                    // Request Service
-            SPL_F_GET_SELFTEST,                             // Requested Function
-            "Read Server SelfTest"                          // Action Description Translator Tag
-        );
+        // Verify Minimum WebService Configuration is Set
+        //====================================================================//
+
+        //====================================================================//
+        // Verify Server Id not empty
+        if (!isset($config['WsIdentifier']) || empty($config['WsIdentifier'])) {
+            return Splash::log()->err('ErrWsNoId');
+        }
+        
+        //====================================================================//
+        // Verify Server Key not empty
+        if (!isset($config['WsEncryptionKey']) || empty($config['WsEncryptionKey'])) {
+            return Splash::log()->err('ErrWsNoKey');
+        }
+        
+        //====================================================================//
+        // Verify host address is present
+        if (!isset($config['WsHost']) || empty($config['WsHost'])) {
+            return Splash::log()->err('ErrWsNoHost');
+        }
+        if (!isset($config['WsPath'])) {
+            return Splash::log()->err('ErrWsNoHost');
+        }
+
+        return true;
     }
     
     //====================================================================//
@@ -123,6 +162,11 @@ final class SoapConnector extends AbstractConnector
      */
     public function getAvailableObjects() : array
     {
+        //====================================================================//
+        // Safety Check => Verify Selftest Pass
+        if (!$this->selfTest()) {
+            return array();
+        }
         //====================================================================//
         // Execute Generic WebService Action
         $response   =   $this->doGeneric(
@@ -140,6 +184,11 @@ final class SoapConnector extends AbstractConnector
      */
     public function getObjectDescription(string $objectType) : array
     {
+        //====================================================================//
+        // Safety Check => Verify Selftest Pass
+        if (!$this->selfTest()) {
+            return array();
+        }
         //====================================================================//
         // Initiate Tasks parameters array
         $parameters = array(
@@ -162,6 +211,11 @@ final class SoapConnector extends AbstractConnector
     public function getObjectFields(string $objectType) : array
     {
         //====================================================================//
+        // Safety Check => Verify Selftest Pass
+        if (!$this->selfTest()) {
+            return array();
+        }
+        //====================================================================//
         // Initiate Tasks parameters array
         $parameters = array(
             "type"  =>  $objectType,
@@ -182,6 +236,11 @@ final class SoapConnector extends AbstractConnector
      */
     public function getObjectList(string $objectType, string $filter = null, array $parameters = array()) : array
     {
+        //====================================================================//
+        // Safety Check => Verify Selftest Pass
+        if (!$this->selfTest()) {
+            return array();
+        }
         //====================================================================//
         // Initiate Tasks parameters array
         $parameters = array(
@@ -205,6 +264,11 @@ final class SoapConnector extends AbstractConnector
      */
     public function getObject(string $objectType, $objectIds, array $fieldsList)
     {
+        //====================================================================//
+        // Safety Check => Verify Selftest Pass
+        if (!$this->selfTest()) {
+            return false;
+        }
         //====================================================================//
         // Safety Checks
         if (empty($objectType)) {
@@ -242,6 +306,11 @@ final class SoapConnector extends AbstractConnector
     public function setObject(string $objectType, string $objectId = null, array $objectData = array())
     {
         //====================================================================//
+        // Safety Check => Verify Selftest Pass
+        if (!$this->selfTest()) {
+            return false;
+        }
+        //====================================================================//
         // Initiate Tasks parameters array
         $parameters = array(
             "type"      =>  $objectType,
@@ -264,6 +333,11 @@ final class SoapConnector extends AbstractConnector
      */
     public function deleteObject(string $objectType, string $objectId) : bool
     {
+        //====================================================================//
+        // Safety Check => Verify Selftest Pass
+        if (!$this->selfTest()) {
+            return false;
+        }
         //====================================================================//
         // Initiate Tasks parameters array
         $parameters = array(
@@ -290,6 +364,11 @@ final class SoapConnector extends AbstractConnector
      */
     public function getFile(string $filePath, string $fileMd5)
     {
+        //====================================================================//
+        // Safety Check => Verify Selftest Pass
+        if (!$this->selfTest()) {
+            return false;
+        }
         //====================================================================//
         // Safety Checks
         if (empty($filePath) || empty($fileMd5)) {
@@ -322,6 +401,11 @@ final class SoapConnector extends AbstractConnector
     public function getAvailableWidgets() : array
     {
         //====================================================================//
+        // Safety Check => Verify Selftest Pass
+        if (!$this->selfTest()) {
+            return array();
+        }
+        //====================================================================//
         // Execute Generic WebService Action
         $response = $this->doGeneric(
             $this->getConfiguration(),                      // WebService Configuration
@@ -338,6 +422,11 @@ final class SoapConnector extends AbstractConnector
      */
     public function getWidgetDescription(string $widgetType) : array
     {
+        //====================================================================//
+        // Safety Check => Verify Selftest Pass
+        if (!$this->selfTest()) {
+            return array();
+        }
         //====================================================================//
         // Initiate Tasks parameters array
         $parameters = array(
@@ -359,6 +448,11 @@ final class SoapConnector extends AbstractConnector
      */
     public function getWidgetContents(string $widgetType, array $widgetConfig = array())
     {
+        //====================================================================//
+        // Safety Check => Verify Selftest Pass
+        if (!$this->selfTest()) {
+            return false;
+        }
         //====================================================================//
         // Convert Dates to Splash String Format
         if (isset($widgetConfig["DateStart"]) && is_a($widgetConfig["DateStart"], "DateTime")) {
@@ -414,7 +508,7 @@ final class SoapConnector extends AbstractConnector
      */
     public function getConnectedTemplate() : string
     {
-        return "@Splash/profile/profile.html.twig";
+        return "@Soap/Profile/connected.html.twig";
     }
 
     /**
@@ -422,7 +516,7 @@ final class SoapConnector extends AbstractConnector
      */
     public function getOfflineTemplate() : string
     {
-        return "@Splash/profile/profile.html.twig";
+        return "@Soap/Profile/offline.html.twig";
     }
 
     /**
@@ -430,7 +524,7 @@ final class SoapConnector extends AbstractConnector
      */
     public function getNewTemplate() : string
     {
-        return "@Splash/profile/profile.html.twig";
+        return "@Soap/Profile/new.html.twig";
     }
     
     /**
@@ -438,7 +532,7 @@ final class SoapConnector extends AbstractConnector
      */
     public function getFormBuilderName() : string
     {
-        return StandaloneFormType::class;
+        return $this->getParameter("Extended", false) ? CompleteSoapType::class : SimpleSoapType::class;
     }
 
     /**
@@ -446,12 +540,11 @@ final class SoapConnector extends AbstractConnector
      */
     public function getAvailableActions() : array
     {
-//        //====================================================================//
-//        // Dispatch Object Listing Event
-//        $Event  =   $this->getEventDispatcher()->dispatch(ActionsListingEvent::NAME, new ActionsListingEvent());
-//        //====================================================================//
-//        // Return Actions Types Array
-//        return $Event->getAll();
+        return array(
+            "master" => "SoapBundle:Soap:master",
+            "newhost" => "SoapBundle:Actions:host",
+            "newkeys" => "SoapBundle:Actions:keys",
+        );
     }
     
     //====================================================================//

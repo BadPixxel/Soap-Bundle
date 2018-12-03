@@ -1,0 +1,29 @@
+{% trans_default_domain "SoapBundle" %}
+
+{% import "SoapBundle:Macros:buttons.html.twig"            as Buttons %}
+
+{% block contents %}
+
+    <h1>{{ 'faults.title'|trans }}</h1>
+    
+    <div class="well well-sm">
+        {{ 'faults.server_url'|trans |raw }}
+    </div>
+    {{ Buttons.NewHostBtn(connector) }}
+    
+    </br>
+    
+    <div class="well well-sm">
+        {{ 'faults.server_ko'|trans |raw }}
+    </div>
+    
+    </br>    
+    
+    <div class="well well-sm">
+        {% include 'SoapBundle:Blocks:description.html.twig' %}
+        {% include 'SoapBundle:Blocks:security.html.twig'  %}
+    </div>
+    
+        
+{% endblock %}
+

@@ -1,0 +1,47 @@
+{% trans_default_domain "SoapBundle" %}
+
+{% if connector.configuration.WsHost [:7] == "http://" %}
+    {% set Url  = connector.configuration.WsHost ~ connector.configuration.WsPath %}
+{% elseif connector.configuration.WsHost [:8] == "https://" %}
+    {% set Url  = connector.configuration.WsHost ~ connector.configuration.WsPath %}
+{% elseif connector.configuration.EnableHttps | default(false) %}
+    {% set Url  = "https://" ~ connector.configuration.WsHost ~ connector.configuration.WsPath %}
+{% else %}
+    {% set Url  = "http://" ~ connector.configuration.WsHost ~ connector.configuration.WsPath %}
+{% endif  %}
+
+<!-- Server Description Block -->                           
+<ul class="list-unstyled">
+    <li>
+        <p class="text-muted">
+            <i class="fa fa-globe"></i>&nbsp;{{ 'show.info.webserviceurl'|trans }}&nbsp;:&nbsp;
+            <a href="{{ Url }}?node={{ connector.configuration.WsIdentifier }}" target="_blank" class="bold">{{ Url }}&nbsp;<i class="fa fa-external-link"></i></a>
+        </p>
+    </li>
+    <li>
+        <p class="text-muted">
+            <i class="fa fa-hdd-o"></i>&nbsp;{{ 'show.info.servertype'|trans }}&nbsp;:&nbsp;
+            <span class="txt-color-darken">{{ informations.servertype | default("") }}</span>
+        </p>
+    </li>
+    <li>
+        <p class="text-muted">
+            <i class="fa fa-external-link"></i>&nbsp;{{ 'show.info.serverurl'|trans }}&nbsp;:&nbsp;
+            <a href="{{ informations.serverurl | default("") }}" target="_blank">{{ informations.serverurl | default("") }}</a>
+        </p>
+    </li>
+    <li>
+        <p class="text-muted">
+            <i class="fa fa-user"></i>&nbsp;{{ 'show.info.author'|trans }}&nbsp;:&nbsp;
+            <span class="txt-color-darken">{{ informations.moduleauthor | default("") }}</span>
+        </p>
+    </li>
+    <li>
+        <p class="text-muted">
+            <i class="fa fa-code-fork"></i>&nbsp;{{ 'show.info.version'|trans }}&nbsp;:&nbsp;
+            <span class="txt-color-darken">{{ informations.moduleversion | default("") }}</span>
+        </p>
+    </li>                                
+</ul>
+<!-- End Server Description Block -->                           
+

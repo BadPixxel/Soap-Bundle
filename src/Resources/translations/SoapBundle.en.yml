@@ -1,0 +1,86 @@
+
+# Form Parameters
+form:
+    
+    id:     
+        label:  Identifier
+        desc:   Server Unique Identifier. Used to identify Server on remote connection.
+        
+    key: 
+        label:      Unique Security Key        
+        desc:       Security key is unique and it's your role to enter it on your serveur. This key will never be transmited during communication with your servers.
+        undefined:  Security key for this server is empty. 
+        tooshort:   Security key for this server is too short.  
+        
+    encrypt:
+        label:  Data Encryption
+        desc:   Select Encryption method for your Server (Default is AES-256)
+        yes:    Messages are Encrypted (AES-256-CBC)
+        no:     Messages are NOT Encrypted
+        
+    host:   
+        label:  Domain / Host
+        desc:   This is the server domain we detected, ensure it is correct!
+        undefined:  Remote Serveur connection Url is undefined.
+        
+    folder:   
+        label:  Webservice Path
+        desc:   This is the path where Splash webservice is accessed, ensure it is correct!
+        undefined:  Remote Serveur Path is empty.
+        
+    https:
+        label:  Https Urls
+        desc:   Enable if your server require Https protocol
+    httpauth:
+        label:  Http Authentification
+        desc:   Your server require Http Authentification to connect Splash Module
+    httpuser:
+        label:  Http User
+        undef:  Http User Name is required for Http Authentification
+    httppwd:
+        label:  Http Password
+        undef:  Http Password is required for Http Authentification
+            
+# Profile
+show:
+    title:      Servers Details
+    created:    Since 
+    info:
+        webserviceurl:  Webservice Url
+        servertype:     Type
+        serverurl:      Url
+        author:         Author
+        version:        Version
+        company:        Company Informations
+        longdesc:       Description
+        server:         Remote Server
+        security:       Security
+    
+    no_node_defined : No Server Defined. 
+    messages:
+        new:        <h5> This Server isn't connected yet.</h5> <p>To connect a new server, enter your security information on remote server parameters.</p>
+        declared:   <h5> Server declared </h5> <p> You now just have to refresh objects data to get it ready!</p>
+        offline:    <h5> Server Unreachable </h5> <p> Last ping requests failed for this server. It may be in error or simply offline. </p>
+        deleted :   <h5> This Server is deleted... </h5> <p> To restore it, click on trash bin and select it for recovery.</p>
+
+faults:
+    title:          Resolve connexion issues
+    server_url:     <h5> Check Server Address </h5> If you have moved your server, changed your domain name, or placed your application in another folder, the module may not be able to access the same address. 
+    server_ko:      <h5> Check the server configuration </h5> If your server is not configured correctly, it may not react as expected. </br> </br> Go to the configuration page of your module and make sure that all required parameters are correctly configured, but also that all automatic tests are passed.    
+
+newkeys:    
+    title:      Re-Generate Security Keys
+    label:      Delete Current Keys and Generate a new set 
+    confirm:    This operation will delete current Server Keys and Generate a new set. Consequently, you will have to manually update remote server configuration. 
+    success:    New Connection Keys Generated
+    error:      Connection Keys not Generated
+        
+new_host:    
+    label:      Update connection information
+    confirm:    This will put your server on hold for a new connection from the client module to update the contact information. </br> As a result, you will then have to manually perform a connection test from your server. 
+    success:    Server waiting for client connection
+    error:      Unable to change server status
+    
+messages:
+    copyId:     Identifier copied to clipboard
+    copyKey:    Encryption key copied to clipboard

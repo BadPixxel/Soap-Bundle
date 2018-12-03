@@ -1,0 +1,24 @@
+{% trans_default_domain "NodesCoreBundle" %}
+{% import "ConnectorsSoapBundle:Macros:buttons.html.twig"                   as Buttons %}
+
+{% block node_resume %}
+<!-- Server Resume Block -->
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h4 class="panel-title">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" class="collapsed" aria-expanded="false"> 
+                <i class="fa fa-lg fa-angle-down pull-right"></i> <i class="fa fa-lg fa-angle-up pull-right"></i> 
+                <div><i class="fa fa-fw fa-info-circle"></i> {{ 'show.info.server'|trans }}</div>
+            </a>
+        </h4>
+    </div>
+    <div id="collapseTwo" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
+        <div class="panel-body">
+            {% include 'NodesCoreBundle:ProfileLeft:description.block.html.twig' %} 
+            {{ Buttons.NewHost_LgBtn(node.id) }}
+        </div>
+    </div>
+</div>
+<!-- End Server Resume Block -->                           
+
+{% endblock %}
