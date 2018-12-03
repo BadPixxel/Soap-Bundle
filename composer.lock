@@ -12,12 +12,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/SplashSync/Php-Bundle.git",
-                "reference": "9f06557ee720e98f778d2e698644a011ac1c011c"
+                "reference": "0c40ce16b80f47bfc127b7975f9a386ab236b85c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/SplashSync/Php-Bundle/zipball/9f06557ee720e98f778d2e698644a011ac1c011c",
-                "reference": "9f06557ee720e98f778d2e698644a011ac1c011c",
+                "url": "https://api.github.com/repos/SplashSync/Php-Bundle/zipball/0c40ce16b80f47bfc127b7975f9a386ab236b85c",
+                "reference": "0c40ce16b80f47bfc127b7975f9a386ab236b85c",
                 "shasum": ""
             },
             "require": {
@@ -75,7 +75,7 @@
                 }
             ],
             "description": "Splash Core Bundle for Symfony Applications",
-            "time": "2018-11-29T21:13:29+00:00"
+            "time": "2018-12-03T01:45:02+00:00"
         },
         {
             "name": "splash/phpcore",
@@ -83,12 +83,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/SplashSync/Php-Core.git",
-                "reference": "fca940fb03cc8e91d821510a189988e756aa9fc2"
+                "reference": "9a9fb7c100671e5eddd36a60a9c6e3ab0dc6ffb0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/SplashSync/Php-Core/zipball/fca940fb03cc8e91d821510a189988e756aa9fc2",
-                "reference": "fca940fb03cc8e91d821510a189988e756aa9fc2",
+                "url": "https://api.github.com/repos/SplashSync/Php-Core/zipball/9a9fb7c100671e5eddd36a60a9c6e3ab0dc6ffb0",
+                "reference": "9a9fb7c100671e5eddd36a60a9c6e3ab0dc6ffb0",
                 "shasum": ""
             },
             "require": {
@@ -135,7 +135,7 @@
                 }
             ],
             "description": "Splash Fundation Module for All Php Applications",
-            "time": "2018-11-29T20:22:02+00:00"
+            "time": "2018-12-03T01:33:08+00:00"
         }
     ],
     "packages-dev": [

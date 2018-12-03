@@ -23,15 +23,14 @@ use Splash\Bundle\Form\StandaloneFormType;
 use Splash\Bundle\Models\AbstractConnector;
 use Splash\Bundle\Models\AbstractStandaloneObject;
 use Splash\Connectors\Soap\Componants\Webservice;
+use Splash\Connectors\Soap\Form\CompleteSoapType;
+use Splash\Connectors\Soap\Form\SimpleSoapType;
 use Splash\Core\SplashCore as Splash;
 use Splash\Models\AbstractObject;
 
-use Splash\Connectors\Soap\Form\SimpleSoapType;
-use Splash\Connectors\Soap\Form\CompleteSoapType;
-
 /**
  * @abstract Splash Soap Connector
- * 
+ *
  * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
  */
 final class SoapConnector extends AbstractConnector

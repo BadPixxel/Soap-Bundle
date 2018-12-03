@@ -43,7 +43,6 @@ class ActionsController extends Controller
         //====================================================================//
         // Safety Check => Action Only Available in Extended Mode
         if ($connector->getParameter('Extended', false)) {
-            
             //====================================================================//
             // Clear Host & Path
             $connector->setParameter('WsHost', null);
@@ -52,7 +51,6 @@ class ActionsController extends Controller
             //====================================================================//
             // Update Configuration
             $connector->updateConfiguration();
-            
         }
         //====================================================================//
         // Redirect Response
@@ -78,14 +76,13 @@ class ActionsController extends Controller
         //====================================================================//
         // Safety Check => Action Only Available in Extended Mode
         if ($connector->getParameter('Extended', false)) {
-            
             //====================================================================//
             // Generate Unique Identifier
-            $connector->setParameter('WsIdentifier', substr(md5(uniqid(time(), true)),0,16));
+            $connector->setParameter('WsIdentifier', substr(md5(uniqid((string) time(), true)), 0, 16));
 
             //====================================================================//
             // Generate Ws Key
-            $connector->setParameter('WsEncryptionKey', substr(hash("sha256", time() . uniqid("", true)),0,50));
+            $connector->setParameter('WsEncryptionKey', substr(hash("sha256", time().uniqid("", true)), 0, 50));
             
             //====================================================================//
             // Update Configuration
