@@ -29,16 +29,16 @@ matrix:
     include:      
           
         # Symfony 3.4 Branch
-        - php: 7.1
+#        - php: 7.1
         - php: 7.2
           
-        # Symfony 4.0 Branch       
-        - php: 7.2
-          env: SF_VERSION="4.0.*"      
-
-        # Symfony 4.2 Branch       
-        - php: 7.2
-          env: SF_VERSION="4.2.*"  
+#        # Symfony 4.0 Branch       
+#        - php: 7.2
+#          env: SF_VERSION="4.0.*"      
+#
+#        # Symfony 4.2 Branch       
+#        - php: 7.2
+#          env: SF_VERSION="4.2.*"  
         
 #    allow_failures:
 #        - env: SF_VERSION="4.0.*"  STABILITY="dev"       
@@ -55,7 +55,7 @@ before_install:
 
     - echo "Configuring Folders"
     - mkdir bin
-    - cp tests/console.php bin/console.php
+    - cp tests/console bin/console
     - mkdir public
     - cp tests/public/* public
 #
