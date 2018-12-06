@@ -114,19 +114,19 @@ before_install:
 # Create database, schema and fixtures
 install:   
     # Setup Travis
-    - bash <(curl -s https://github.com/SplashSync/Php-Bundle/tree/master/src/Resources/travis/configure.sh)
+    - curl -s https://github.com/SplashSync/Php-Bundle/tree/master/src/Resources/travis/configure.sh  | bash
     # Setup Symfony Version if Required
-    - bash <(curl -s https://github.com/SplashSync/Php-Bundle/tree/master/src/Resources/travis/build_symfony.sh)
+    - curl -s https://github.com/SplashSync/Php-Bundle/tree/master/src/Resources/travis/build_symfony.sh  | bash
     # Configure For Phpstan vs PHP Versions
-    - bash <(curl -s https://github.com/SplashSync/Php-Bundle/tree/master/src/Resources/travis/build_grumphp.sh)
+    - curl -s https://github.com/SplashSync/Php-Bundle/tree/master/src/Resources/travis/build_grumphp.sh  | bash
     # Install Symfony
-    - bash <(curl -s https://github.com/SplashSync/Php-Bundle/tree/master/src/Resources/travis/install.sh)
+    - curl -s https://github.com/SplashSync/Php-Bundle/tree/master/src/Resources/travis/install.sh  | bash
 
 ################################################################################
 # Run script
 script:
     # Execute Full Testsuite 
-    - bash <(curl -s https://github.com/SplashSync/Php-Bundle/tree/master/src/Resources/travis/test_all.sh)
+    - curl -s https://github.com/SplashSync/Php-Bundle/tree/master/src/Resources/travis/test_all.sh | bash
 
 ################################################################################
 # Project language
