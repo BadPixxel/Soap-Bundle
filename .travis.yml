@@ -74,7 +74,7 @@ install:
     - php tests/bin/console doctrine:schema:update --force  --no-interaction --no-debug
 
     - echo "Start Web Server"
-    - php tests/bin/console server:start -d web    
+    - php tests/bin/console server:start -d tests/public    
 
 ################################################################################
 # Run script
