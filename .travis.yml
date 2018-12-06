@@ -87,7 +87,7 @@ script:
     - php vendor/bin/grumphp run --testsuite=csfixer
     
     # Execute Grump => Phpstan Testsuite 
-    - php vendor/bin/grumphp run --testsuite=phpstan; fi  
+    - php vendor/bin/grumphp run --testsuite=phpstan 
     
     # Execute PhpUnit Tests 
     - vendor/bin/phpunit
