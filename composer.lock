@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f94bb1d4f9c233812709c34154c5ffe7",
+    "content-hash": "e472a389b0627559d0741cf7dcd5a1a7",
     "packages": [
         {
             "name": "splash/php-bundle",
@@ -12,12 +12,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/SplashSync/Php-Bundle.git",
-                "reference": "95568d56ad519801a29ec27f2d3e63d596c7b0d5"
+                "reference": "ed0fbfbf3e79ea5a86d72cd685357ce01bb96347"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/SplashSync/Php-Bundle/zipball/95568d56ad519801a29ec27f2d3e63d596c7b0d5",
-                "reference": "95568d56ad519801a29ec27f2d3e63d596c7b0d5",
+                "url": "https://api.github.com/repos/SplashSync/Php-Bundle/zipball/ed0fbfbf3e79ea5a86d72cd685357ce01bb96347",
+                "reference": "ed0fbfbf3e79ea5a86d72cd685357ce01bb96347",
                 "shasum": ""
             },
             "require": {
@@ -29,6 +29,7 @@
                 "doctrine/doctrine-bundle": "^1.9",
                 "doctrine/orm": "^2.4",
                 "escapestudios/symfony2-coding-standard": "^3.4",
+                "friendsofphp/php-cs-fixer": "^2.10",
                 "j13k/yaml-lint": "^1.1",
                 "jakub-onderka/php-parallel-lint": "^1.0",
                 "phpmd/phpmd": "^2.6",
@@ -46,8 +47,8 @@
                 "sensiolabs/security-checker": "^5.0",
                 "splash/faker": "dev-master",
                 "squizlabs/php_codesniffer": "^3.2",
-                "symfony/monolog-bundle": ">=2.1",
-                "symfony/phpunit-bridge": "^3.0",
+                "symfony/monolog-bundle": "*",
+                "symfony/phpunit-bridge": "*",
                 "symfony/symfony": "~3.4"
             },
             "type": "symfony-bundle",
@@ -75,7 +76,7 @@
                 }
             ],
             "description": "Splash Core Bundle for Symfony Applications",
-            "time": "2018-12-06T02:30:03+00:00"
+            "time": "2018-12-06T04:13:17+00:00"
         },
         {
             "name": "splash/phpcore",

@@ -27,6 +27,7 @@ before_install:
     - cp tests/console bin/console
     - mkdir public
     - cp tests/public/* public
+    - cp tests/public/.htaccess public/.htaccess
 
 ################################################################################
 # GENERIC CONFIGURATION

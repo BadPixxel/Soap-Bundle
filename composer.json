@@ -68,12 +68,5 @@
         "phpstan/phpstan-doctrine":                     "^0.10",
         "phpstan/phpstan-phpunit":                      "^0.10",
         "phpstan/phpstan-shim":                         "^0.10"
-    },
-    
-    "extra": {
-        "symfony-app-dir":                          "tests/app",
-        "symfony-bin-dir":                          "tests/bin",
-        "symfony-var-dir":                          "tests/var",
-        "symfony-web-dir":                          "tests/public"
     }
 }
