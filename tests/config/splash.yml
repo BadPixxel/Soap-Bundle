@@ -4,13 +4,6 @@
 splash:
     connections:
 
-        faker:
-            id:                 ThisIsFakerWsId
-            key:                ThisIsNotASecretKeyForFaker
-            name:               Serveur 1 (Faker)
-            host:               "%splash_host%/ws/soap"
-            server_host:        "%splash_host%"
-
         soap:
             id:                 ThisIsSoapWsId
             key:                ThisIsNotASecretKeyForSoap
@@ -24,4 +17,12 @@ splash:
                 WsEncryptionKey:    ThisIsNotASecretKeyForFaker                
                 WsHost:             http://localhost:8000
                 WsPath:             /ws/splash
+                
+        faker:
+            id:                 ThisIsFakerWsId
+            key:                ThisIsNotASecretKeyForFaker
+            name:               Serveur 1 (Faker)
+            host:               "%splash_host%/ws/soap"
+            server_host:        "%splash_host%"
+
         
