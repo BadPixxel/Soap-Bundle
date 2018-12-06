@@ -1,27 +1,27 @@
-################################################################################
-# Project language
-language: php
-# Allows use container-based infrastructure
-sudo: false
-#sudo: required
-dist: trusty
-
-################################################################################
-# Start mysql service
-services:
-  - mysql
-
-################################################################################
-# Cache composer packages so "composer install" is faster
-cache:
-    directories:
-        - $HOME/.composer/cache/files
-
-################################################################################
-# Define an environment variable
-env:
-    global:
-        - SYMFONY_DEPRECATIONS_HELPER=disabled
+#################################################################################
+## Project language
+#language: php
+## Allows use container-based infrastructure
+#sudo: false
+##sudo: required
+#dist: trusty
+#
+#################################################################################
+## Start mysql service
+#services:
+#  - mysql
+#
+#################################################################################
+## Cache composer packages so "composer install" is faster
+#cache:
+#    directories:
+#        - $HOME/.composer/cache/files
+#
+#################################################################################
+## Define an environment variable
+#env:
+#    global:
+#        - SYMFONY_DEPRECATIONS_HELPER=disabled
         
 ################################################################################
 # Define Test Matrix
@@ -49,52 +49,107 @@ matrix:
 ################################################################################
 # Prepare Test Environement
 before_install:
-    # Update composer
-    - composer self-update
-    # Setup Travis PHP     
-    - if [ "$TRAVIS_PHP_VERSION" != "hhvm" ]; then echo "memory_limit = -1" >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini; fi
-    # Setup Composer Stability if Required   
-    - if ! [ -z "$STABILITY" ]; then composer config minimum-stability ${STABILITY}; fi;
-    # Setup Symfony Version if Required    
-    - if [ "$SF_VERSION" != "" ]; then composer require --no-update symfony/symfony=$SF_VERSION; fi;
-    # Create Database
-    - mysql -e 'CREATE DATABASE IF NOT EXISTS symfony;'
-      
+
+    - echo "Configuring The Bundles"
+    - cp tests/config/parameters.yml.dist tests/config/parameters.yml
+
+    - echo "Configuring Folders"
+    - mkdir bin
+    - cp tests/console.php bin/console.php
+    - mkdir public
+    - cp tests/public/* public
+#
+#    
+#    # Update composer
+#    - composer self-update
+#    # Setup Travis PHP     
+#    - if [ "$TRAVIS_PHP_VERSION" != "hhvm" ]; then echo "memory_limit = -1" >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini; fi
+#    # Setup Composer Stability if Required   
+#    - if ! [ -z "$STABILITY" ]; then composer config minimum-stability ${STABILITY}; fi;
+#    # Setup Symfony Version if Required    
+#    - if [ "$SF_VERSION" != "" ]; then composer require --no-update symfony/symfony=$SF_VERSION; fi;
+#    # Create Database
+#    - mysql -e 'CREATE DATABASE IF NOT EXISTS symfony;'
+#      
+#################################################################################
+## Install composer dependencies,
+## Create database, schema and fixtures
+#install:   
+#    - echo "Build Dependencies"
+#    - composer update  --prefer-dist --no-interaction  
+#    
+#    
+#    - echo "Install Symfony"
+#    - php tests/bin/console doctrine:schema:update --force  --no-interaction --no-debug
+#
+#    - echo "Start Web Server"
+#    - php tests/bin/console server:start -d tests/public    
+
+#################################################################################
+## Run script
+#script:
+#    
+#    # Execute Grump => Travis Testsuite 
+#    - php vendor/bin/grumphp run --testsuite=travis
+#
+#    # Execute Grump => CsFixer Testsuite 
+#    - php vendor/bin/grumphp run --testsuite=csfixer
+#    
+#    # Execute Grump => Phpstan Testsuite 
+#    - php vendor/bin/grumphp run --testsuite=phpstan 
+#    
+#    # Execute PhpUnit Tests 
+#    - vendor/bin/phpunit
+#    
+#    # Show Outdated Packages   
+#    - composer outdated    
+    
+
+################################################################################
+# GENERIC CONFIGURATION
+################################################################################
+
 ################################################################################
 # Install composer dependencies,
 # Create database, schema and fixtures
 install:   
-    - echo "Build Dependencies"
-    - composer update  --prefer-dist --no-interaction  
-    
-    - echo "Configuring The Bundles"
-    - cp tests/config/parameters.yml.dist tests/config/parameters.yml
-    
-    - echo "Install Symfony"
-    - php tests/bin/console doctrine:schema:update --force  --no-interaction --no-debug
-
-    - echo "Start Web Server"
-    - php tests/bin/console server:start -d tests/public    
+    # Setup Travis
+    - bash https://github.com/SplashSync/Php-Bundle/tree/master/src/Resources/travis/configure.sh
+    # Setup Symfony Version if Required
+    - bash https://github.com/SplashSync/Php-Bundle/tree/master/src/Resources/travis/build_symfony.sh
+    # Configure For Phpstan vs PHP Versions
+    - bash https://github.com/SplashSync/Php-Bundle/tree/master/src/Resources/travis/build_grumphp.sh
+    # Install Symfony
+    - bash https://github.com/SplashSync/Php-Bundle/tree/master/src/Resources/travis/install.sh
 
 ################################################################################
 # Run script
 script:
-    
-    # Execute Grump => Travis Testsuite 
-    - php vendor/bin/grumphp run --testsuite=travis
+    # Execute Full Testsuite 
+    - bash https://github.com/SplashSync/Php-Bundle/tree/master/src/Resources/travis/test_all.sh
 
-    # Execute Grump => CsFixer Testsuite 
-    - php vendor/bin/grumphp run --testsuite=csfixer
-    
-    # Execute Grump => Phpstan Testsuite 
-    - php vendor/bin/grumphp run --testsuite=phpstan 
-    
-    # Execute PhpUnit Tests 
-    - vendor/bin/phpunit
-    
-    # Show Outdated Packages   
-    - composer outdated    
-    
+################################################################################
+# Project language
+language: php
+# Allows use container-based infrastructure
+sudo: false
+#sudo: required
+dist: trusty
+################################################################################
+# Start mysql service
+services:
+  - mysql
+################################################################################
+# Cache composer packages so "composer install" is faster
+cache:
+    directories:
+        - $HOME/.composer/cache/files
+################################################################################
+# Define an environment variable
+env:
+    global:
+        - SYMFONY_DEPRECATIONS_HELPER=disabled
+################################################################################
 # After a build, send email notification with the build results
 notifications:
   email:         
