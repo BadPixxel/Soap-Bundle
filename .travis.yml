@@ -59,6 +59,8 @@ script:
     - vendor/bin/phpunit
     # Show Outdated Packages   
     - composer outdated
+    
+    - curl http://localhost:8000/ws/splash
 
 ################################################################################
 # Project language
