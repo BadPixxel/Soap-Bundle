@@ -7,3 +7,5 @@
 ###< symfony/framework-bundle ###
 /bin/
 /.php_cs.cache
+/.web-server-pid
+/tests/config/parameters.yml

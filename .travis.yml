@@ -26,16 +26,11 @@ env:
 ################################################################################
 # Define Test Matrix
 matrix:
-    include:          
-#        # Symfony 3.3 Branch       
-#        - php: 7.0
-#          env: SF_VERSION="3.3.*"        
-#        - php: 7.1
-#          env: SF_VERSION="3.3.*"        
+    include:      
           
         # Symfony 3.4 Branch       
         - php: 7.1
-          env: SF_VERSION="3.4.*"        
+#          env: SF_VERSION="3.4.*"        
 #        - php: 7.2
 #          env: SF_VERSION="3.4.*"        
 #          
@@ -45,8 +40,8 @@ matrix:
 #        - php: 7.2
 #          env: SF_VERSION="4.0.*"  STABILITY="dev"        
         
-    allow_failures:
-        - env: SF_VERSION="4.0.*"  STABILITY="dev"       
+#    allow_failures:
+#        - env: SF_VERSION="4.0.*"  STABILITY="dev"       
         
     # Fast finish allows to set the build as "finished" even if the "allow_failures" matrix elements are not finished yet.
     fast_finish: true
@@ -62,8 +57,8 @@ before_install:
     - if ! [ -z "$STABILITY" ]; then composer config minimum-stability ${STABILITY}; fi;
     # Setup Symfony Version if Required    
     - if [ "$SF_VERSION" != "" ]; then composer require --no-update symfony/symfony=$SF_VERSION; fi;
-    # With PHP 7 => Load Phpstan   
-    - if [[ ${TRAVIS_PHP_VERSION:0:1} == "7" ]]; then composer require phpstan/phpstan-shim --no-update; fi    
+    # Create Database
+    - mysql -e 'CREATE DATABASE IF NOT EXISTS symfony;'
       
 ################################################################################
 # Install composer dependencies,
@@ -72,20 +67,33 @@ install:
     - echo "Build Dependencies"
     - composer update  --prefer-dist --no-interaction  
     
+    - echo "Configuring The Bundles"
+    - cp tests/config/parameters.yml.dist tests/config/parameters.yml
+    
+    - echo "Install Symfony"
+    - php tests/bin/console doctrine:schema:update --force  --no-interaction --no-debug
+
+    - echo "Start Web Server"
+    - php tests/bin/console server:start -d web    
 
 ################################################################################
 # Run script
 script:
     
-    # Execute Grump Travis Testsuite 
-    - php bin/grumphp run --testsuite=travis
+    # Execute Grump => Travis Testsuite 
+    - php vendor/bin/grumphp run --testsuite=travis
+
+    # Execute Grump => CsFixer Testsuite 
+    - php vendor/bin/grumphp run --testsuite=csfixer
     
-    # With PHP 7 => Execute Grump Phpstan Testsuite 
-    - if [[ ${TRAVIS_PHP_VERSION:0:1} == "7" ]]; then php bin/grumphp run --testsuite=phpstan; fi  
+    # Execute Grump => Phpstan Testsuite 
+    - php vendor/bin/grumphp run --testsuite=phpstan; fi  
     
-#    # Execute PhpUnit Tests 
-#    - phpunit
+    # Execute PhpUnit Tests 
+    - vendor/bin/phpunit
     
+    # Show Outdated Packages   
+    - composer outdated    
     
 # After a build, send email notification with the build results
 notifications:

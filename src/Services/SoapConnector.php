@@ -16,17 +16,12 @@
 namespace Splash\Connectors\Soap\Services;
 
 use ArrayObject;
-use Exception;
-use Splash\Bundle\Events\ActionsListingEvent;
-use Splash\Bundle\Events\ObjectsListingEvent;
-use Splash\Bundle\Form\StandaloneFormType;
 use Splash\Bundle\Models\AbstractConnector;
-use Splash\Bundle\Models\AbstractStandaloneObject;
 use Splash\Connectors\Soap\Componants\Webservice;
 use Splash\Connectors\Soap\Form\CompleteSoapType;
 use Splash\Connectors\Soap\Form\SimpleSoapType;
 use Splash\Core\SplashCore as Splash;
-use Splash\Models\AbstractObject;
+use Splash\Models\Helpers\TestHelper;
 
 /**
  * @abstract Splash Soap Connector
@@ -242,7 +237,7 @@ final class SoapConnector extends AbstractConnector
         }
         //====================================================================//
         // Initiate Tasks parameters array
-        $parameters = array(
+        $params = array(
             "type"      =>  $objectType,
             "filters"   =>  $filter,
             "params"    =>  $parameters,
@@ -254,7 +249,7 @@ final class SoapConnector extends AbstractConnector
             SPL_S_OBJECTS,                                  // Request Service
             SPL_F_LIST,                                     // Requested Function
             "Read Objects List",                            // Action Description Translator Tag
-            $parameters                                     // Requets Parameters Array
+            $params                                         // Requets Parameters Array
         );
     }
     
@@ -318,13 +313,21 @@ final class SoapConnector extends AbstractConnector
         );
         //====================================================================//
         // Execute Generic WebService Action
-        return $this->doGeneric(
+        $response = $this->doGeneric(
             $this->getConfiguration(),                      // WebService Configuration
             SPL_S_OBJECTS,                                  // Request Service
             SPL_F_SET,                                      // Requested Function
             "Write Object Data",                            // Action Description Translator Tag
             $parameters                                     // Requets Parameters Array
         );
+        //====================================================================//
+        // PhpUnit Helper => Submit Object Commit
+        if ((false !== $response) && !empty($response)) {
+            $action = empty($objectId) ? SPL_A_CREATE : SPL_A_UPDATE;
+            TestHelper::simObjectCommit($objectType, $response, $action);
+        }
+        
+        return $response;
     }
 
     /**
@@ -345,13 +348,20 @@ final class SoapConnector extends AbstractConnector
         );
         //====================================================================//
         // Execute Generic WebService Action
-        return $this->doGeneric(
+        $response = $this->doGeneric(
             $this->getConfiguration(),                      // WebService Configuration
             SPL_S_OBJECTS,                                  // Request Service
             SPL_F_DEL,                                      // Requested Function
             "Delete Object",                                // Action Description Translator Tag
             $parameters                                     // Requets Parameters Array
         );
+        //====================================================================//
+        // PhpUnit Helper => Submit Object Commit
+        if (true !== $response) {
+            TestHelper::simObjectCommit($objectType, $objectId, SPL_A_DELETE);
+        }
+        
+        return $response;
     }
 
     //====================================================================//

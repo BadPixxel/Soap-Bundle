@@ -1,10 +1,11 @@
 {
-    "name": "splash/soap",
-    "description": "Splash Soap Connector",
+    "name":                 "splash/soap",
+    "description":          "Splash Soap Connector",
 
-    "license": "MIT",
-    "minimum-stability": "dev",
-    "prefer-stable": true,
+    "type":                 "symfony-bundle",
+    "license":              "MIT",
+    "minimum-stability":    "dev",
+    "prefer-stable":        true,
 
     "authors": [
         {
@@ -33,17 +34,22 @@
     
     
     "require": {
-        "php":                                          "^7.0",
+        "php":                                          "^7.1",
         "splash/php-bundle":                            "*"
     },
     
     "require-dev": {
         "splash/php-bundle":                            "dev-master",
-        
-        "phpunit/phpunit":                              ">7",
+        "splash/faker":                                 "dev-master",
         
         "symfony/symfony":                              "~3.4",
         "symfony/monolog-bundle":                       ">=2.1",
+        "symfony/phpunit-bridge":                       "^3.0",
+        
+        "doctrine/doctrine-bundle":                     "^1.6",
+        "doctrine/orm":                                 "^2.5",
+        
+        "phpunit/phpunit":                              ">7",
         
         "composer/composer":                            "^1.5",
         "j13k/yaml-lint":                               "^1.1",
@@ -61,5 +67,12 @@
         "phpstan/phpstan-doctrine":                     "^0.10",
         "phpstan/phpstan-phpunit":                      "^0.10",
         "phpstan/phpstan-shim":                         "^0.10"
+    },
+    
+    "extra": {
+        "symfony-app-dir":                          "tests/app",
+        "symfony-bin-dir":                          "tests/bin",
+        "symfony-var-dir":                          "tests/var",
+        "symfony-web-dir":                          "tests/public"
     }
 }

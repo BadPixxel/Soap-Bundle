@@ -1,3 +1,3 @@
-# Splash Sync Faker-Bundle
+# Soap-Bundle
 
-This Bundle is a technical, only used for testing Splash Generic Connectors Interfaces
+This Bundle is a technical, only used for testing Generic Connectors Interfaces

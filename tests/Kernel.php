@@ -37,11 +37,16 @@ class Kernel extends BaseKernel
         $bundles[] = new Symfony\Bundle\MonologBundle\MonologBundle();
         
         //==============================================================================
+        // DOCTRINE CORE
+        $bundles[] = new Doctrine\Bundle\DoctrineBundle\DoctrineBundle();
+        
+        //==============================================================================
         // SPLASH PHP BUNDLE
         $bundles[] = new Splash\Bundle\SplashBundle();
 
         //==============================================================================
         // SPLASH CONNECTORS BUNDLE
+        $bundles[] = new Splash\Connectors\Faker\FakerBundle();
         $bundles[] = new Splash\Connectors\Soap\SoapBundle();
         
         //==============================================================================
@@ -92,11 +97,6 @@ class Kernel extends BaseKernel
      */
     public function registerContainerConfiguration(LoaderInterface $loader)
     {
-        if ("test" == $this->getEnvironment()) {
-            $loader->load($this->getRootDir().'/config_test.yml');
-
-            return;
-        }
-        $loader->load($this->getRootDir().'/config.yml');
+        $loader->load($this->getRootDir().'/config/config.yml');
     }
 }
