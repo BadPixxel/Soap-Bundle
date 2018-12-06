@@ -28,8 +28,7 @@ env:
 matrix:
     include:      
           
-        # Symfony 3.4 Branch       
-        - php: 7.0
+        # Symfony 3.4 Branch
         - php: 7.1
         - php: 7.2
           
