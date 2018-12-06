@@ -35,9 +35,6 @@ require __DIR__.'/../../vendor/autoload.php';
 Debug::enable();
 
 $kernel = new Kernel('dev', false);
-if (PHP_VERSION_ID < 70000) {
-    $kernel->loadClassCache();
-}
 $request = Request::createFromGlobals();
 $response = $kernel->handle($request);
 $response->send();
