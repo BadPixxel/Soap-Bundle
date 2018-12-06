@@ -58,52 +58,6 @@ before_install:
     - cp tests/console bin/console
     - mkdir public
     - cp tests/public/* public
-#
-#    
-#    # Update composer
-#    - composer self-update
-#    # Setup Travis PHP     
-#    - if [ "$TRAVIS_PHP_VERSION" != "hhvm" ]; then echo "memory_limit = -1" >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini; fi
-#    # Setup Composer Stability if Required   
-#    - if ! [ -z "$STABILITY" ]; then composer config minimum-stability ${STABILITY}; fi;
-#    # Setup Symfony Version if Required    
-#    - if [ "$SF_VERSION" != "" ]; then composer require --no-update symfony/symfony=$SF_VERSION; fi;
-#    # Create Database
-#    - mysql -e 'CREATE DATABASE IF NOT EXISTS symfony;'
-#      
-#################################################################################
-## Install composer dependencies,
-## Create database, schema and fixtures
-#install:   
-#    - echo "Build Dependencies"
-#    - composer update  --prefer-dist --no-interaction  
-#    
-#    
-#    - echo "Install Symfony"
-#    - php tests/bin/console doctrine:schema:update --force  --no-interaction --no-debug
-#
-#    - echo "Start Web Server"
-#    - php tests/bin/console server:start -d tests/public    
-
-#################################################################################
-## Run script
-#script:
-#    
-#    # Execute Grump => Travis Testsuite 
-#    - php vendor/bin/grumphp run --testsuite=travis
-#
-#    # Execute Grump => CsFixer Testsuite 
-#    - php vendor/bin/grumphp run --testsuite=csfixer
-#    
-#    # Execute Grump => Phpstan Testsuite 
-#    - php vendor/bin/grumphp run --testsuite=phpstan 
-#    
-#    # Execute PhpUnit Tests 
-#    - vendor/bin/phpunit
-#    
-#    # Show Outdated Packages   
-#    - composer outdated    
-    
 
 ################################################################################
 # GENERIC CONFIGURATION
@@ -125,8 +79,17 @@ install:
 ################################################################################
 # Run script
 script:
-    # Execute Full Testsuite 
-    - curl -s https://raw.githubusercontent.com/SplashSync/Php-Bundle/master/src/Resources/travis/test_all.sh  | bash
+    # Execute Grump Travis Testsuite 
+    - php vendor/bin/grumphp run --testsuite=travis
+    # With PHP > 7.0 => Execute CsFixer
+    - if [[ ${TRAVIS_PHP_VERSION:0:3} > "7.0" ]]; then php ./vendor/bin/grumphp run --testsuite=csfixer; fi    
+    # With PHP > 7.0 => Execute Phpstan 
+    - if [[ ${TRAVIS_PHP_VERSION:0:3} > "7.0" ]]; then php ./vendor/bin/grumphp run --testsuite=phpstan; fi   
+    # Execute PhpUnit Tests 
+    - vendor/bin/phpunit
+    # Show Outdated Packages   
+    - composer outdated    
+
 
 ################################################################################
 # Project language
