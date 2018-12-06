@@ -1,58 +1,27 @@
-#################################################################################
-## Project language
-#language: php
-## Allows use container-based infrastructure
-#sudo: false
-##sudo: required
-#dist: trusty
-#
-#################################################################################
-## Start mysql service
-#services:
-#  - mysql
-#
-#################################################################################
-## Cache composer packages so "composer install" is faster
-#cache:
-#    directories:
-#        - $HOME/.composer/cache/files
-#
-#################################################################################
-## Define an environment variable
-#env:
-#    global:
-#        - SYMFONY_DEPRECATIONS_HELPER=disabled
-        
+       
 ################################################################################
 # Define Test Matrix
 matrix:
     include:      
-          
         # Symfony 3.4 Branch
-#        - php: 7.1
+        - php: 7.1
         - php: 7.2
-          
-#        # Symfony 4.0 Branch       
-#        - php: 7.2
-#          env: SF_VERSION="4.0.*"      
-#
-#        # Symfony 4.2 Branch       
-#        - php: 7.2
-#          env: SF_VERSION="4.2.*"  
+        # Symfony 4.0 Branch       
+        - php: 7.2
+          env: SF_VERSION="4.0.*"      
+        # Symfony 4.2 Branch       
+        - php: 7.2
+          env: SF_VERSION="4.2.*"  
         
-#    allow_failures:
-#        - env: SF_VERSION="4.0.*"  STABILITY="dev"       
-        
-    # Fast finish allows to set the build as "finished" even if the "allow_failures" matrix elements are not finished yet.
+    allow_failures:
+        - env: SF_VERSION="4.2.*"       
     fast_finish: true
 
 ################################################################################
 # Prepare Test Environement
 before_install:
-
     - echo "Configuring The Bundles"
     - cp tests/config/parameters.yml.dist tests/config/parameters.yml
-
     - echo "Configuring Folders"
     - mkdir bin
     - cp tests/console bin/console
@@ -88,8 +57,7 @@ script:
     # Execute PhpUnit Tests 
     - vendor/bin/phpunit
     # Show Outdated Packages   
-    - composer outdated    
-
+    - composer outdated
 
 ################################################################################
 # Project language
