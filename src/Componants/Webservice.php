@@ -59,6 +59,14 @@ final class Webservice extends BaseWebservice
             isset($config['EnableHttps']) ? $config['EnableHttps'] : true
         );
         //====================================================================//
+        // Detect Http Auth Configuration
+        if (isset($config['HttpAuth']) && !empty($config['HttpAuth'])) {
+            $this->httpAuth = true;
+            $this->httpUser = $config['HttpUser'];
+            $this->httpPassword = $config['HttpPassword'];
+        }        
+
+        //====================================================================//
         //  Load Translation File
         Splash::translator()->load("ws");
 

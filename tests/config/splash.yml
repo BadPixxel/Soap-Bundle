@@ -17,6 +17,9 @@ splash:
                 WsEncryptionKey:    ThisIsNotASecretKeyForFaker                
                 WsHost:             http://localhost:8000
                 WsPath:             /ws/splash
+                HttpAuth:           true
+                HttpUser:           PhpUnit
+                HttpPassword:       PhpUnitPwd
                 
         faker:
             id:                 ThisIsFakerWsId

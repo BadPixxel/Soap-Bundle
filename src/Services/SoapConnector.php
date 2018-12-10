@@ -144,6 +144,17 @@ final class SoapConnector extends AbstractConnector
             return Splash::log()->err('ErrWsNoHost');
         }
 
+        //====================================================================//
+        // Verify Http Auth Configuration 
+        if (isset($config['HttpAuth']) && !empty($config['HttpAuth'])) {
+            if (!isset($config['HttpUser']) || empty($config['HttpUser'])) {
+                return Splash::log()->err('ErrWsNoHttpUser');
+            }
+            if (!isset($config['HttpPassword']) || empty($config['HttpPassword'])) {
+                return Splash::log()->err('ErrWsNoHttpPwd');
+            }
+        }
+        
         return true;
     }
     
