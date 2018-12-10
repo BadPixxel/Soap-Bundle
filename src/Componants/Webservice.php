@@ -64,7 +64,7 @@ final class Webservice extends BaseWebservice
             $this->httpAuth = true;
             $this->httpUser = $config['HttpUser'];
             $this->httpPassword = $config['HttpPassword'];
-        }        
+        }
 
         //====================================================================//
         //  Load Translation File

@@ -122,37 +122,15 @@ final class SoapConnector extends AbstractConnector
         //====================================================================//
         // Verify Minimum WebService Configuration is Set
         //====================================================================//
-
-        //====================================================================//
-        // Verify Server Id not empty
-        if (!isset($config['WsIdentifier']) || empty($config['WsIdentifier'])) {
-            return Splash::log()->err('ErrWsNoId');
+        if (true !== $this->verifyCoreConfiguration($config)) {
+            return false;
         }
         
         //====================================================================//
-        // Verify Server Key not empty
-        if (!isset($config['WsEncryptionKey']) || empty($config['WsEncryptionKey'])) {
-            return Splash::log()->err('ErrWsNoKey');
-        }
-        
+        // Verify Http Auth Configuration
         //====================================================================//
-        // Verify host address is present
-        if (!isset($config['WsHost']) || empty($config['WsHost'])) {
-            return Splash::log()->err('ErrWsNoHost');
-        }
-        if (!isset($config['WsPath'])) {
-            return Splash::log()->err('ErrWsNoHost');
-        }
-
-        //====================================================================//
-        // Verify Http Auth Configuration 
-        if (isset($config['HttpAuth']) && !empty($config['HttpAuth'])) {
-            if (!isset($config['HttpUser']) || empty($config['HttpUser'])) {
-                return Splash::log()->err('ErrWsNoHttpUser');
-            }
-            if (!isset($config['HttpPassword']) || empty($config['HttpPassword'])) {
-                return Splash::log()->err('ErrWsNoHttpPwd');
-            }
+        if (true !== $this->verifyHttpAuthConfiguration($config)) {
+            return false;
         }
         
         return true;
@@ -668,5 +646,65 @@ final class SoapConnector extends AbstractConnector
             "Read Object Data",                             // Action Description Translator Tag
             $parameters                                     // Requets Parameters Array
         );
+    }
+    
+    //====================================================================//
+    //  LOW LEVEL PRIVATE FUNCTIONS
+    //====================================================================//
+ 
+    /**
+     * Verify Core Configuration
+     *
+     * @param array $config Connector Configuration
+     *
+     * @return bool
+     */
+    private function verifyCoreConfiguration(array $config) : bool
+    {
+        //====================================================================//
+        // Verify Server Id not empty
+        if (!isset($config['WsIdentifier']) || empty($config['WsIdentifier'])) {
+            return Splash::log()->err('ErrWsNoId');
+        }
+        
+        //====================================================================//
+        // Verify Server Key not empty
+        if (!isset($config['WsEncryptionKey']) || empty($config['WsEncryptionKey'])) {
+            return Splash::log()->err('ErrWsNoKey');
+        }
+        
+        //====================================================================//
+        // Verify host address is present
+        if (!isset($config['WsHost']) || empty($config['WsHost'])) {
+            return Splash::log()->err('ErrWsNoHost');
+        }
+        if (!isset($config['WsPath'])) {
+            return Splash::log()->err('ErrWsNoHost');
+        }
+        
+        return true;
+    }
+
+    /**
+     * Verify Http Auth Configuration
+     *
+     * @param array $config Connector Configuration
+     *
+     * @return bool
+     */
+    private function verifyHttpAuthConfiguration(array $config) : bool
+    {
+        //====================================================================//
+        // Verify Http Auth Configuration
+        if (isset($config['HttpAuth']) && !empty($config['HttpAuth'])) {
+            if (!isset($config['HttpUser']) || empty($config['HttpUser'])) {
+                return Splash::log()->err('ErrWsNoHttpUser');
+            }
+            if (!isset($config['HttpPassword']) || empty($config['HttpPassword'])) {
+                return Splash::log()->err('ErrWsNoHttpPwd');
+            }
+        }
+        
+        return true;
     }
 }
