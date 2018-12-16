@@ -19,6 +19,7 @@
         <testsuite name="All">
             <directory>Tests/*</directory>
             <directory>vendor/splash/phpcore/Tests/*</directory>
+            <directory>vendor/splash/php-bundle/tests/*</directory>
         </testsuite>
     </testsuites>
 
@@ -26,6 +27,7 @@
         <whitelist>
             <directory>Tests</directory>
             <directory>vendor/splash/phpcore</directory>
+            <directory>vendor/splash/php-bundle</directory>
             <exclude>
                 <directory>vendor</directory>
             </exclude>
