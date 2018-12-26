@@ -20,7 +20,6 @@ use Exception;
 use SoapServer;
 use Splash\Bundle\Models\AbstractConnector;
 use Splash\Client\Splash;
-use Splash\Server\SplashServer;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -139,10 +138,7 @@ class SoapController extends Controller
     {
         //====================================================================//
         // Perform Identify Pointed Server
-        $result = $this->connector->identify($identifier);
-        //====================================================================//
-        // Force Splash Logger Prefix
-        Splash::log()->setPrefix("Splash");
+        $result = $this->doIdentify($identifier);
         //====================================================================//
         // Server Not Found
         if (false === $result) {
@@ -153,7 +149,7 @@ class SoapController extends Controller
         //====================================================================//
         // Add Success Message
         Splash::log()->msg('Ping Successful. Hello '.Splash::configuration()->localname.' !!');
-
+        
         //====================================================================//
         // Transmit Answer with No Encryption
         return Splash::ws()->pack(array('result' => true, 'log' => Splash::log()), true);
@@ -240,6 +236,41 @@ class SoapController extends Controller
     //====================================================================//
     
     /**
+     * Identify & Initialize Server before request execution.
+     *
+     * @param string $webserviceId
+     *
+     * @return null|bool
+     */
+    private function doIdentify($webserviceId) : ?bool
+    {
+        //====================================================================//
+        // Perform Identify Pointed Server
+        $result = $this->connector->identify($webserviceId);
+        //====================================================================//
+        // Server Found
+        if (false === $result) {
+            return false;
+        }
+        //====================================================================//
+        // Reboot Splash Core Module
+        Splash::reboot();
+        //====================================================================//
+        // Force Splash Logger Prefix
+        Splash::log()->setPrefix("Splash");
+        //====================================================================//
+        // Configure Webservice Componant with Minimal Parameters
+        Splash::configuration()->localname = $this->connector->getParameter("Name");
+        Splash::configuration()->WsIdentifier = $this->connector->getParameter("WsIdentifier");
+        Splash::configuration()->WsEncryptionKey = $this->connector->getParameter("WsEncryptionKey");
+        //====================================================================//
+        // Add Identify Debug Message
+        Splash::log()->deb('Hello '.Splash::configuration()->localname.' !!');
+        
+        return $result;
+    }
+    
+    /**
      * Treat Received Data and Initialize Server before request execution.
      *
      * @param string $webserviceId
@@ -251,10 +282,8 @@ class SoapController extends Controller
     {
         //====================================================================//
         // Perform Identifier Verification
-        $identify = $this->connector->identify($webserviceId);
-        //====================================================================//
-        // Force Splash Logger Prefix
-        Splash::log()->setPrefix("Splash");
+        $identify = $this->doIdentify($webserviceId);
+        
         //====================================================================//
         // Server Not Found
         if (false === $identify) {
@@ -264,7 +293,7 @@ class SoapController extends Controller
 
             return false;
         }
-
+        
         //===================================================================//
         // Server Connection Rejected
         if (null === $identify) {
