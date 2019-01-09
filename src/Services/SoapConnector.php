@@ -541,7 +541,7 @@ final class SoapConnector extends AbstractConnector
     /**
      * {@inheritdoc}
      */
-    public function getMasterAction() : array
+    public function getMasterAction()
     {
         return "SoapBundle:Soap:master";
     }
