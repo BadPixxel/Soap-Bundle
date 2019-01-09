@@ -3,7 +3,7 @@
 /*
  *  This file is part of SplashSync Project.
  *
- *  Copyright (C) 2015-2018 Splash Sync  <www.splashsync.com>
+ *  Copyright (C) 2015-2019 Splash Sync  <www.splashsync.com>
  *
  *  This program is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -346,9 +346,9 @@ class SoapController extends Controller
     /**
      * Execute Request Tasks from Client Remote Server
      *
-     * @param         string $identifier WebService Remote Webservice Identifier
-     * @param         string $data       WebService Packaged Data Inputs
-     * @param         array  $filters    WebService Allowed Actions
+     * @param string $identifier WebService Remote Webservice Identifier
+     * @param string $data       WebService Packaged Data Inputs
+     * @param array  $filters    WebService Allowed Actions
      *
      * @return string
      */
@@ -412,11 +412,11 @@ class SoapController extends Controller
     /**
      * Create An Empty Task Respons
      *
-     * @param      string $taskId      Task Id
-     * @param      string $taskName    Task Name
-     * @param      string $description Task Description
+     * @param string $taskId      Task Id
+     * @param string $taskName    Task Name
+     * @param string $description Task Description
      *
-     * @return     ArrayObject
+     * @return ArrayObject
      */
     private function createEmptyTaskResponse(string $taskId, string $taskName, string $description = "") : ArrayObject
     {
@@ -432,9 +432,9 @@ class SoapController extends Controller
     /**
      * Manage Object Commit Notification
      *
-     * @param   ArrayObject $task Full Task Request
+     * @param ArrayObject $task Full Task Request
      *
-     * @return  ArrayObject
+     * @return ArrayObject
      */
     private function objectCommit(ArrayObject $task) : ArrayObject
     {
@@ -468,7 +468,7 @@ class SoapController extends Controller
     /**
      * @abstract   Manage Files Reading
      *
-     * @param   ArrayObject $task Full Task Request
+     * @param ArrayObject $task Full Task Request
      *
      *  @return ArrayObject
      */

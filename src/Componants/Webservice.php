@@ -3,7 +3,7 @@
 /*
  *  This file is part of SplashSync Project.
  *
- *  Copyright (C) 2015-2018 Splash Sync  <www.splashsync.com>
+ *  Copyright (C) 2015-2019 Splash Sync  <www.splashsync.com>
  *
  *  This program is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -31,7 +31,7 @@ final class Webservice extends BaseWebservice
     /**
      * @abstract   Override Setup Function
      *
-     * @return  false
+     * @return false
      */
     public function setup()
     {
@@ -41,9 +41,9 @@ final class Webservice extends BaseWebservice
     /**
      * @abstract   Initialise Webservice Parameters
      *
-     * @param   array $config Connector Configuration
+     * @param array $config Connector Configuration
      *
-     * @return  $this
+     * @return $this
      */
     public function configure(array $config)
     {
@@ -76,9 +76,9 @@ final class Webservice extends BaseWebservice
     /**
      * @abstract   Extract Data from Task response
      *
-     * @param      ArrayObject $task WebService Response Task
+     * @param ArrayObject $task WebService Response Task
      *
-     * @return     array|false
+     * @return array|false
      */
     public static function extractData(ArrayObject $task)
     {
@@ -95,11 +95,11 @@ final class Webservice extends BaseWebservice
     /**
      * @abstract   Prepare & Normalize Host Url From Current Server
      *
-     * @param   string $wsHost  Server Host Url
-     * @param   string $wsPath  Server Path
-     * @param   bool   $enHttps Force Https Url if no Schema Defined
+     * @param string $wsHost  Server Host Url
+     * @param string $wsPath  Server Path
+     * @param bool   $enHttps Force Https Url if no Schema Defined
      *
-     * @return  string
+     * @return string
      */
     private static function getNormalizedHostUrl(string $wsHost, string $wsPath, bool $enHttps = null)
     {

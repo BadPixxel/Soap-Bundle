@@ -3,7 +3,7 @@
 /*
  *  This file is part of SplashSync Project.
  *
- *  Copyright (C) 2015-2018 Splash Sync  <www.splashsync.com>
+ *  Copyright (C) 2015-2019 Splash Sync  <www.splashsync.com>
  *
  *  This program is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -24,14 +24,12 @@ use Splash\Core\SplashCore as Splash;
 use Splash\Models\Helpers\TestHelper;
 
 /**
- * @abstract Splash Soap Connector
+ * Splash Soap Connector
  *
  * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
  */
 final class SoapConnector extends AbstractConnector
 {
-//    use ContainerAwareTrait;
-    
     /**
      * {@inheritdoc}
      */
@@ -80,6 +78,7 @@ final class SoapConnector extends AbstractConnector
         
     /**
      * {@inheritdoc}
+     *
      * @SuppressWarnings(PHPMD.ElseExpression)
      */
     public function informations(ArrayObject  $informations) : ArrayObject
@@ -179,13 +178,15 @@ final class SoapConnector extends AbstractConnector
         );
         //====================================================================//
         // Execute Generic WebService Action
-        return $this->doGeneric(
+        $response = $this->doGeneric(
             $this->getConfiguration(),                      // WebService Configuration
             SPL_S_OBJECTS,                                  // Request Service
             SPL_F_DESC,                                     // Requested Function
             "Read Object Description",                      // Action Description
             $parameters                                     // Requets Parameters Array
         );
+        
+        return (false === $response) ? array() : $response;
     }
       
     /**
@@ -205,13 +206,15 @@ final class SoapConnector extends AbstractConnector
         );
         //====================================================================//
         // Execute Generic WebService Action
-        return $this->doGeneric(
+        $response = $this->doGeneric(
             $this->getConfiguration(),                      // WebService Configuration
             SPL_S_OBJECTS,                                  // Request Service
             SPL_F_FIELDS,                                   // Requested Function
             "Read Object Fields",                           // Action Description Translator Tag
             $parameters                                     // Requets Parameters Array
         );
+        
+        return (false === $response) ? array() : $response;
     }
     
     /**
@@ -233,13 +236,15 @@ final class SoapConnector extends AbstractConnector
         );
         //====================================================================//
         // Execute Generic WebService Action
-        return $this->doGeneric(
+        $response = $this->doGeneric(
             $this->getConfiguration(),                      // WebService Configuration
             SPL_S_OBJECTS,                                  // Request Service
             SPL_F_LIST,                                     // Requested Function
             "Read Objects List",                            // Action Description Translator Tag
             $params                                         // Requets Parameters Array
         );
+        
+        return (false === $response) ? array() : $response;
     }
     
     /**
@@ -483,7 +488,7 @@ final class SoapConnector extends AbstractConnector
     /**
      * @abstract   Get Connector Profile Informations
      *
-     * @return  array
+     * @return array
      */
     public function getProfile() : array
     {
@@ -536,10 +541,25 @@ final class SoapConnector extends AbstractConnector
     /**
      * {@inheritdoc}
      */
-    public function getAvailableActions() : array
+    public function getMasterActions() : array
+    {
+        return "SoapBundle:Soap:master";
+    }
+    
+    /**
+     * {@inheritdoc}
+     */
+    public function getPublicActions() : array
+    {
+        return array();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getSecuredActions() : array
     {
         return array(
-            "master" => "SoapBundle:Soap:master",
             "newhost" => "SoapBundle:Actions:host",
             "newkeys" => "SoapBundle:Actions:keys",
         );
@@ -552,13 +572,13 @@ final class SoapConnector extends AbstractConnector
     /**
      * @abstract   Perform Generic Soap Action
      *
-     * @param      array  $config      WebService Configuration
-     * @param      string $service     Service Method to reach
-     * @param      string $action      Service Action to perform
-     * @param      string $description Action Description for Information
-     * @param      array  $parameters  Action Parameters.
+     * @param array  $config      WebService Configuration
+     * @param string $service     Service Method to reach
+     * @param string $action      Service Action to perform
+     * @param string $description Action Description for Information
+     * @param array  $parameters  Action Parameters.
      *
-     * @return     mixed
+     * @return mixed
      */
     private function doGeneric(array $config, string $service, string $action, string $description, array $parameters = array())
     {
@@ -588,13 +608,13 @@ final class SoapConnector extends AbstractConnector
     /**
      * @abstract   Perform Multiple Soap Action
      *
-     * @param      array  $config      WebService Configuration
-     * @param      string $service     Service Method to reach
-     * @param      string $action      Service Action to perform
-     * @param      string $description Action Description for Information
-     * @param      array  $parameters  Array of Action Parameters.
+     * @param array  $config      WebService Configuration
+     * @param string $service     Service Method to reach
+     * @param string $action      Service Action to perform
+     * @param string $description Action Description for Information
+     * @param array  $parameters  Array of Action Parameters.
      *
-     * @return     mixed
+     * @return mixed
      */
     private function doCombo(array $config, string $service, string $action, string $description, array $parameters = array())
     {
