@@ -37,7 +37,7 @@ final class Webservice extends BaseWebservice
     {
         return false;
     }
-    
+
     /**
      * @abstract   Initialise Webservice Parameters
      *
@@ -49,11 +49,11 @@ final class Webservice extends BaseWebservice
     {
         //====================================================================//
         // Read Parameters
-        $this->id       =   $config['WsIdentifier'];
-        $this->key      =   $config['WsEncryptionKey'];
+        $this->id = $config['WsIdentifier'];
+        $this->key = $config['WsEncryptionKey'];
         //====================================================================//
         // Detect Server Host Address
-        $this->host     =   self::getNormalizedHostUrl(
+        $this->host = self::getNormalizedHostUrl(
             $config['WsHost'],
             $config['WsPath'],
             isset($config['EnableHttps']) ? $config['EnableHttps'] : true
@@ -91,7 +91,7 @@ final class Webservice extends BaseWebservice
 
         return $task["data"];
     }
-    
+
     /**
      * @abstract   Prepare & Normalize Host Url From Current Server
      *
@@ -103,7 +103,7 @@ final class Webservice extends BaseWebservice
      */
     private static function getNormalizedHostUrl(string $wsHost, string $wsPath, bool $enHttps = null)
     {
-        $schema =   null;
+        $schema = null;
         //====================================================================//
         // If Given Url Doesn't include Prefix
         if ((false === strpos($wsHost, "http://")) && (false === strpos($wsHost, "https://"))) {

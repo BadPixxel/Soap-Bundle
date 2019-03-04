@@ -42,7 +42,7 @@ final class SoapConnector extends AbstractConnector
         }
         //====================================================================//
         // Create Webservice Componant
-        $webservice =   (new Webservice())->configure($this->getConfiguration());
+        $webservice = (new Webservice())->configure($this->getConfiguration());
         //====================================================================//
         // Perform Ping Test
         $response = $webservice->call(SPL_S_PING, null, true);
@@ -65,7 +65,7 @@ final class SoapConnector extends AbstractConnector
         }
         //====================================================================//
         // Create Webservice Componant
-        $webservice =   (new Webservice())->configure($this->getConfiguration());
+        $webservice = (new Webservice())->configure($this->getConfiguration());
         //====================================================================//
         // Perform Connect Test
         $response = $webservice->call(SPL_S_CONNECT);
@@ -75,7 +75,7 @@ final class SoapConnector extends AbstractConnector
 
         return false;
     }
-        
+
     /**
      * {@inheritdoc}
      *
@@ -90,7 +90,7 @@ final class SoapConnector extends AbstractConnector
         }
         //====================================================================//
         // Execute Generic WebService Action
-        $response   =   $this->doGeneric(
+        $response = $this->doGeneric(
             $this->getConfiguration(),                      // WebService Configuration
             SPL_S_ADMIN,                                  // Request Service
             SPL_F_GET_INFOS,                                // Requested Function
@@ -109,7 +109,7 @@ final class SoapConnector extends AbstractConnector
 
         return $informations;
     }
-    
+
     /**
      * {@inheritdoc}
      */
@@ -117,28 +117,28 @@ final class SoapConnector extends AbstractConnector
     {
         $config = $this->getConfiguration();
         Splash::translator()->load("ws");
-        
+
         //====================================================================//
         // Verify Minimum WebService Configuration is Set
         //====================================================================//
         if (true !== $this->verifyCoreConfiguration($config)) {
             return false;
         }
-        
+
         //====================================================================//
         // Verify Http Auth Configuration
         //====================================================================//
         if (true !== $this->verifyHttpAuthConfiguration($config)) {
             return false;
         }
-        
+
         return true;
     }
-    
+
     //====================================================================//
     // Objects Interfaces
     //====================================================================//
-    
+
     /**
      * {@inheritdoc}
      */
@@ -151,7 +151,7 @@ final class SoapConnector extends AbstractConnector
         }
         //====================================================================//
         // Execute Generic WebService Action
-        $response   =   $this->doGeneric(
+        $response = $this->doGeneric(
             $this->getConfiguration(),                      // WebService Configuration
             SPL_S_OBJECTS,                                  // Request Service
             SPL_F_OBJECTS,                                  // Requested Function
@@ -160,7 +160,7 @@ final class SoapConnector extends AbstractConnector
 
         return (false === $response) ? array() : $response;
     }
-    
+
     /**
      * {@inheritdoc}
      */
@@ -174,7 +174,7 @@ final class SoapConnector extends AbstractConnector
         //====================================================================//
         // Initiate Tasks parameters array
         $parameters = array(
-            "type"  =>  $objectType,
+            "type" => $objectType,
         );
         //====================================================================//
         // Execute Generic WebService Action
@@ -185,10 +185,10 @@ final class SoapConnector extends AbstractConnector
             "Read Object Description",                      // Action Description
             $parameters                                     // Requets Parameters Array
         );
-        
+
         return (false === $response) ? array() : $response;
     }
-      
+
     /**
      * {@inheritdoc}
      */
@@ -202,7 +202,7 @@ final class SoapConnector extends AbstractConnector
         //====================================================================//
         // Initiate Tasks parameters array
         $parameters = array(
-            "type"  =>  $objectType,
+            "type" => $objectType,
         );
         //====================================================================//
         // Execute Generic WebService Action
@@ -213,10 +213,10 @@ final class SoapConnector extends AbstractConnector
             "Read Object Fields",                           // Action Description Translator Tag
             $parameters                                     // Requets Parameters Array
         );
-        
+
         return (false === $response) ? array() : $response;
     }
-    
+
     /**
      * {@inheritdoc}
      */
@@ -230,9 +230,9 @@ final class SoapConnector extends AbstractConnector
         //====================================================================//
         // Initiate Tasks parameters array
         $params = array(
-            "type"      =>  $objectType,
-            "filters"   =>  $filter,
-            "params"    =>  $parameters,
+            "type" => $objectType,
+            "filters" => $filter,
+            "params" => $parameters,
         );
         //====================================================================//
         // Execute Generic WebService Action
@@ -243,10 +243,10 @@ final class SoapConnector extends AbstractConnector
             "Read Objects List",                            // Action Description Translator Tag
             $params                                         // Requets Parameters Array
         );
-        
+
         return (false === $response) ? array() : $response;
     }
-    
+
     /**
      * {@inheritdoc}
      */
@@ -272,9 +272,9 @@ final class SoapConnector extends AbstractConnector
         $parameters = array();
         foreach ($objectIds as $objectId) {
             $parameters[] = array(
-                "type"      =>  $objectType,
-                "id"        =>  $objectId,
-                "fields"    =>  $fieldsList,
+                "type" => $objectType,
+                "id" => $objectId,
+                "fields" => $fieldsList,
             );
         }
         //====================================================================//
@@ -301,9 +301,9 @@ final class SoapConnector extends AbstractConnector
         //====================================================================//
         // Initiate Tasks parameters array
         $parameters = array(
-            "type"      =>  $objectType,
-            "id"        =>  $objectId,
-            "fields"    =>  $objectData,
+            "type" => $objectType,
+            "id" => $objectId,
+            "fields" => $objectData,
         );
         //====================================================================//
         // Execute Generic WebService Action
@@ -320,7 +320,7 @@ final class SoapConnector extends AbstractConnector
             $action = empty($objectId) ? SPL_A_CREATE : SPL_A_UPDATE;
             TestHelper::simObjectCommit($objectType, $response, $action);
         }
-        
+
         return $response;
     }
 
@@ -337,8 +337,8 @@ final class SoapConnector extends AbstractConnector
         //====================================================================//
         // Initiate Tasks parameters array
         $parameters = array(
-            "type"      =>  $objectType,
-            "id"        =>  $objectId,
+            "type" => $objectType,
+            "id" => $objectId,
         );
         //====================================================================//
         // Execute Generic WebService Action
@@ -351,17 +351,17 @@ final class SoapConnector extends AbstractConnector
         );
         //====================================================================//
         // PhpUnit Helper => Submit Object Commit
-        if (true !== $response) {
+        if (true === $response) {
             TestHelper::simObjectCommit($objectType, $objectId, SPL_A_DELETE);
         }
-        
+
         return $response;
     }
 
     //====================================================================//
     // Files Interfaces
     //====================================================================//
-    
+
     /**
      * {@inheritdoc}
      */
@@ -380,8 +380,8 @@ final class SoapConnector extends AbstractConnector
         //====================================================================//
         // Initiate Tasks parameters array
         $parameters = array(
-            "path"      =>  $filePath,
-            "md5"       =>  $fileMd5,
+            "path" => $filePath,
+            "md5" => $fileMd5,
         );
         //====================================================================//
         // Execute Generic WebService Action
@@ -393,11 +393,11 @@ final class SoapConnector extends AbstractConnector
             $parameters                                     // Requets Parameters Array
         );
     }
-    
+
     //====================================================================//
     // Widgets Interfaces
     //====================================================================//
-    
+
     /**
      * {@inheritdoc}
      */
@@ -416,10 +416,10 @@ final class SoapConnector extends AbstractConnector
             SPL_F_WIDGET_LIST,                              // Requested Function
             "Read Widgets List"                             // Action Description Translator Tag
         );
-        
+
         return (false === $response) ? array() : $response;
     }
-    
+
     /**
      * {@inheritdoc}
      */
@@ -433,7 +433,7 @@ final class SoapConnector extends AbstractConnector
         //====================================================================//
         // Initiate Tasks parameters array
         $parameters = array(
-            "type"      =>  $widgetType,
+            "type" => $widgetType,
         );
         //====================================================================//
         // Execute Generic WebService Action
@@ -445,7 +445,7 @@ final class SoapConnector extends AbstractConnector
             $parameters                                     // Requets Parameters Array
         );
     }
-    
+
     /**
      * {@inheritdoc}
      */
@@ -467,8 +467,8 @@ final class SoapConnector extends AbstractConnector
         //====================================================================//
         // Initiate Tasks parameters array
         $parameters = array(
-            "type"      =>  $widgetType,
-            "params"    =>  $widgetConfig,
+            "type" => $widgetType,
+            "params" => $widgetConfig,
         );
         //====================================================================//
         // Execute Generic WebService Action
@@ -480,11 +480,11 @@ final class SoapConnector extends AbstractConnector
             $parameters                                     // Requets Parameters Array
         );
     }
-    
+
     //====================================================================//
     // Profile Interfaces
     //====================================================================//
-    
+
     /**
      * @abstract   Get Connector Profile Informations
      *
@@ -493,19 +493,19 @@ final class SoapConnector extends AbstractConnector
     public function getProfile() : array
     {
         return array(
-            'enabled'   =>      true,                                   // is Connector Enabled
-            'beta'      =>      true,                                   // is this a Beta release
-            'type'      =>      self::TYPE_SERVER,                      // Connector Type or Mode
-            'name'      =>      'soap',                                 // Connector code (lowercase, no space allowed)
-            'connector' =>      'splash.connectors.soap',               // Connector PUBLIC service
-            'title'     =>      'Soap Connector',                       // Public short name
-            'label'     =>      'The Soap Connector',                   // Public long name
-            'domain'    =>      false,                                  // Translation domain for names
-            'ico'       =>      'bundles/splash/splash-ico.png',        // Public Icon path
-            'www'       =>      'www.splashsync.com',                   // Website Url
+            'enabled' => true,                              // is Connector Enabled
+            'beta' => true,                                 // is this a Beta release
+            'type' => self::TYPE_SERVER,                    // Connector Type or Mode
+            'name' => 'soap',                               // Connector code (lowercase, no space allowed)
+            'connector' => 'splash.connectors.soap',        // Connector Symfony service
+            'title' => 'Soap Connector',                    // Public short name
+            'label' => 'The Soap Connector',                // Public long name
+            'domain' => false,                              // Translation domain for names
+            'ico' => 'bundles/splash/splash-ico.png',       // Public Icon path
+            'www' => 'www.splashsync.com',                  // Website Url
         );
     }
-    
+
     /**
      * {@inheritdoc}
      */
@@ -529,7 +529,7 @@ final class SoapConnector extends AbstractConnector
     {
         return "@Soap/Profile/new.html.twig";
     }
-    
+
     /**
      * {@inheritdoc}
      */
@@ -545,7 +545,7 @@ final class SoapConnector extends AbstractConnector
     {
         return "SoapBundle:Soap:master";
     }
-    
+
     /**
      * {@inheritdoc}
      */
@@ -564,11 +564,11 @@ final class SoapConnector extends AbstractConnector
             "newkeys" => "SoapBundle:Actions:keys",
         );
     }
-    
+
     //====================================================================//
     //  HIGH LEVEL WEBSERVICE CALLS
     //====================================================================//
-    
+
     /**
      * @abstract   Perform Generic Soap Action
      *
@@ -584,13 +584,13 @@ final class SoapConnector extends AbstractConnector
     {
         //====================================================================//
         // Create Webservice Componant
-        $webservice =   (new Webservice())->configure($config);
+        $webservice = (new Webservice())->configure($config);
         //====================================================================//
         // Add Task To Queue
         $webservice->addTask($action, $parameters, $description);
         //====================================================================//
         // Perform Request
-        $response   =   $webservice->call($service);
+        $response = $webservice->call($service);
         //====================================================================//
         // Verify Response is Ok
         if (!isset($response->result) || empty($response->result) || empty($response->tasks)) {
@@ -604,7 +604,7 @@ final class SoapConnector extends AbstractConnector
         // Return Task Data
         return Webservice::extractData($task);
     }
-    
+
     /**
      * @abstract   Perform Multiple Soap Action
      *
@@ -620,7 +620,7 @@ final class SoapConnector extends AbstractConnector
     {
         //====================================================================//
         // Create Webservice Componant
-        $webservice =   (new Webservice())->configure($config);
+        $webservice = (new Webservice())->configure($config);
         //====================================================================//
         // Add Task To Queue
         foreach ($parameters as $params) {
@@ -628,7 +628,7 @@ final class SoapConnector extends AbstractConnector
         }
         //====================================================================//
         // Perform Request
-        $response   =   $webservice->call($service);
+        $response = $webservice->call($service);
         //====================================================================//
         // Verify Response is Ok
         if (!isset($response->result) || empty($response->result) || empty($response->tasks)) {
@@ -638,13 +638,13 @@ final class SoapConnector extends AbstractConnector
         // Get Tasks Results
         $results = array();
         foreach ($response->tasks as $task) {
-            $results[]   =   Webservice::extractData($task);
+            $results[] = Webservice::extractData($task);
         }
         //====================================================================//
         // Return Tasks Results
         return   $results;
     }
-    
+
     /**
      * {@inheritdoc}
      */
@@ -653,9 +653,9 @@ final class SoapConnector extends AbstractConnector
         //====================================================================//
         // Initiate Tasks parameters array
         $parameters = array(
-            "type"      =>  $objectType,
-            "id"        =>  $objectId,
-            "fields"    =>  $fieldsList,
+            "type" => $objectType,
+            "id" => $objectId,
+            "fields" => $fieldsList,
         );
         //====================================================================//
         // Execute Generic WebService Action
@@ -667,11 +667,11 @@ final class SoapConnector extends AbstractConnector
             $parameters                                     // Requets Parameters Array
         );
     }
-    
+
     //====================================================================//
     //  LOW LEVEL PRIVATE FUNCTIONS
     //====================================================================//
- 
+
     /**
      * Verify Core Configuration
      *
@@ -686,13 +686,13 @@ final class SoapConnector extends AbstractConnector
         if (!isset($config['WsIdentifier']) || empty($config['WsIdentifier'])) {
             return Splash::log()->err('ErrWsNoId');
         }
-        
+
         //====================================================================//
         // Verify Server Key not empty
         if (!isset($config['WsEncryptionKey']) || empty($config['WsEncryptionKey'])) {
             return Splash::log()->err('ErrWsNoKey');
         }
-        
+
         //====================================================================//
         // Verify host address is present
         if (!isset($config['WsHost']) || empty($config['WsHost'])) {
@@ -701,7 +701,7 @@ final class SoapConnector extends AbstractConnector
         if (!isset($config['WsPath'])) {
             return Splash::log()->err('ErrWsNoHost');
         }
-        
+
         return true;
     }
 
@@ -724,7 +724,7 @@ final class SoapConnector extends AbstractConnector
                 return Splash::log()->err('ErrWsNoHttpPwd');
             }
         }
-        
+
         return true;
     }
 }

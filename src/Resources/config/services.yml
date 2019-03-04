@@ -5,7 +5,6 @@ services:
         class: Splash\Connectors\Soap\Services\SoapConnector
         arguments:  [ "@event_dispatcher", "@logger" ]
         tags:       
-            # Register Soap Connector Actions
             - { name: "splash.connector"}
         
             

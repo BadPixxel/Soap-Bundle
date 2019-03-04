@@ -156,7 +156,7 @@ abstract class AbstractSoapType extends AbstractType
 
         return $this;
     }
-    
+
     /**
      * Detect CheckBox For Type to use
      *
@@ -167,7 +167,7 @@ abstract class AbstractSoapType extends AbstractType
         if (class_exists("ThemeBundle\\Form\\Type\\StyledCheckBoxType")) {
             return "ThemeBundle\\Form\\Type\\StyledCheckBoxType";
         }
-        
+
         return CheckboxType::class;
     }
 }

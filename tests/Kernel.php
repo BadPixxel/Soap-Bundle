@@ -36,11 +36,11 @@ class Kernel extends BaseKernel
         $bundles[] = new Symfony\Bundle\SecurityBundle\SecurityBundle();
         $bundles[] = new Symfony\Bundle\TwigBundle\TwigBundle();
         $bundles[] = new Symfony\Bundle\MonologBundle\MonologBundle();
-        
+
         //==============================================================================
         // DOCTRINE CORE
         $bundles[] = new Doctrine\Bundle\DoctrineBundle\DoctrineBundle();
-        
+
         //==============================================================================
         // SPLASH PHP BUNDLE
         $bundles[] = new Splash\Bundle\SplashBundle();
@@ -49,7 +49,7 @@ class Kernel extends BaseKernel
         // SPLASH CONNECTORS BUNDLE
         $bundles[] = new Splash\Connectors\Faker\FakerBundle();
         $bundles[] = new Splash\Connectors\Soap\SoapBundle();
-        
+
         //==============================================================================
         // TEST & DEV BUNDLES
         if (in_array($this->getEnvironment(), array('dev', 'test'), true)) {
@@ -58,7 +58,7 @@ class Kernel extends BaseKernel
             if ('dev' === $this->getEnvironment()) {
                 $bundles[] = new Symfony\Bundle\WebProfilerBundle\WebProfilerBundle();
             }
-            
+
             if (('dev' === $this->getEnvironment()) && class_exists("\\Symfony\\Bundle\\WebServerBundle\\WebServerBundle")) {
                 $bundles[] = new Symfony\Bundle\WebServerBundle\WebServerBundle();
             }

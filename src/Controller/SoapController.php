@@ -122,7 +122,7 @@ class SoapController extends Controller
         // Process methods & Return the results.
         Splash::com()->handle();
     }
-    
+
     //====================================================================//
     //   WebService Available Services
     //====================================================================//
@@ -149,7 +149,7 @@ class SoapController extends Controller
         //====================================================================//
         // Add Success Message
         Splash::log()->msg('Ping Successful. Hello '.Splash::configuration()->localname.' !!');
-        
+
         //====================================================================//
         // Transmit Answer with No Encryption
         return Splash::ws()->pack(array('result' => true, 'log' => Splash::log()), true);
@@ -198,7 +198,7 @@ class SoapController extends Controller
         if (!isset($this->inputs->cfg->silent)) {
             Splash::log()->msg('Connection Successful. Hello '.Splash::configuration()->localname.'!!');
         }
-        
+
         //====================================================================//
         // Transmit Answers To Client
         //====================================================================//
@@ -234,7 +234,7 @@ class SoapController extends Controller
     //====================================================================//
     //   WebService Low Level Functions
     //====================================================================//
-    
+
     /**
      * Identify & Initialize Server before request execution.
      *
@@ -264,12 +264,15 @@ class SoapController extends Controller
         Splash::configuration()->WsIdentifier = $this->connector->getParameter("WsIdentifier");
         Splash::configuration()->WsEncryptionKey = $this->connector->getParameter("WsEncryptionKey");
         //====================================================================//
+        // Clean Logger due to Splash::configuration() with Empty Parameters
+        Splash::log()->cleanLog();
+        //====================================================================//
         // Add Identify Debug Message
         Splash::log()->deb('Hello '.Splash::configuration()->localname.' !!');
-        
+
         return $result;
     }
-    
+
     /**
      * Treat Received Data and Initialize Server before request execution.
      *
@@ -283,7 +286,7 @@ class SoapController extends Controller
         //====================================================================//
         // Perform Identifier Verification
         $identify = $this->doIdentify($webserviceId);
-        
+
         //====================================================================//
         // Server Not Found
         if (false === $identify) {
@@ -293,7 +296,7 @@ class SoapController extends Controller
 
             return false;
         }
-        
+
         //===================================================================//
         // Server Connection Rejected
         if (null === $identify) {
@@ -342,7 +345,7 @@ class SoapController extends Controller
             'log' => Splash::log(),
         ));
     }
-    
+
     /**
      * Execute Request Tasks from Client Remote Server
      *
@@ -369,7 +372,7 @@ class SoapController extends Controller
         }
         //====================================================================//
         // Init Tasks Responses Array
-        $response   =   array();
+        $response = array();
         //====================================================================//
         // Step by Step Execute Tasks
         foreach ($this->tasks as $id => $task) {
@@ -382,27 +385,27 @@ class SoapController extends Controller
             // Check if Tasks is Allowed in this Service
             if (!empty($filters) && !in_array($task->name, $filters, true)) {
                 Splash::log()->err("Requested task was not found => ".$task->name." (".$task->desc.")");
-                $response[$id]      =   $this->createEmptyTaskResponse($task->id, $task->name, $task->desc);
+                $response[$id] = $this->createEmptyTaskResponse($task->id, $task->name, $task->desc);
 
                 continue;
             }
-            
+
             switch ($task->name) {
                 //====================================================================//
                 // Execute Object Commit
                 case SPL_F_COMMIT:
-                    $response[$id]  =   $this->objectCommit($task);
+                    $response[$id] = $this->objectCommit($task);
 
                     break;
                 //====================================================================//
                 // Execute Object Commit
                 case SPL_F_GETFILE:
-                    $response[$id]  =   $this->fileRead($task);
+                    $response[$id] = $this->fileRead($task);
 
                     break;
             }
         }
-        
+
         //====================================================================//
         // Transmit Answers To Master
         //====================================================================//
@@ -421,14 +424,14 @@ class SoapController extends Controller
     private function createEmptyTaskResponse(string $taskId, string $taskName, string $description = "") : ArrayObject
     {
         $response = new ArrayObject(array(), ArrayObject::ARRAY_AS_PROPS);
-        $response->name        = $taskId;
-        $response->name        = $taskName;
-        $response->desc        = $description;
-        $response->result      = false;
-        
+        $response->name = $taskId;
+        $response->name = $taskName;
+        $response->desc = $description;
+        $response->result = false;
+
         return $response;
     }
-    
+
     /**
      * Manage Object Commit Notification
      *
@@ -439,7 +442,7 @@ class SoapController extends Controller
     private function objectCommit(ArrayObject $task) : ArrayObject
     {
         Splash::log()->deb("Objects Router - Execute Action => ".$task->name." (".$task->desc.")");
-        
+
         //====================================================================//
         // Init Tasks results array
         $response = $this->createEmptyTaskResponse($task->id, $task->name, $task->desc);
@@ -464,7 +467,7 @@ class SoapController extends Controller
 
         return $response;
     }
-    
+
     /**
      * @abstract   Manage Files Reading
      *
@@ -475,15 +478,15 @@ class SoapController extends Controller
     private function fileRead(ArrayObject $task) : ArrayObject
     {
         Splash::log()->deb("Files Router - Execute Action => ".$task->name." (".$task->desc.")");
-        
+
         //====================================================================//
         // Init Tasks results array
         $response = $this->createEmptyTaskResponse($task->id, $task->name, $task->desc);
-        
+
         try {
             //====================================================================//
             // Dispatch File Event
-            $response->data     =    $this->connector->file(
+            $response->data = $this->connector->file(
                 $task->params->file,                    // File Path
                 $task->params->md5                      // File MD5 Checksum
             );
@@ -491,7 +494,7 @@ class SoapController extends Controller
         } catch (Exception $ex) {
             Splash::log()->err("Read File Fail => ".$ex->getMessage().")");
         }
-        
+
         return $response;
     }
 }

@@ -2,7 +2,7 @@
 
 {% macro NewKeysBtn(connector) %}
     
-    {% set Url = path( "splash_connector_action" , { 
+    {% set Url = path( "splash_connector_secured_action" , { 
         "connectorName" : connector.profile.name, 
         "webserviceId" : connector.WebserviceId, 
         "action" : "newkeys"
@@ -18,7 +18,7 @@
 
 {% macro NewHostBtn(connector) %}
     
-    {% set Url = path( "splash_connector_action" , { 
+    {% set Url = path( "splash_connector_secured_action" , { 
         "connectorName" : connector.profile.name, 
         "webserviceId" : connector.WebserviceId, 
         "action" : "newhost"

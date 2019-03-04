@@ -18,20 +18,19 @@ namespace Splash\Connectors\Soap\Controller;
 use Splash\Bundle\Models\AbstractConnector;
 use Splash\Bundle\Models\Local\ActionsTrait;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * @abstract    Splash Faker Connector Actions Controller
+ * Splash Soap Connector Actions Controller
  */
 class ActionsController extends Controller
 {
     use ActionsTrait;
-    
+
     /**
-     * @abstract    Ask for Server Host Refresh
+     * Ask for Server Host Refresh
      *
      * @param Request           $request
      * @param AbstractConnector $connector
@@ -47,7 +46,7 @@ class ActionsController extends Controller
             // Clear Host & Path
             $connector->setParameter('WsHost', null);
             $connector->setParameter('WsPath', null);
-            
+
             //====================================================================//
             // Update Configuration
             $connector->updateConfiguration();
@@ -62,9 +61,9 @@ class ActionsController extends Controller
 
         return new RedirectResponse($referer);
     }
-    
+
     /**
-     * @abstract    Ask for Server Keys Refresh
+     * Ask for Server Keys Refresh
      *
      * @param Request           $request
      * @param AbstractConnector $connector
@@ -83,7 +82,7 @@ class ActionsController extends Controller
             //====================================================================//
             // Generate Ws Key
             $connector->setParameter('WsEncryptionKey', substr(hash("sha256", time().uniqid("", true)), 0, 50));
-            
+
             //====================================================================//
             // Update Configuration
             $connector->updateConfiguration();
