@@ -57,6 +57,8 @@ script:
     - if [[ ${TRAVIS_PHP_VERSION:0:3} > "7.0" ]]; then php ./vendor/bin/grumphp run --testsuite=phpstan; fi   
     # Execute PhpUnit Tests 
     - vendor/bin/phpunit
+    # Execute PhpUnit Tests with Coverage Report
+    - phpdbg -qrr -d memory_limit=-1 vendor/bin/phpunit    
     # Show Outdated Packages   
     - composer outdated
     
