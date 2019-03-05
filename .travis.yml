@@ -28,6 +28,8 @@ before_install:
     - mkdir public
     - cp tests/public/* public
     - cp tests/public/.htaccess public/.htaccess
+    # Disable Xdebug ...
+    - phpenv config-rm xdebug.ini    
 
 ################################################################################
 # GENERIC CONFIGURATION
