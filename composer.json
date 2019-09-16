@@ -40,6 +40,7 @@
     
     "require-dev": {
         "splash/php-bundle":                            "dev-master",
+        "splash/console":                               "dev-master",
         "splash/faker":                                 "dev-master",
         
         "symfony/symfony":                              "~3.4",
