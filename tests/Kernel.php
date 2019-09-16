@@ -20,6 +20,8 @@ use Symfony\Component\HttpKernel\Kernel as BaseKernel;
 
 /**
  * Symfony Kernel for testing
+ *
+ * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
  */
 class Kernel extends BaseKernel
 {
