@@ -1,20 +1,18 @@
 {% trans_default_domain "SoapBundle" %}
 {% import "SoapBundle:Macros:buttons.html.twig"                   as Buttons %}
    
-<div class="panel-group smart-accordion-default " id="accordion">
+<div class="panel-group" id="accordion">
 
     <!-- Server Safety Description Block -->
-    <div class="panel panel-default">
-        <div class="panel-heading">
-            <h4 class="panel-title">
-                <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree" class="collapsed" aria-expanded="false"> 
-                    <i class="fa fa-lg fa-angle-down pull-right"></i> <i class="fa fa-lg fa-angle-up pull-right"></i> 
-                    <div><i class="fa fa-fw fa-key"></i> {{ 'show.info.security'|trans }}</div>
-                </a>
-            </h4>
+    <div class="panel panel-default card">
+        <div class="panel-heading card-header collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false">
+            <h3 class="panel-title card-title text-primary">
+                <i class="fa fa-fw fa-key"></i> 
+                {{ 'show.info.security'|trans }}
+            </h3>
         </div>
-        <div id="collapseThree" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
-            <div class="panel-body">
+        <div id="collapseThree" class="panel-collapse collapse" aria-expanded="false">
+            <div class="panel-body card-body">
                     {% include 'SoapBundle:Blocks:security.html.twig'  %}                                             
             </div>
         </div>
@@ -23,17 +21,15 @@
 
 
     <!-- Server Description Block -->
-    <div class="panel panel-default">
-        <div class="panel-heading">
-            <h4 class="panel-title">
-                <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" class="collapsed" aria-expanded="false"> 
-                    <i class="fa fa-lg fa-angle-down pull-right"></i> <i class="fa fa-lg fa-angle-up pull-right"></i> 
-                    <div><i class="fa fa-fw fa-info-circle"></i> {{ 'show.info.server'|trans }}</div>
-                </a>
-            </h4>
+    <div class="panel panel-default card">
+        <div class="panel-heading card-header" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="true">
+            <h3 class="panel-title card-title text-primary">
+                <i class="fa fa-fw fa-info-circle"></i> 
+                {{ 'show.info.server'|trans }}
+            </h3>
         </div>
-        <div id="collapseTwo" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
-            <div class="panel-body">
+        <div id="collapseTwo" class="panel-collapse collapse show" aria-expanded="true">
+            <div class="panel-body card-body">
                 {% include 'SoapBundle:Blocks:description.html.twig' %} 
                 {{ Buttons.NewHostBtn(connector) }}
             </div>

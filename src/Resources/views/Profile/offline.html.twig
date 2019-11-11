@@ -6,20 +6,21 @@
 
     <h1>{{ 'faults.title'|trans }}</h1>
     
-    <div class="well well-sm">
+    <div class="well well-sm my-2">
         {{ 'faults.server_url'|trans |raw }}
     </div>
+    
     {{ Buttons.NewHostBtn(connector) }}
     
-    </br>
+    <br />
     
-    <div class="well well-sm">
+    <div class="well well-sm my-2">
         {{ 'faults.server_ko'|trans |raw }}
     </div>
     
     </br>    
     
-    <div class="well well-sm">
+    <div class="well well-sm my-2">
         {% include 'SoapBundle:Blocks:description.html.twig' %}
         {% include 'SoapBundle:Blocks:security.html.twig'  %}
     </div>

@@ -6,7 +6,7 @@
     <li>
         <p class="text-muted">
             <i class="fa fa-barcode"></i>&nbsp;{{ 'form.id.label'|trans }}&nbsp;:&nbsp;
-            <a onclick="copyToClipboard('node-ws-id' , '{{ "messages.copyId" | trans }} ');" > 
+            <a class="text-primary" onclick="copyToClipboard('node-ws-id' , '{{ "messages.copyId" | trans }} ');" > 
                 <span id="node-ws-id">{{ connector.configuration.WsIdentifier }}</span>
                 <i class="fa fa-fw fa-clipboard">&nbsp;</i> 
             </a>
@@ -14,7 +14,7 @@
     </li>
     <li>
         <p class="text-muted">
-            <i class="fa fa-hdd-o"></i>&nbsp;{{ 'form.encrypt.label'|trans }}&nbsp;:&nbsp;
+            <i class="far fa-hdd"></i>&nbsp;{{ 'form.encrypt.label'|trans }}&nbsp;:&nbsp;
                 <span class="text-success">
                     <span class="fa fa-check"></span>
                     &nbsp;{{ 'form.encrypt.yes'|trans }}
@@ -24,7 +24,7 @@
     <li>
         <p class="text-muted">
             <i class="fa fa-key"></i>&nbsp;{{ 'form.key.label'|trans }}&nbsp;:&nbsp;
-            <a onclick="copyToClipboard('node-ws-key' , '{{ "messages.copyKey" | trans }} ');" > 
+            <a class="text-primary" onclick="copyToClipboard('node-ws-key' , '{{ "messages.copyKey" | trans }} ');" > 
                 <span id="node-ws-key">{{ connector.configuration.WsEncryptionKey }}</span>
                 <i class="fa fa-fw fa-clipboard">&nbsp;</i> 
             </a>
@@ -39,7 +39,7 @@
         <ul class="list-unstyled">
             <li>
                 <p class="text-muted">
-                    <i class="fa fa-hdd-o"></i>&nbsp;{{ 'form.httpauth.label'|trans }}&nbsp;:&nbsp;
+                    <i class="far fa-hdd"></i>&nbsp;{{ 'form.httpauth.label'|trans }}&nbsp;:&nbsp;
                     {% if connector.configuration.HttpAuth | default(false) %}
                         <span class="text-success">
                             <span class="fa fa-check"></span>
