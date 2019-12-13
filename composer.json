@@ -46,6 +46,7 @@
         "symfony/symfony":                              "~3.4",
         "symfony/monolog-bundle":                       "*",
         "symfony/phpunit-bridge":                       "*",
+        "monolog/monolog":                              "^1.0",
         
         "doctrine/doctrine-bundle":                     "^1.6",
         "doctrine/orm":                                 "^2.5",
