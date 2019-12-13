@@ -37,7 +37,7 @@ abstract class AbstractSoapType extends AbstractType
         $builder
             ->add('WsHost', TextType::class, array(
                 'label' => 'form.host.label',
-//                'help_block' => 'form.host.desc',
+                // 'help_block' => 'form.host.desc',
                 'translation_domain' => 'SoapBundle',
             ))
             ;
@@ -57,7 +57,7 @@ abstract class AbstractSoapType extends AbstractType
         $builder
             ->add('WsPath', TextType::class, array(
                 'label' => 'form.folder.label',
-//                'help_block' => 'form.folder.desc',
+                // 'help_block' => 'form.folder.desc',
                 'translation_domain' => 'SoapBundle',
             ))
             ;
@@ -79,7 +79,7 @@ abstract class AbstractSoapType extends AbstractType
             // Https Url Option Authentification
             ->add('EnableHttps', self::getCheckBoxClass(), array(
                 'label' => 'form.https.label',
-//                'help_block' => 'form.https.desc',
+                // 'help_block' => 'form.https.desc',
                 'required' => false,
                 'translation_domain' => 'SoapBundle',
             ))
@@ -102,7 +102,7 @@ abstract class AbstractSoapType extends AbstractType
             // Http Authentification
             ->add('WsIdentifier', TextType::class, array(
                 'label' => 'form.id.label',
-//                'help_block' => 'form.id.desc',
+                // 'help_block' => 'form.id.desc',
                 'translation_domain' => 'SoapBundle',
             ))
 
@@ -110,7 +110,7 @@ abstract class AbstractSoapType extends AbstractType
             // Http Authentification -> User
             ->add('WsEncryptionKey', TextType::class, array(
                 'label' => 'form.key.label',
-//                'help_block' => 'form.key.desc',
+                // 'help_block' => 'form.key.desc',
                 'translation_domain' => 'SoapBundle',
             ))
             ;
@@ -132,7 +132,7 @@ abstract class AbstractSoapType extends AbstractType
             // Http Authentification
             ->add('HttpAuth', self::getCheckBoxClass(), array(
                 'label' => 'form.httpauth.label',
-//                'help_block' => 'form.httpauth.desc',
+                // 'help_block' => 'form.httpauth.desc',
                 'translation_domain' => 'SoapBundle',
                 'required' => false,
             ))

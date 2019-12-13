@@ -24,7 +24,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * @abstract    Splash Bundle Soap Controller
+ * Splash Bundle Soap Controller
  */
 class SoapController extends Controller
 {
@@ -58,7 +58,7 @@ class SoapController extends Controller
     //====================================================================//
 
     /**
-     * @abstract    Master Fake Controller Action
+     * Master Fake Controller Action
      *
      * @param AbstractConnector $connector
      *
@@ -93,9 +93,9 @@ class SoapController extends Controller
     }
 
     /**
-     * @abstract   Declare fatal Error Handler => Called in case of Script Exceptions
+     * Declare fatal Error Handler => Called in case of Script Exceptions
      */
-    public static function fatalHandler()
+    public static function fatalHandler(): void
     {
         //====================================================================//
         // Read Last Error
@@ -156,7 +156,7 @@ class SoapController extends Controller
     }
 
     /**
-     * @abstract    Splash SOAP Connect Action
+     * Splash SOAP Connect Action
      *
      * @param string $webserviceId
      * @param string $data
@@ -206,7 +206,7 @@ class SoapController extends Controller
     }
 
     /**
-     * @abstract    Splash SOAP Object Action
+     * Splash SOAP Object Action
      *
      * @param string $webserviceId
      * @param string $data
@@ -219,7 +219,7 @@ class SoapController extends Controller
     }
 
     /**
-     * @abstract    Splash SOAP File Action
+     * Splash SOAP File Action
      *
      * @param string $webserviceId
      * @param string $data
@@ -469,7 +469,7 @@ class SoapController extends Controller
     }
 
     /**
-     * @abstract   Manage Files Reading
+     * Manage Files Reading
      *
      * @param ArrayObject $task Full Task Request
      *

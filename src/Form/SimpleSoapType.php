@@ -28,9 +28,11 @@ class SimpleSoapType extends AbstractSoapType
      * @param FormBuilderInterface $builder
      * @param array                $options
      *
+     * @return void
+     *
      * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $this
             ->addWsHost($builder)

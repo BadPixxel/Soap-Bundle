@@ -20,7 +20,7 @@ use Splash\Components\Webservice as BaseWebservice;
 use Splash\Core\SplashCore as Splash;
 
 /**
- * @abstract    Spash Soap Connector Webservice Manager
+ * Spash Soap Connector Webservice Manager
  */
 final class Webservice extends BaseWebservice
 {
@@ -29,7 +29,7 @@ final class Webservice extends BaseWebservice
     //====================================================================//
 
     /**
-     * @abstract   Override Setup Function
+     * Override Setup Function
      *
      * @return false
      */
@@ -39,7 +39,7 @@ final class Webservice extends BaseWebservice
     }
 
     /**
-     * @abstract   Initialise Webservice Parameters
+     * Initialise Webservice Parameters
      *
      * @param array $config Connector Configuration
      *
@@ -74,7 +74,7 @@ final class Webservice extends BaseWebservice
     }
 
     /**
-     * @abstract   Extract Data from Task response
+     * Extract Data from Task response
      *
      * @param ArrayObject $task WebService Response Task
      *
@@ -93,7 +93,7 @@ final class Webservice extends BaseWebservice
     }
 
     /**
-     * @abstract   Prepare & Normalize Host Url From Current Server
+     * Prepare & Normalize Host Url From Current Server
      *
      * @param string $wsHost  Server Host Url
      * @param string $wsPath  Server Path

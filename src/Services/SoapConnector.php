@@ -46,7 +46,7 @@ final class SoapConnector extends AbstractConnector
         //====================================================================//
         // Perform Ping Test
         $response = $webservice->call(SPL_S_PING, null, true);
-        if (isset($response["result"]) && !empty($response["result"])) {
+        if ($response && isset($response["result"]) && !empty($response["result"])) {
             return true;
         }
 
@@ -69,7 +69,7 @@ final class SoapConnector extends AbstractConnector
         //====================================================================//
         // Perform Connect Test
         $response = $webservice->call(SPL_S_CONNECT);
-        if (isset($response["result"]) && !empty($response["result"])) {
+        if ($response && isset($response["result"]) && !empty($response["result"])) {
             return true;
         }
 
@@ -486,7 +486,7 @@ final class SoapConnector extends AbstractConnector
     //====================================================================//
 
     /**
-     * @abstract   Get Connector Profile Informations
+     * Get Connector Profile Informations
      *
      * @return array
      */
@@ -570,7 +570,7 @@ final class SoapConnector extends AbstractConnector
     //====================================================================//
 
     /**
-     * @abstract   Perform Generic Soap Action
+     * Perform Generic Soap Action
      *
      * @param array  $config      WebService Configuration
      * @param string $service     Service Method to reach
@@ -606,7 +606,7 @@ final class SoapConnector extends AbstractConnector
     }
 
     /**
-     * @abstract   Perform Multiple Soap Action
+     * Perform Multiple Soap Action
      *
      * @param array  $config      WebService Configuration
      * @param string $service     Service Method to reach
@@ -646,7 +646,13 @@ final class SoapConnector extends AbstractConnector
     }
 
     /**
-     * {@inheritdoc}
+     * Read One Object Action
+     *
+     * @param string $objectType Object Type Name
+     * @param string $objectId   Object ID
+     * @param array  $fieldsList List of Field IDs to Read
+     *
+     * @return mixed
      */
     private function getOneObject(string $objectType, string $objectId, array $fieldsList)
     {
