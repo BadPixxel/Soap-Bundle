@@ -10,3 +10,5 @@
 /.web-server-pid
 /tests/config/parameters.yml
 /public/
+/.gh-pages/
+/.idea/
