@@ -11,10 +11,10 @@ splash:
             host:               "%splash_host%/ws/splash"
             server_host:        "%splash_host%"
             connector:          soap
-            config:     
+            config:
                 Extended:           true
                 WsIdentifier:       ThisIsFakerWsId
-                WsEncryptionKey:    ThisIsNotASecretKeyForFaker                
+                WsEncryptionKey:    ThisIsNotASecretKeyForFaker
                 WsHost:             http://localhost:8000
                 WsPath:             /ws/splash
                 HttpAuth:           true
@@ -27,5 +27,3 @@ splash:
             name:               Serveur 1 (Faker)
             host:               "%splash_host%/ws/soap"
             server_host:        "%splash_host%"
-
-        

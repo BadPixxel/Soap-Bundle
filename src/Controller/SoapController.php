@@ -20,13 +20,13 @@ use Exception;
 use SoapServer;
 use Splash\Bundle\Models\AbstractConnector;
 use Splash\Client\Splash;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Splash Bundle Soap Controller
  */
-class SoapController extends Controller
+class SoapController extends AbstractController
 {
     /**
      * @var AbstractConnector
@@ -64,19 +64,22 @@ class SoapController extends Controller
      *
      * @return Response
      */
-    public function masterAction(AbstractConnector $connector)
+    public function masterAction(AbstractConnector $connector): Response
     {
         //====================================================================//
-        // Store Soop Connector
+        // Store Soap Connector
         $this->connector = $connector;
         //====================================================================//
         // Create SOAP Server
-        $this->soapServer = new SoapServer(dirname(__DIR__).'/Resources/wsdl/splash.wsdl', array('cache_wsdl' => WSDL_CACHE_NONE));
+        $this->soapServer = new SoapServer(
+            dirname(__DIR__).'/Resources/wsdl/splash.wsdl',
+            array('cache_wsdl' => WSDL_CACHE_NONE)
+        );
         //====================================================================//
         // Register SOAP Service
         $this->soapServer->setObject($this);
         //====================================================================//
-        // Register shuttdown method available for fatal errors reteival
+        // Register shutdown method available for fatal errors retrieval
         register_shutdown_function(array(self::class, 'fatalHandler'));
         //====================================================================//
         // Prepare Response
@@ -134,7 +137,7 @@ class SoapController extends Controller
      *
      * @return false|string
      */
-    public function ping($identifier)
+    public function ping(string $identifier)
     {
         //====================================================================//
         // Perform Identify Pointed Server
@@ -163,7 +166,7 @@ class SoapController extends Controller
      *
      * @return false|string
      */
-    public function connect($webserviceId, $data)
+    public function connect(string $webserviceId, string $data)
     {
         //====================================================================//
         // Receive Request from Client
@@ -213,7 +216,7 @@ class SoapController extends Controller
      *
      * @return string
      */
-    public function objects($webserviceId, $data)
+    public function objects(string $webserviceId, string $data): string
     {
         return $this->doTasks($webserviceId, $data, array(SPL_F_COMMIT));
     }
@@ -226,7 +229,7 @@ class SoapController extends Controller
      *
      * @return string
      */
-    public function files($webserviceId, $data)
+    public function files(string $webserviceId, string $data): string
     {
         return $this->doTasks($webserviceId, $data, array(SPL_F_GETFILE));
     }
@@ -242,7 +245,7 @@ class SoapController extends Controller
      *
      * @return null|bool
      */
-    private function doIdentify($webserviceId) : ?bool
+    private function doIdentify(string $webserviceId) : ?bool
     {
         //====================================================================//
         // Perform Identify Pointed Server
@@ -259,7 +262,7 @@ class SoapController extends Controller
         // Force Splash Logger Prefix
         Splash::log()->setPrefix("Splash");
         //====================================================================//
-        // Configure Webservice Componant with Minimal Parameters
+        // Configure Webservice Component with Minimal Parameters
         Splash::configuration()->localname = $this->connector->getParameter("Name");
         Splash::configuration()->WsIdentifier = $this->connector->getParameter("WsIdentifier");
         Splash::configuration()->WsEncryptionKey = $this->connector->getParameter("WsEncryptionKey");
@@ -281,7 +284,7 @@ class SoapController extends Controller
      *
      * @return bool
      */
-    private function doReceive($webserviceId, $data)
+    private function doReceive(string $webserviceId, string $data): bool
     {
         //====================================================================//
         // Perform Identifier Verification
@@ -290,7 +293,10 @@ class SoapController extends Controller
         //====================================================================//
         // Server Not Found
         if (false === $identify) {
-            $this->connector->getLogger()->warning('[SoapConnector]'.'::'.__FUNCTION__.' request received from '.$webserviceId.'(Unknown!) =>  Connection Refused');
+            $this->connector->getLogger()->warning(
+                '[SoapConnector]'.'::'.__FUNCTION__.' request received from '
+                .$webserviceId.'(Unknown!) =>  Connection Refused'
+            );
 
             $this->soapServer->fault("0", '[Splash]  Connection Refused');
 
@@ -332,8 +338,8 @@ class SoapController extends Controller
     /**
      * Return packaged data buffer for transmit to client.
      *
-     * @param bool  $result Global Operation Result
-     * @param array $tasks  Tasks Response Data
+     * @param bool       $result Global Operation Result
+     * @param null|array $tasks  Tasks Response Data
      *
      * @return string
      */
@@ -355,7 +361,7 @@ class SoapController extends Controller
      *
      * @return string
      */
-    private function doTasks(string $identifier, string $data, array $filters = array())
+    private function doTasks(string $identifier, string $data, array $filters = array()): string
     {
         //====================================================================//
         // Validate & Unpack received Request
