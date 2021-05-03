@@ -318,7 +318,9 @@ final class SoapConnector extends AbstractConnector
         // PhpUnit Helper => Submit Object Commit
         if ((false !== $response) && !empty($response)) {
             $action = empty($objectId) ? SPL_A_CREATE : SPL_A_UPDATE;
-            TestHelper::simObjectCommit($objectType, $response, $action);
+            if (Splash::isDebugMode()) {
+                TestHelper::simObjectCommit($objectType, $response, $action);
+            }
         }
 
         return $response;
