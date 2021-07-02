@@ -1,0 +1,48 @@
+
+splash:
+
+################################################################################    
+# Configure Splash Bundle Parameters Cache    
+# Cache is Enabled by Default to Store Custom Connectors Configuration
+# If disabled, configuration must be store in Static, on connections section
+################################################################################    
+#    cache: 
+#        enabled: false    
+#        lifetime: 10
+
+    # Allow Notifications for Generic Users   
+    notify: ["ROLE_USER"]
+    
+################################################################################    
+# List of Available Connector Connections
+################################################################################    
+
+    connections:
+        
+        ########################################################################
+        # Soap Server
+        soap:
+            id:                 ThisIsSoapWsId
+            key:                ThisIsNotASecretKeyForSoap
+            name:               Serveur 2 (Soap)
+            host:               "http://toolkit.soap.local/ws/splash"
+            server_host:        "http://toolkit.soap.local"
+            connector:          soap
+            config:
+                Extended:           true
+                WsIdentifier:       ThisIsFakerWsId
+                WsEncryptionKey:    ThisIsNotASecretKeyForFaker
+                WsHost:             http://toolkit.soap.local
+                WsPath:             /ws/splash
+                HttpAuth:           true
+                HttpUser:           PhpUnit
+                HttpPassword:       PhpUnitPwd
+
+        ########################################################################
+        # Faker Server
+        faker:
+            id:                 ThisIsFakerWsId
+            key:                ThisIsNotASecretKeyForFaker
+            name:               Serveur 1 (Faker)
+            host:               "http://toolkit.soap.local/ws/soap"
+            server_host:        "http://toolkit.soap.local"

@@ -86,7 +86,12 @@ final class Webservice extends BaseWebservice
             return false;
         }
         if (is_a($task["data"], ArrayObject::class)) {
-            return $task["data"]->getArrayCopy();
+            $data = $task["data"]->getArrayCopy();
+            foreach ($data as &$item) {
+                $item = ($item instanceof ArrayObject) ? $item->getArrayCopy() : $item;
+            }
+
+            return $data;
         }
 
         return $task["data"];

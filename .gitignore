@@ -12,3 +12,5 @@
 /public/
 /.gh-pages/
 /.idea/
+/.phpunit.result.cache
+/.php-cs-fixer.cache
