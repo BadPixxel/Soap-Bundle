@@ -42,7 +42,6 @@ services:
             - './docker/toolkit/splash.yml:/app/config/packages/splash.yml:ro'
             # Uncomment to use Local Sources instead of Release
             - './src/:/app/vendor/splash/soap/src/:ro'
-            - '/mnt/data/WebDesign/GitHub/Splash/Php-Core:/app/vendor/splash/phpcore:ro'
         hostname:           toolkit.soap.local
         networks:
             soap:           { ipv4_address: 172.116.0.100, aliases: [ toolkit.soap.local ] }
