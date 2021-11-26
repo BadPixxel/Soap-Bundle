@@ -31,10 +31,9 @@
             "vendor/splash/php-bundle/src/Tests/KernelTestCase.php"
         ]
     },
-    
-    
+
     "require": {
-        "php":                                          "^7.2",
+        "php":                                          "^7.3|^8.0",
         "splash/php-bundle":                            "dev-master",
         "ext-soap":                                     "*"
     },
@@ -50,7 +49,7 @@
         "monolog/monolog":                              "^1.0",
         
         "doctrine/doctrine-bundle":                     "^1.6",
-        "doctrine/orm":                                 "^2.5"
+        "doctrine/orm":                                 "^2.6"
     },
 
     "scripts": {
