@@ -48,9 +48,8 @@
         "symfony/phpunit-bridge":                       "*",
         "monolog/monolog":                              "^1.0",
         
-        "doctrine/doctrine-bundle":                     "^1.6",
-        "doctrine/orm":                                 "^2.6",
-        "doctrine/common":                              "^2.13"
+        "doctrine/doctrine-bundle":                     "^2.4",
+        "doctrine/orm":                                 "^2.6"
     },
 
     "scripts": {
