@@ -39,7 +39,7 @@
     },
     
     "require-dev": {
-        "badpixxel/php-sdk":                            "dev-main",
+        "badpixxel/php-sdk":                            "~2.0",
         "splash/console":                               "dev-master",
         "splash/faker":                                 "dev-master",
         

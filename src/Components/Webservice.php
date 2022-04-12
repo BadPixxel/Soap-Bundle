@@ -3,7 +3,7 @@
 /*
  *  This file is part of SplashSync Project.
  *
- *  Copyright (C) 2015-2021 Splash Sync  <www.splashsync.com>
+ *  Copyright (C) Splash Sync  <www.splashsync.com>
  *
  *  This program is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -13,14 +13,14 @@
  *  file that was distributed with this source code.
  */
 
-namespace Splash\Connectors\Soap\Componants;
+namespace Splash\Connectors\Soap\Components;
 
 use ArrayObject;
 use Splash\Components\Webservice as BaseWebservice;
 use Splash\Core\SplashCore as Splash;
 
 /**
- * Spash Soap Connector Webservice Manager
+ * Splash Soap Connector Webservice Manager
  */
 final class Webservice extends BaseWebservice
 {
@@ -31,9 +31,9 @@ final class Webservice extends BaseWebservice
     /**
      * Override Setup Function
      *
-     * @return false
+     * @return bool
      */
-    public function setup()
+    public function setup(): bool
     {
         return false;
     }
@@ -45,7 +45,7 @@ final class Webservice extends BaseWebservice
      *
      * @return $this
      */
-    public function configure(array $config)
+    public function configure(array $config): self
     {
         //====================================================================//
         // Read Parameters
@@ -74,27 +74,38 @@ final class Webservice extends BaseWebservice
     }
 
     /**
-     * Extract Data from Task response
+     * Extract Array Data from Task response
      *
-     * @param ArrayObject $task WebService Response Task
+     * @param null|array $task WebService Response Task
      *
-     * @return array|false
+     * @return null|array
      */
-    public static function extractData(ArrayObject $task)
+    public static function extractArray(?array $task): ?array
     {
-        if (!isset($task["data"])) {
-            return false;
+        if (is_null($task) || !isset($task["data"])) {
+            return null;
         }
-        if (is_a($task["data"], ArrayObject::class)) {
-            $data = $task["data"]->getArrayCopy();
-            foreach ($data as &$item) {
-                $item = ($item instanceof ArrayObject) ? $item->getArrayCopy() : $item;
-            }
-
-            return $data;
+        foreach ($task["data"] as &$item) {
+            $item = ($item instanceof ArrayObject) ? $item->getArrayCopy() : $item;
         }
 
         return $task["data"];
+    }
+
+    /**
+     * Extract String Data from Task response
+     *
+     * @param null|array $task WebService Response Task
+     *
+     * @return null|string
+     */
+    public static function extractString(?array $task): ?string
+    {
+        if (is_null($task) || !isset($task["data"]) || !is_scalar($task["data"])) {
+            return null;
+        }
+
+        return (string) $task["data"];
     }
 
     /**
@@ -106,7 +117,7 @@ final class Webservice extends BaseWebservice
      *
      * @return string
      */
-    private static function getNormalizedHostUrl(string $wsHost, string $wsPath, bool $enHttps = null)
+    private static function getNormalizedHostUrl(string $wsHost, string $wsPath, bool $enHttps = null): string
     {
         $schema = null;
         //====================================================================//

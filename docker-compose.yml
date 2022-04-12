@@ -48,6 +48,15 @@ services:
             splashsync:     { aliases: [ toolkit.soap.local ] }
 
     ################################################################################
+    # PHP 8.1
+    php-8.1:
+        image:          registry.gitlab.com/badpixxel-projects/php-sdk:php-8.1
+        container_name: soap-bundle-8.1
+        volumes:
+            - ./:/var/www/html
+            - vendor-php81:/var/www/html/vendor
+
+    ################################################################################
     # PHP 8.0
     php-8.0:
         image:          registry.gitlab.com/badpixxel-projects/php-sdk:php-8.0
@@ -65,15 +74,6 @@ services:
             - ./:/var/www/html
             - vendor-php74:/var/www/html/vendor
 
-    ################################################################################
-    # PHP 7.3
-    php-7.3:
-        image:      registry.gitlab.com/badpixxel-projects/php-sdk:php-7.3
-        container_name: soap-bundle-7.3
-        volumes:
-            - ./:/var/www/html
-            - vendor-php73:/var/www/html/vendor
-
 networks:
     ################################################################################
     # Default Private Network    
@@ -88,6 +88,7 @@ networks:
         external: true
 
 volumes:
+    vendor-php81: ~
     vendor-php80: ~
     vendor-php74: ~
     vendor-php73: ~

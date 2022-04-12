@@ -3,7 +3,7 @@
 /*
  *  This file is part of SplashSync Project.
  *
- *  Copyright (C) 2015-2021 Splash Sync  <www.splashsync.com>
+ *  Copyright (C) Splash Sync  <www.splashsync.com>
  *
  *  This program is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -15,7 +15,6 @@
 
 namespace Splash\Connectors\Soap\Controller;
 
-use ArrayObject;
 use Exception;
 use SoapServer;
 use Splash\Bundle\Models\AbstractConnector;
@@ -31,27 +30,22 @@ class SoapController extends AbstractController
     /**
      * @var AbstractConnector
      */
-    protected $connector;
+    protected AbstractConnector $connector;
 
     /**
      * @var SoapServer
      */
-    private $soapServer;
+    private SoapServer $soapServer;
 
     /**
-     * @var string Raw Client Request Message
+     * @var null|array Decoded Client Message
      */
-    private $rawInputs;
+    private ?array $inputs;
 
     /**
-     * @var ArrayObject Decoded Client Message
+     * @var array[] Clients Tasks Buffer
      */
-    private $inputs;
-
-    /**
-     * @var ArrayObject Clients Tasks Buffer
-     */
-    private $tasks;
+    private array $tasks;
 
     //====================================================================//
     //   WebService SOAP Calls Responses Functions
@@ -109,7 +103,7 @@ class SoapController extends AbstractController
         //====================================================================//
         // Non Fatal Error
         if (E_ERROR != $error['type']) {
-            Splash::log()->war($error['message'].' on File '.$error['file'].' Line '.$error['line']);
+            Splash::log()->war($error['message'].' on File '.$error['file'].', Line '.$error['line']);
 
             return;
         }
@@ -135,19 +129,19 @@ class SoapController extends AbstractController
      *
      * @param string $identifier WebService Remote Node Identifier
      *
-     * @return false|string
+     * @return null|string
      */
-    public function ping(string $identifier)
+    public function ping(string $identifier): ?string
     {
         //====================================================================//
         // Perform Identify Pointed Server
         $result = $this->doIdentify($identifier);
         //====================================================================//
         // Server Not Found
-        if (false === $result) {
+        if (!$result) {
             $this->soapServer->fault("0", '[Splash] Ping Fail. Unable to identify this remote Node');
 
-            return false;
+            return null;
         }
         //====================================================================//
         // Add Success Message
@@ -164,9 +158,9 @@ class SoapController extends AbstractController
      * @param string $webserviceId
      * @param string $data
      *
-     * @return false|string
+     * @return null|string
      */
-    public function connect(string $webserviceId, string $data)
+    public function connect(string $webserviceId, string $data): ?string
     {
         //====================================================================//
         // Receive Request from Client
@@ -179,18 +173,19 @@ class SoapController extends AbstractController
         // Update Server Status
         //====================================================================//
         $config = $this->connector->getConfiguration();
-        if (empty($config['WsHost']) && isset($this->inputs->server)) {
+        if (empty($config['WsHost']) && isset($this->inputs['server'])) {
+            $serverInfos = $this->inputs['server'];
             //====================================================================//
             // Update Server Path
-            if (!empty($this->inputs->server['ServerPath']) && is_scalar($this->inputs->server['ServerPath'])) {
-                $this->connector->setParameter('WsPath', $this->inputs->server['ServerPath']);
-                Splash::log()->msg('Server Path Updated to "'.$this->inputs->server['ServerPath'].'"');
+            if (!empty($serverInfos['ServerPath']) && is_scalar($serverInfos['ServerPath'])) {
+                $this->connector->setParameter('WsPath', $serverInfos['ServerPath']);
+                Splash::log()->msg('Server Path Updated to "'.$serverInfos['ServerPath'].'"');
             }
             //====================================================================//
             // Update Server Host
-            if (!empty($this->inputs->server['ServerHost']) && is_scalar($this->inputs->server['ServerHost'])) {
-                Splash::log()->msg('HostName Updated to "'.$this->inputs->server['ServerHost'].'"');
-                $this->connector->setParameter('WsHost', $this->inputs->server['ServerHost']);
+            if (!empty($serverInfos['ServerHost']) && is_scalar($serverInfos['ServerHost'])) {
+                Splash::log()->msg('HostName Updated to "'.$serverInfos['ServerHost'].'"');
+                $this->connector->setParameter('WsHost', $serverInfos['ServerHost']);
                 $this->connector->updateConfiguration();
             }
         }
@@ -198,7 +193,7 @@ class SoapController extends AbstractController
         //====================================================================//
         // Log Request
         //====================================================================//
-        if (!isset($this->inputs->cfg->silent)) {
+        if (!isset($this->inputs['cfg']['silent'])) {
             Splash::log()->msg('Connection Successful. Hello '.Splash::configuration()->localname.'!!');
         }
 
@@ -252,8 +247,8 @@ class SoapController extends AbstractController
         $result = $this->connector->identify($webserviceId);
         //====================================================================//
         // Server Found
-        if (false === $result) {
-            return false;
+        if (!$result) {
+            return $result;
         }
         //====================================================================//
         // Reboot Splash Core Module
@@ -289,7 +284,6 @@ class SoapController extends AbstractController
         //====================================================================//
         // Perform Identifier Verification
         $identify = $this->doIdentify($webserviceId);
-
         //====================================================================//
         // Server Not Found
         if (false === $identify) {
@@ -302,7 +296,6 @@ class SoapController extends AbstractController
 
             return false;
         }
-
         //===================================================================//
         // Server Connection Rejected
         if (null === $identify) {
@@ -310,11 +303,6 @@ class SoapController extends AbstractController
 
             return false;
         }
-
-        //====================================================================//
-        // Store Received Raw Data
-        $this->rawInputs = $data;
-
         //====================================================================//
         // Unpack SOAP Request
         $this->inputs = Splash::ws()->unpack($data);
@@ -326,9 +314,9 @@ class SoapController extends AbstractController
         Splash::log()->deb('[Splash] Node Identified & Message Decoded.');
 
         //====================================================================//
-        // Extract Received Taxks
-        if (!empty($this->inputs->tasks)) {
-            $this->tasks = $this->inputs->tasks;
+        // Extract Received Tasks
+        if (!empty($this->inputs['tasks'])) {
+            $this->tasks = $this->inputs['tasks'];
             Splash::log()->deb('Found '.count($this->tasks).' tasks in request.');
         }
 
@@ -389,14 +377,14 @@ class SoapController extends AbstractController
             }
             //====================================================================//
             // Check if Tasks is Allowed in this Service
-            if (!empty($filters) && !in_array($task->name, $filters, true)) {
-                Splash::log()->err("Requested task was not found => ".$task->name." (".$task->desc.")");
-                $response[$id] = $this->createEmptyTaskResponse($task->id, $task->name, $task->desc);
+            if (!empty($filters) && !in_array($task["name"], $filters, true)) {
+                Splash::log()->err("Requested task was not found => ".$task["name"]." (".$task["desc"].")");
+                $response[$id] = $this->createEmptyTaskResponse($task["id"], $task["name"], $task["desc"]);
 
                 continue;
             }
 
-            switch ($task->name) {
+            switch ($task["name"]) {
                 //====================================================================//
                 // Execute Object Commit
                 case SPL_F_COMMIT:
@@ -419,51 +407,50 @@ class SoapController extends AbstractController
     }
 
     /**
-     * Create An Empty Task Respons
+     * Create An Empty Task Response
      *
-     * @param string $taskId      Task Id
-     * @param string $taskName    Task Name
-     * @param string $description Task Description
+     * @param string $taskId   Task Id
+     * @param string $taskName Task Name
+     * @param string $desc     Task Description
      *
-     * @return ArrayObject
+     * @return array
      */
-    private function createEmptyTaskResponse(string $taskId, string $taskName, string $description = "") : ArrayObject
+    private function createEmptyTaskResponse(string $taskId, string $taskName, string $desc = "") : array
     {
-        $response = new ArrayObject(array(), ArrayObject::ARRAY_AS_PROPS);
-        $response->name = $taskId;
-        $response->name = $taskName;
-        $response->desc = $description;
-        $response->result = false;
-
-        return $response;
+        return array(
+            "id" => $taskId,
+            "name" => $taskName,
+            "desc" => $desc,
+            "result" => false,
+        );
     }
 
     /**
      * Manage Object Commit Notification
      *
-     * @param ArrayObject $task Full Task Request
+     * @param array $task Full Task Request
      *
-     * @return ArrayObject
+     * @return array
      */
-    private function objectCommit(ArrayObject $task) : ArrayObject
+    private function objectCommit(array $task) : array
     {
-        Splash::log()->deb("Objects Router - Execute Action => ".$task->name." (".$task->desc.")");
+        Splash::log()->deb("Objects Router - Execute Action => ".$task['name']." (".$task['desc'].")");
 
         //====================================================================//
         // Init Tasks results array
-        $response = $this->createEmptyTaskResponse($task->id, $task->name, $task->desc);
+        $response = $this->createEmptyTaskResponse($task['id'], $task['name'], $task['desc']);
 
         try {
             //====================================================================//
             // Dispatch Commit Event
             $this->connector->commit(
-                $task->params->type,                    // Object Type
-                $task->params->id,                      // Object Id or Objects Id Array
-                $task->params->action,                  // Action Type
-                $task->params->user,                    // User Name
-                $task->params->comment                  // Action Description or Comment
+                $task['params']['type'],                    // Object Type
+                $task['params']['id'],                      // Object ID or Objects ID Array
+                $task['params']['action'],                  // Action Type
+                $task['params']['user'],                    // User Name
+                $task['params']['comment']                  // Action Description or Comment
             );
-            $response->result = true;
+            $response['result'] = true;
             //====================================================================//
             // If Commit Notification Successful => Add Ok Message
             Splash::log()->msg("Change Notified!");
@@ -477,26 +464,27 @@ class SoapController extends AbstractController
     /**
      * Manage Files Reading
      *
-     * @param ArrayObject $task Full Task Request
+     * @param array $task Full Task Request
      *
-     *  @return ArrayObject
+     *  @return array
      */
-    private function fileRead(ArrayObject $task) : ArrayObject
+    private function fileRead(array $task) : array
     {
-        Splash::log()->deb("Files Router - Execute Action => ".$task->name." (".$task->desc.")");
-
+        Splash::log()->deb("Files Router - Execute Action => ".$task['name']." (".$task['desc'].")");
         //====================================================================//
         // Init Tasks results array
-        $response = $this->createEmptyTaskResponse($task->id, $task->name, $task->desc);
+        $response = $this->createEmptyTaskResponse($task['id'], $task['name'], $task['desc']);
 
         try {
             //====================================================================//
             // Dispatch File Event
-            $response->data = $this->connector->file(
-                $task->params->file,                    // File Path
-                $task->params->md5                      // File MD5 Checksum
+            $response['data'] = $this->connector->file(
+                // File Path
+                $task['params']['file'],
+                // File MD5 Checksum
+                $task['params']['md5']
             );
-            $response->result = true;
+            $response['result'] = true;
         } catch (Exception $ex) {
             Splash::log()->err("Read File Fail => ".$ex->getMessage().")");
         }
