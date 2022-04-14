@@ -34,14 +34,14 @@
 
     "require": {
         "php":                                          "^7.3|^8.0",
-        "splash/php-bundle":                            "dev-master",
+        "splash/php-bundle":                            "~1.4",
         "ext-soap":                                     "*"
     },
     
     "require-dev": {
-        "badpixxel/php-sdk":                            "dev-main",
+        "badpixxel/php-sdk":                            "~1.0",
         "splash/console":                               "dev-master",
-        "splash/faker":                                 "dev-master",
+        "splash/faker":                                 "1.0.x-dev",
         
         "symfony/symfony":                              "^3.4|^4.4",
         "symfony/monolog-bundle":                       "*",
