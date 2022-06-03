@@ -149,7 +149,10 @@ class SoapController extends AbstractController
 
         //====================================================================//
         // Transmit Answer with No Encryption
-        return Splash::ws()->pack(array('result' => true, 'log' => Splash::log()), true);
+        return Splash::ws()->pack(array(
+            'result' => true,
+            'log' => Splash::log()->getRawLog()
+        ), true);
     }
 
     /**
@@ -336,7 +339,7 @@ class SoapController extends AbstractController
         return (string) Splash::ws()->pack(array(
             'result' => $result,
             'tasks' => $tasks,
-            'log' => Splash::log(),
+            'log' => Splash::log()->getRawLog(),
         ));
     }
 
