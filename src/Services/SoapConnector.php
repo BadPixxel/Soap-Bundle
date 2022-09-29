@@ -16,6 +16,7 @@
 namespace Splash\Connectors\Soap\Services;
 
 use ArrayObject;
+use Splash\Bundle\Interfaces\Connectors\PrimaryKeysInterface;
 use Splash\Bundle\Models\AbstractConnector;
 use Splash\Connectors\Soap\Components\Webservice;
 use Splash\Connectors\Soap\Form\CompleteSoapType;
@@ -28,7 +29,7 @@ use Splash\Models\Helpers\TestHelper;
  *
  * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
  */
-final class SoapConnector extends AbstractConnector
+final class SoapConnector extends AbstractConnector implements PrimaryKeysInterface
 {
     /**
      * {@inheritdoc}
@@ -255,6 +256,37 @@ final class SoapConnector extends AbstractConnector
         );
 
         return Webservice::extractArray($task)?: array();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getObjectIdByPrimary(string $objectType, array $keys): ?string
+    {
+        //====================================================================//
+        // Safety Check => Verify Self test Pass
+        if (!$this->selfTest() || empty($objectType)) {
+            return null;
+        }
+        //====================================================================//
+        // Execute Generic WebService Action
+        $task = $this->doGeneric(
+            // WebService Configuration
+            $this->getConfiguration(),
+            // Request Service
+            SPL_S_OBJECTS,
+            // Requested Function
+            SPL_F_IDENTIFY,
+            // Action Description Translator Tag
+            "Identify Object by Primary Keys",
+            // Request Parameters Array
+            array(
+                "type" => $objectType,
+                "keys" => $keys,
+            )
+        );
+
+        return Webservice::extractString($task) ?: null;
     }
 
     /**
