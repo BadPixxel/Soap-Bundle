@@ -25,7 +25,7 @@ use Symfony\Component\HttpFoundation\Response;
 /**
  * Splash Soap Connector Actions Controller
  */
-class ActionsController extends Controller
+class ActionsController extends AbstractController
 {
     use ActionsTrait;
 
