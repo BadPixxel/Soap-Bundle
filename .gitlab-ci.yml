@@ -91,6 +91,8 @@ quality:php-8.0:
     ################################################################################
     # Run Test Script
     script:
+        # Start Web Server
+        - symfony serve -d
         # Execute PhpUnit Tests
         - vendor/bin/phpunit --log-junit $CI_PROJECT_DIR/full-report.xml
 
