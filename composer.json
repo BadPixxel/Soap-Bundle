@@ -23,39 +23,24 @@
             "Splash\\Connectors\\Soap\\":     "src/"
         }
     },
-    
-    "autoload-dev": {
-        "classmap": [ "tests/Kernel.php" ],
-        "files":    [ 
-            "vendor/splash/phpcore/inc/Splash.Inc.php",
-            "vendor/splash/php-bundle/src/Tests/KernelTestCase.php"
-        ]
-    },
 
     "require": {
-        "php":                                          "^7.3|^8.0",
+        "php":                                          "^8.0",
         "splash/php-bundle":                            "dev-master",
         "ext-soap":                                     "*"
     },
     
     "require-dev": {
         "badpixxel/php-sdk":                            "~2.0",
-        "splash/console":                               "dev-master",
-        "splash/faker":                                 "dev-master",
-        
-        "symfony/symfony":                              "^3.4|^4.4",
-        "symfony/monolog-bundle":                       "*",
-        "symfony/phpunit-bridge":                       "*",
-        "monolog/monolog":                              "^1.0",
-        
-        "doctrine/doctrine-bundle":                     "^2.4",
-        "doctrine/orm":                                 "^2.6"
+        "splash/toolkit":                               "dev-master"
     },
 
     "scripts": {
         "auto-scripts": [
-            "php tests/console cache:clear",
-            "cd var/cache/dev && rm testContainer.xml && ln -s testsKernelDevDebugContainer.xml testContainer.xml"
+            "php bin/console cache:clear",
+            "php bin/console doctrine:schema:update --force  --no-interaction --no-debug",
+            "php bin/console sonata:user:create Toolkit toolkit@splashsync.com toolkit --super-admin || exit 0",
+            "find var/cache/dev/*.xml | while read -r i; do cp \"$i\" var/cache/dev/testContainer.xml; done"
         ],
         "post-install-cmd": [
             "@auto-scripts"
@@ -66,7 +51,11 @@
     },
     "config": {
         "allow-plugins": {
-            "phpro/grumphp": true
+            "phpro/grumphp": true,
+            "symfony/runtime": true
         }
+    },
+    "extra": {
+        "public-dir": "tests"
     }
 }

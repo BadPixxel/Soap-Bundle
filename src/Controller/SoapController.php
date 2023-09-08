@@ -83,7 +83,7 @@ class SoapController extends AbstractController
         // Execute Actions
         ob_start();
         $this->soapServer->handle();
-        $response->setContent(ob_get_clean());
+        $response->setContent((string) ob_get_clean());
 
         //====================================================================//
         // Return response

@@ -1,0 +1,20 @@
+services:
+    _defaults:
+        autowire: true      # Automatically injects dependencies in your services.
+        autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
+
+    ################################################################################
+    # AutoWire for Controllers
+    Splash\Connectors\Soap\Controller\:
+        resource: '../../Controller'
+        tags: [ 'controller.service_arguments', 'container.service_subscriber' ]
+
+    ################################################################################
+    # SPLASH SOAP Connector 
+    splash.connectors.soap:
+        class: Splash\Connectors\Soap\Services\SoapConnector
+        arguments:  [ "@event_dispatcher", "@logger" ]
+        tags:       
+            - { name: "splash.connector"}
+        
+            

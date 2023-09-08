@@ -36,10 +36,10 @@ services:
     # Splash Toolkit Container   
     toolkit:
         image: 'splashsync/toolkit'
-        container_name: soap-toolkit
+        container_name: toolkit.soap.local
         volumes:
             # Specify Local Configuration File
-            - './docker/toolkit/splash.yml:/app/config/packages/splash.yml:ro'
+            - './docker/toolkit/splash.yaml:/app/config/packages/splash.yaml:ro'
             # Uncomment to use Local Sources instead of Release
             - './src/:/app/vendor/splash/soap/src/:ro'
         hostname:           toolkit.soap.local
@@ -51,7 +51,7 @@ services:
     # PHP 8.1
     php-8.1:
         image:          registry.gitlab.com/badpixxel-projects/php-sdk:php-8.1
-        container_name: soap-bundle-8.1
+        container_name: php-8.1.toolkit.soap.local
         volumes:
             - ./:/var/www/html
             - vendor-php81:/var/www/html/vendor
@@ -60,19 +60,10 @@ services:
     # PHP 8.0
     php-8.0:
         image:          registry.gitlab.com/badpixxel-projects/php-sdk:php-8.0
-        container_name: soap-bundle-8.0
+        container_name: php-8.0.toolkit.soap.local
         volumes:
             - ./:/var/www/html
             - vendor-php80:/var/www/html/vendor
-
-    ################################################################################
-    # PHP 7.4
-    php-7.4:
-        image:      registry.gitlab.com/badpixxel-projects/php-sdk:php-7.4
-        container_name: soap-bundle-7.4
-        volumes:
-            - ./:/var/www/html
-            - vendor-php74:/var/www/html/vendor
 
 networks:
     ################################################################################
@@ -90,5 +81,3 @@ networks:
 volumes:
     vendor-php81: ~
     vendor-php80: ~
-    vendor-php74: ~
-    vendor-php73: ~
