@@ -88,8 +88,6 @@ quality:php-8.0:
 .functional:    &functional
     <<:         *base
     stage:      functional
-    services:
-        - mysql:5.7
     ################################################################################
     # Run Test Script
     script:
