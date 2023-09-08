@@ -40,7 +40,7 @@ abstract class AbstractSoapType extends AbstractType
                 // 'help_block' => 'form.host.desc',
                 'translation_domain' => 'SoapBundle',
             ))
-            ;
+        ;
 
         return $this;
     }
@@ -60,7 +60,7 @@ abstract class AbstractSoapType extends AbstractType
                 // 'help_block' => 'form.folder.desc',
                 'translation_domain' => 'SoapBundle',
             ))
-            ;
+        ;
 
         return $this;
     }
@@ -83,7 +83,7 @@ abstract class AbstractSoapType extends AbstractType
                 'required' => false,
                 'translation_domain' => 'SoapBundle',
             ))
-            ;
+        ;
 
         return $this;
     }
@@ -113,7 +113,7 @@ abstract class AbstractSoapType extends AbstractType
                 // 'help_block' => 'form.key.desc',
                 'translation_domain' => 'SoapBundle',
             ))
-            ;
+        ;
 
         return $this;
     }
@@ -152,7 +152,7 @@ abstract class AbstractSoapType extends AbstractType
                 'translation_domain' => 'SoapBundle',
                 'required' => false,
             ))
-            ;
+        ;
 
         return $this;
     }

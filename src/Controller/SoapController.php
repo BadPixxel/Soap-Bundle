@@ -84,6 +84,7 @@ class SoapController extends AbstractController
         ob_start();
         $this->soapServer->handle();
         $response->setContent(ob_get_clean());
+
         //====================================================================//
         // Return response
         return $response;
@@ -394,8 +395,8 @@ class SoapController extends AbstractController
                     $response[$id] = $this->objectCommit($task);
 
                     break;
-                //====================================================================//
-                // Execute Object Commit
+                    //====================================================================//
+                    // Execute Object Commit
                 case SPL_F_GETFILE:
                     $response[$id] = $this->fileRead($task);
 
@@ -469,7 +470,7 @@ class SoapController extends AbstractController
      *
      * @param array $task Full Task Request
      *
-     *  @return array
+     * @return array
      */
     private function fileRead(array $task) : array
     {

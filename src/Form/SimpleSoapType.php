@@ -39,6 +39,6 @@ class SimpleSoapType extends AbstractSoapType
             ->addWsPath($builder)
             ->addEnableHttps($builder)
             ->addHttpAuth($builder)
-            ;
+        ;
     }
 }

@@ -31,15 +31,12 @@ stages:
   - deploy
 
 ################################################################
-# Functional Tests
+# Base Tests
 ################################################################
 
-.core_tests:    &core_tests
-    stage:      tests
+.base:    &base
     tags:
         - Dedicated
-    services:
-        - mysql:5.7
     artifacts:
         when: always
         reports:
@@ -47,39 +44,63 @@ stages:
     ################################################################################
     # Install & Configure Environnement
     before_script:
-        # Setup Travis
-        - curl -s https://raw.githubusercontent.com/BadPixxel/Php-Sdk/main/ci/configure.sh  | sh
-        # Deploy Symfony Files
-        - curl -s https://raw.githubusercontent.com/BadPixxel/Php-Sdk/main/symfony/deploy.sh | sh
-        # Setup Symfony Version & Create Database
-        - curl -s https://raw.githubusercontent.com/BadPixxel/Php-Sdk/main/symfony/configure.sh | sh
-        # Install Symfony
-        - curl -s https://raw.githubusercontent.com/BadPixxel/Php-Sdk/main/symfony/install.sh | sh
-
-    ################################################################################
-    # Run Test Script
-    script:
-        # Execute Grumphp Testsuite
-        - curl -s https://raw.githubusercontent.com/BadPixxel/Php-Sdk/main/ci/grumphp.sh  | sh
-        # Execute PhpUnit Tests
-        - vendor/bin/phpunit --log-junit $CI_PROJECT_DIR/full-report.xml
-
+      # Setup Travis
+      - curl -s https://raw.githubusercontent.com/BadPixxel/Php-Sdk/main/ci/configure.sh  | sh
+      # Deploy Symfony Files
+      - curl -s https://raw.githubusercontent.com/BadPixxel/Php-Sdk/main/symfony/deploy.sh | sh
+      # Setup Symfony Version & Create Database
+      - curl -s https://raw.githubusercontent.com/BadPixxel/Php-Sdk/main/symfony/configure.sh | sh
+      # Install Symfony
+      - curl -s https://raw.githubusercontent.com/BadPixxel/Php-Sdk/main/symfony/install.sh | sh
     ################################################################################
     # Run After Script
     after_script:
       - curl -s https://raw.githubusercontent.com/BadPixxel/Php-Sdk/main/ci/after.sh | sh
 
-tests:php-8.1:
+################################################################
+# Quality Tests
+################################################################
+
+.quality:    &quality
+    <<:         *base
+    stage:      quality
+    services:
+        - mysql:5.7
+    ################################################################################
+    # Run Test Script
+    script:
+      # Execute Grumphp Testsuite
+      - curl -s https://raw.githubusercontent.com/BadPixxel/Php-Sdk/main/ci/grumphp.sh  | sh
+
+quality:php-8.1:
   image: registry.gitlab.com/badpixxel-projects/php-sdk:php-8.1
-  <<: *core_tests
+  <<: *base
 
-tests:php-8.0:
+quality:php-8.0:
   image: registry.gitlab.com/badpixxel-projects/php-sdk:php-8.0
-  <<: *core_tests
+  <<: *base
 
-tests:php-7.4:
-  image: registry.gitlab.com/badpixxel-projects/php-sdk:php-7.4
-  <<: *core_tests
+################################################################
+# Functional Tests
+################################################################
+
+.functional:    &functional
+    stage:      tests
+    services:
+        - mysql:5.7
+    ################################################################################
+    # Run Test Script
+    script:
+        # Execute PhpUnit Tests
+        - vendor/bin/phpunit --log-junit $CI_PROJECT_DIR/full-report.xml
+
+functional:php-8.1:
+    image: registry.gitlab.com/badpixxel-projects/php-sdk:php-8.1
+    <<: *functional
+
+functional:php-8.0:
+    image: registry.gitlab.com/badpixxel-projects/php-sdk:php-8.0
+    <<: *functional
 
 ##################################################################
 ### Build Documentation

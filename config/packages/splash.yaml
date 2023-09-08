@@ -1,0 +1,38 @@
+
+parameters:
+    # Adds a fallback DATABASE_URL if the env var is not set.
+    env(SPLASH_HOST): 'http://localhost:8000'
+
+splash:
+    ################################################################################
+    # List of Available Connector Connections
+    ################################################################################
+    connections:
+
+        ########################################################################
+        # Soap Server
+        soap:
+            id:                 ThisIsSoapWsId
+            key:                ThisIsNotASecretKeyForSoap
+            name:               Serveur 2 (Soap)
+            host:               "%env(SPLASH_HOST)%/ws/splash"
+            server_host:        "%env(SPLASH_HOST)%"
+            connector:          soap
+            config:
+                Extended:           true
+                WsIdentifier:       ThisIsFakerWsId
+                WsEncryptionKey:    ThisIsNotASecretKeyForFaker
+                WsHost:             "%env(SPLASH_HOST)%"
+                WsPath:             /ws/splash
+                HttpAuth:           true
+                HttpUser:           PhpUnit
+                HttpPassword:       PhpUnitPwd
+
+        ########################################################################
+        # Faker Server
+        faker:
+            id:                 ThisIsFakerWsId
+            key:                ThisIsNotASecretKeyForFaker
+            name:               Serveur 1 (Faker)
+            host:               "%env(SPLASH_HOST)%/ws/soap"
+            server_host:        "%env(SPLASH_HOST)%"

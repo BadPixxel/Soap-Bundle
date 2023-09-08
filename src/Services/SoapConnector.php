@@ -19,6 +19,7 @@ use ArrayObject;
 use Splash\Bundle\Interfaces\Connectors\PrimaryKeysInterface;
 use Splash\Bundle\Models\AbstractConnector;
 use Splash\Connectors\Soap\Components\Webservice;
+use Splash\Connectors\Soap\Controller;
 use Splash\Connectors\Soap\Form\CompleteSoapType;
 use Splash\Connectors\Soap\Form\SimpleSoapType;
 use Splash\Core\SplashCore as Splash;
@@ -319,6 +320,7 @@ final class SoapConnector extends AbstractConnector implements PrimaryKeysInterf
                 "fields" => $fieldsList,
             );
         }
+
         //====================================================================//
         // Execute Combo WebService Action
         return $this->doComboRead(
@@ -611,7 +613,7 @@ final class SoapConnector extends AbstractConnector implements PrimaryKeysInterf
      */
     public function getMasterAction(): ?string
     {
-        return "SoapBundle:Soap:master";
+        return Controller\SoapController::class."::masterAction";
     }
 
     /**
@@ -628,8 +630,8 @@ final class SoapConnector extends AbstractConnector implements PrimaryKeysInterf
     public function getSecuredActions() : array
     {
         return array(
-            "newhost" => "SoapBundle:Actions:host",
-            "newkeys" => "SoapBundle:Actions:keys",
+            "newhost" => Controller\ActionsController::class."::hostAction",
+            "newkeys" => Controller\ActionsController::class."::keysAction",
         );
     }
 
@@ -672,6 +674,7 @@ final class SoapConnector extends AbstractConnector implements PrimaryKeysInterf
         //====================================================================//
         // Get Next Task Result
         $task = array_shift($response['tasks']);
+
         //====================================================================//
         // Return Task Data
         return is_array($task) ? $task : null;
@@ -710,6 +713,7 @@ final class SoapConnector extends AbstractConnector implements PrimaryKeysInterf
         foreach ($response['tasks'] as $task) {
             $results[] = Webservice::extractArray(is_array($task) ? $task : null);
         }
+
         //====================================================================//
         // Return Tasks Results
         return   $results;

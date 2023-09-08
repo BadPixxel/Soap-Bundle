@@ -127,6 +127,7 @@ final class Webservice extends BaseWebservice
             // If Https Mode is Enabled
             $schema = (false !== $enHttps) ? 'https://' : 'http://';
         }
+
         //====================================================================//
         // If Given Url include Prefix
         return  $schema.$wsHost.$wsPath;

@@ -1,6 +1,6 @@
 {% trans_default_domain "SoapBundle" %}
 
-{% import "SoapBundle:Macros:buttons.html.twig"            as Buttons %}
+{% import "@Soap/Macros/buttons.html.twig"        as Buttons %}
 
 {% block contents %}
 
@@ -21,8 +21,8 @@
     </br>    
     
     <div class="well well-sm my-2">
-        {% include 'SoapBundle:Blocks:description.html.twig' %}
-        {% include 'SoapBundle:Blocks:security.html.twig'  %}
+        {% include '@Soap/Blocks/description.html.twig' %}
+        {% include '@Soap/Blocks/security.html.twig'  %}
     </div>
     
         

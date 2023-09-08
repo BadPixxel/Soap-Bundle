@@ -1,5 +1,5 @@
 {% trans_default_domain "SoapBundle" %}
-{% import "SoapBundle:Macros:buttons.html.twig"                   as Buttons %}
+{% import "@Soap/Macros/buttons.html.twig"        as Buttons %}
    
 <div class="panel-group" id="accordion">
 
@@ -13,7 +13,7 @@
         </div>
         <div id="collapseThree" class="panel-collapse collapse" aria-expanded="false">
             <div class="panel-body card-body">
-                    {% include 'SoapBundle:Blocks:security.html.twig'  %}                                             
+                    {% include '@Soap/Blocks/security.html.twig'  %}
             </div>
         </div>
     </div>                                    
@@ -30,7 +30,7 @@
         </div>
         <div id="collapseTwo" class="panel-collapse collapse show" aria-expanded="true">
             <div class="panel-body card-body">
-                {% include 'SoapBundle:Blocks:description.html.twig' %} 
+                {% include '@Soap/Blocks/description.html.twig' %}
                 {{ Buttons.NewHostBtn(connector) }}
             </div>
         </div>

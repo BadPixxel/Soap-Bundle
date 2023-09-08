@@ -40,6 +40,6 @@ class CompleteSoapType extends AbstractSoapType
             ->addWsIdentifiers($builder)
             ->addEnableHttps($builder)
             ->addHttpAuth($builder)
-            ;
+        ;
     }
 }

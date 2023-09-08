@@ -1,5 +1,5 @@
 {% trans_default_domain "NodesCoreBundle" %}
-{% import "ConnectorsSoapBundle:Macros:buttons.html.twig"                   as Buttons %}
+{% import "@Soap/Macros/buttons.html.twig"        as Buttons %}
 
 {% block node_resume %}
 <!-- Server Resume Block -->
@@ -14,7 +14,7 @@
     </div>
     <div id="collapseTwo" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
         <div class="panel-body">
-            {% include 'NodesCoreBundle:ProfileLeft:description.block.html.twig' %} 
+            {% include '@NodesCore/ProfileLeft/description.block.html.twig' %}
             {{ Buttons.NewHost_LgBtn(node.id) }}
         </div>
     </div>
