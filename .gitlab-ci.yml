@@ -53,6 +53,8 @@ stages:
       - curl -s https://raw.githubusercontent.com/BadPixxel/Php-Sdk/main/symfony/configure.sh | sh
       # Install Symfony
       - curl -s https://raw.githubusercontent.com/BadPixxel/Php-Sdk/main/symfony/install.sh | sh
+      # Install Symfony CLI
+      - wall-e add:symfony
     ################################################################################
     # Run After Script
     after_script:
