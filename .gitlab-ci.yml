@@ -71,8 +71,6 @@ stages:
     # Run Test Script
     script:
       # Execute Grumphp Testsuite
-      - curl -s https://raw.githubusercontent.com/BadPixxel/Php-Sdk/main/ci/grumphp.sh  | sh
-      # Execute Grumphp Testsuite
       - wall-e grumphp:quality
       - wall-e grumphp:stan
 
