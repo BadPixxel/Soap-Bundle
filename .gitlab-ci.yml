@@ -18,9 +18,6 @@
 ################################################################
 # Set any variables we need
 variables:
-  # Configure mysql environment variables (https://hub.docker.com/r/_/mysql/)
-  MYSQL_DATABASE:         symfony
-  MYSQL_ROOT_PASSWORD:    Soap-Bundle
   COMPOSER_MEMORY_LIMIT:  -1
   SYMFONY_DEPRECATIONS_HELPER:  disabled
 
@@ -45,14 +42,8 @@ stages:
     ################################################################################
     # Install & Configure Environnement
     before_script:
-      # Setup Travis
-      - curl -s https://raw.githubusercontent.com/BadPixxel/Php-Sdk/main/ci/configure.sh  | sh
-      # Deploy Symfony Files
-      - curl -s https://raw.githubusercontent.com/BadPixxel/Php-Sdk/main/symfony/deploy.sh | sh
-      # Setup Symfony Version & Create Database
-      - curl -s https://raw.githubusercontent.com/BadPixxel/Php-Sdk/main/symfony/configure.sh | sh
       # Install Symfony
-      - curl -s https://raw.githubusercontent.com/BadPixxel/Php-Sdk/main/symfony/install.sh | sh
+      - composer update
       # Install Symfony CLI
       - wall-e add:symfony
     ################################################################################

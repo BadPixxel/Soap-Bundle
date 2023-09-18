@@ -10,7 +10,7 @@
     convertWarningsToExceptions = "true"
     processIsolation            = "false"
     stopOnFailure               = "true"
-    bootstrap                   = "vendor/splash/toolkit/tests/bootstrap.php"
+    bootstrap                   = "vendor/autoload.php"
     verbose                     = "false"
     timeoutForLargeTests        = "10"  
 >
@@ -19,7 +19,6 @@
         <testsuite name="All">
             <directory>Tests/*</directory>
             <directory>vendor/splash/phpcore/Tests/*</directory>
-            <directory>vendor/splash/php-bundle/tests/*</directory>
         </testsuite>
     </testsuites>
 
