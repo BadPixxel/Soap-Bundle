@@ -18,14 +18,22 @@
 ################################################################
 # Include Pipeline Templates
 include:
-  - remote: 'https://raw.githubusercontent.com/BadPixxel/Php-Sdk/main/gitlab/php/connectors.yaml'
+    - remote: 'https://raw.githubusercontent.com/BadPixxel/Php-Sdk/main/gitlab/php/connectors.yaml'
 
-#################################################################
-## Functional Tests
-#################################################################
+################################################################
+# Functional Tests
+################################################################
 
 functional:php-8.2:
-  extends: .functional-web
+    extends: .functional-web
 
 functional:php-8.1:
-  extends: .functional-web
+    extends: .functional-web
+
+################################################################
+# Build Documentation
+################################################################
+
+pages:
+    when: manual
+
