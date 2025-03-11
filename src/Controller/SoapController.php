@@ -169,8 +169,8 @@ class SoapController extends AbstractController
         //====================================================================//
         // Receive Request from Client
         //====================================================================//
-        if (!$this->doReceive($webserviceId, $data)) {
-            return $this->doTransmit(false);
+        if (!$receive = $this->doReceive($webserviceId, $data)) {
+            return $this->doTransmit($receive);
         }
 
         //====================================================================//
@@ -181,15 +181,17 @@ class SoapController extends AbstractController
             $serverInfos = $this->inputs['server'];
             //====================================================================//
             // Update Server Path
-            if (!empty($serverInfos['ServerPath']) && is_scalar($serverInfos['ServerPath'])) {
-                $this->connector->setParameter('WsPath', $serverInfos['ServerPath']);
-                Splash::log()->msg('Server Path Updated to "'.$serverInfos['ServerPath'].'"');
+            $serverPath = $serverInfos['ServerPath'] ?? null;
+            if (!empty($serverPath) && is_scalar($serverPath)) {
+                $this->connector->setParameter('WsPath', $serverPath);
+                Splash::log()->msg('Server Path Updated to "'.$serverPath.'"');
             }
             //====================================================================//
             // Update Server Host
-            if (!empty($serverInfos['ServerHost']) && is_scalar($serverInfos['ServerHost'])) {
-                Splash::log()->msg('HostName Updated to "'.$serverInfos['ServerHost'].'"');
-                $this->connector->setParameter('WsHost', $serverInfos['ServerHost']);
+            $serverHost = $serverInfos['ServerHost'] ?? null;
+            if (!empty($serverHost) && is_scalar($serverHost)) {
+                Splash::log()->msg('HostName Updated to "'.$serverHost.'"');
+                $this->connector->setParameter('WsHost', $serverHost);
                 $this->connector->updateConfiguration();
             }
         }
@@ -278,12 +280,12 @@ class SoapController extends AbstractController
     /**
      * Treat Received Data and Initialize Server before request execution.
      *
-     * @param string $webserviceId
+     * @param string $webserviceId Webserver ID
      * @param string $data         Received Raw Data
      *
-     * @return bool
+     * @return null|bool False if Not Found, Null if Disabled
      */
-    private function doReceive(string $webserviceId, string $data): bool
+    private function doReceive(string $webserviceId, string $data): ?bool
     {
         //====================================================================//
         // Perform Identifier Verification
@@ -298,7 +300,7 @@ class SoapController extends AbstractController
 
             $this->soapServer->fault("0", '[Splash]  Connection Refused');
 
-            return false;
+            return null;
         }
         //===================================================================//
         // Server Connection Rejected
@@ -335,8 +337,12 @@ class SoapController extends AbstractController
      *
      * @return string
      */
-    private function doTransmit(bool $result, array $tasks = null): string
+    private function doTransmit(?bool $result, array $tasks = null): string
     {
+        if (is_null($result)) {
+            return "";
+        }
+
         return (string) Splash::ws()->pack(array(
             'result' => $result,
             'tasks' => $tasks,
@@ -356,9 +362,9 @@ class SoapController extends AbstractController
     private function doTasks(string $identifier, string $data, array $filters = array()): string
     {
         //====================================================================//
-        // Validate & Unpack received Request
-        if (!$this->doReceive($identifier, $data)) {
-            return $this->doTransmit(false);
+        // Validate & Unpack Received Request
+        if (!$receive = $this->doReceive($identifier, $data)) {
+            return $this->doTransmit($receive);
         }
         //====================================================================//
         // Execute Tasks
