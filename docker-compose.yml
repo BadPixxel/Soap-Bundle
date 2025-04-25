@@ -15,53 +15,39 @@
 #
 ################################################################################
 
-################################################################################
-# Docker Compose File
-#
-# This Docker File intend to Create a Complete Dev Environment
-# for Splash MailJet Connector
-#
-# For a faster access to you container, you can add this IP to /etc/hosts
-# 
-# 172.116.0.100       toolkit.soap.local
-#
-################################################################################
-
+name: splash_soap_bundle
 
 services:
 
     ################################################################################
-    # Splash Toolkit Container   
-    toolkit:
-        image: 'splashsync/toolkit'
-        container_name: toolkit.soap.local
+    # PHP 8.3
+    php-8.3:
+        image:          registry.gitlab.com/badpixxel-projects/php-sdk:php-8.3
+        container_name: php-8.3.soap-bundle.local
         volumes:
-            # Specify Local Configuration File
-            - './docker/toolkit/splash.yaml:/app/config/packages/splash.yaml:ro'
-            # Uncomment to use Local Sources instead of Release
-            - './src/:/app/vendor/splash/soap/src/:ro'
-        hostname:           toolkit.soap.local
-        networks:
-            soap:           { ipv4_address: 172.116.0.100, aliases: [ toolkit.soap.local ] }
-            splashsync:     { aliases: [ toolkit.soap.local ] }
+            - ./:/var/www/html
+            - php83-var:/var/www/html/var
+            - php83-vendor:/var/www/html/vendor
+
+    ################################################################################
+    # PHP 8.2
+    php-8.2:
+        image:          registry.gitlab.com/badpixxel-projects/php-sdk:php-8.2
+        container_name: php-8.2.soap-bundle.local
+        volumes:
+            - ./:/var/www/html
+            - php82-var:/var/www/html/var
+            - php82-vendor:/var/www/html/vendor
 
     ################################################################################
     # PHP 8.1
     php-8.1:
         image:          registry.gitlab.com/badpixxel-projects/php-sdk:php-8.1
-        container_name: php-8.1.toolkit.soap.local
+        container_name: php-8.1.soap-bundle.local
         volumes:
             - ./:/var/www/html
-            - vendor-php81:/var/www/html/vendor
-
-    ################################################################################
-    # PHP 8.0
-    php-8.0:
-        image:          registry.gitlab.com/badpixxel-projects/php-sdk:php-8.0
-        container_name: php-8.0.toolkit.soap.local
-        volumes:
-            - ./:/var/www/html
-            - vendor-php80:/var/www/html/vendor
+            - php81-var:/var/www/html/var
+            - php81-vendor:/var/www/html/vendor
 
 networks:
     ################################################################################
@@ -77,5 +63,9 @@ networks:
         external: true
 
 volumes:
-    vendor-php81: ~
-    vendor-php80: ~
+    php83-var: ~
+    php83-vendor: ~
+    php82-var: ~
+    php82-vendor: ~
+    php81-var: ~
+    php81-vendor: ~
