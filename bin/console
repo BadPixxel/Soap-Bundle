@@ -1,7 +1,7 @@
 #!/usr/bin/env php
 <?php
 
-use Splash\Toolkit\Kernel;
+use Splash\Connectors\Soap\Tests\Kernel;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 
 // if you don't want to setup permissions the proper way, just uncomment the following PHP line

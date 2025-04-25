@@ -16,8 +16,8 @@
 namespace Splash\Connectors\Soap\Components;
 
 use ArrayObject;
-use Splash\Components\Webservice as BaseWebservice;
-use Splash\Core\SplashCore as Splash;
+use Splash\Core\Client\Splash;
+use Splash\Core\Components\Webservice as BaseWebservice;
 
 /**
  * Splash Soap Connector Webservice Manager

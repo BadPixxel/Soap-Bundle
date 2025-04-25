@@ -22,8 +22,15 @@ use Splash\Connectors\Soap\Components\Webservice;
 use Splash\Connectors\Soap\Controller;
 use Splash\Connectors\Soap\Form\CompleteSoapType;
 use Splash\Connectors\Soap\Form\SimpleSoapType;
-use Splash\Core\SplashCore as Splash;
-use Splash\Models\Helpers\TestHelper;
+use Splash\Core\Client\Splash;
+use Splash\Core\Dictionary\Methods\SplAdminMethods;
+use Splash\Core\Dictionary\Methods\SplFilesMethods;
+use Splash\Core\Dictionary\Methods\SplObjectMethods;
+use Splash\Core\Dictionary\Methods\SplWidgetsMethods;
+use Splash\Core\Dictionary\SplOperations;
+use Splash\Core\Dictionary\SplServices;
+use Splash\Core\Helpers\DatesHelper;
+use Splash\Core\Helpers\TestHelper;
 
 /**
  * Splash Soap Connector
@@ -47,8 +54,8 @@ final class SoapConnector extends AbstractConnector implements PrimaryKeysInterf
         $webservice = (new Webservice())->configure($this->getConfiguration());
         //====================================================================//
         // Perform Ping Test
-        $response = $webservice->call(SPL_S_PING, null, true);
-        if ($response && isset($response["result"]) && !empty($response["result"])) {
+        $response = $webservice->call(SplServices::PING, null, true);
+        if ($response && !empty($response["result"])) {
             return true;
         }
 
@@ -70,8 +77,8 @@ final class SoapConnector extends AbstractConnector implements PrimaryKeysInterf
         $webservice = (new Webservice())->configure($this->getConfiguration());
         //====================================================================//
         // Perform Connect Test
-        $response = $webservice->call(SPL_S_CONNECT);
-        if ($response && isset($response["result"]) && !empty($response["result"])) {
+        $response = $webservice->call(SplServices::CONNECT);
+        if ($response && !empty($response["result"])) {
             return true;
         }
 
@@ -93,14 +100,10 @@ final class SoapConnector extends AbstractConnector implements PrimaryKeysInterf
         //====================================================================//
         // Execute Generic WebService Action
         $response = Webservice::extractArray($this->doGeneric(
-            // WebService Configuration
-            $this->getConfiguration(),
-            // Request Service
-            SPL_S_ADMIN,
-            // Requested Function
-            SPL_F_GET_INFOS,
-            // Action Description Translator Tag
-            "Read Server Infos"
+            $this->getConfiguration(),     // WebService Configuration
+            SplServices::ADMIN,     // Request Service
+            SplAdminMethods::INFOS,  // Requested Function
+            "Read Server Infos"       // Action Description Translator Tag
         ));
         //====================================================================//
         // Check Response
@@ -158,10 +161,10 @@ final class SoapConnector extends AbstractConnector implements PrimaryKeysInterf
         //====================================================================//
         // Execute Generic WebService Action
         $task = $this->doGeneric(
-            $this->getConfiguration(),      // WebService Configuration
-            SPL_S_OBJECTS,           // Request Service
-            SPL_F_OBJECTS,            // Requested Function
-            "Read Objects List"        // Action Description
+            $this->getConfiguration(),         // WebService Configuration
+            SplServices::OBJECTS,       // Request Service
+            SplObjectMethods::OBJECTS,   // Requested Function
+            "Read Objects List"           // Action Description
         );
 
         return Webservice::extractArray($task)?: array();
@@ -180,16 +183,11 @@ final class SoapConnector extends AbstractConnector implements PrimaryKeysInterf
         //====================================================================//
         // Execute Generic WebService Action
         $task = $this->doGeneric(
-            // WebService Configuration
-            $this->getConfiguration(),
-            // Request Service
-            SPL_S_OBJECTS,
-            // Requested Function
-            SPL_F_DESC,
-            // Action Description
-            "Read Object Description",
-            // Requests Parameters Array
-            array(
+            $this->getConfiguration(),         // WebService Configuration
+            SplServices::OBJECTS,       // Request Service
+            SplObjectMethods::DESC,      // Requested Function
+            "Read Object Description",    // Action Description
+            array(                             // Requests Parameters Array
                 "type" => $objectType,
             )
         );
@@ -210,16 +208,11 @@ final class SoapConnector extends AbstractConnector implements PrimaryKeysInterf
         //====================================================================//
         // Execute Generic WebService Action
         $task = $this->doGeneric(
-            // WebService Configuration
-            $this->getConfiguration(),
-            // Request Service
-            SPL_S_OBJECTS,
-            // Requested Function
-            SPL_F_FIELDS,
-            // Action Description Translator Tag
-            "Read Object Fields",
-            // Request Parameters Array
-            array(
+            $this->getConfiguration(),       // WebService Configuration
+            SplServices::OBJECTS,     // Request Service
+            SplObjectMethods::FIELDS,  // Requested Function
+            "Read Object Fields",       // Action Description Translator Tag
+            array(                           // Request Parameters Array
                 "type" => $objectType,
             )
         );
@@ -240,16 +233,11 @@ final class SoapConnector extends AbstractConnector implements PrimaryKeysInterf
         //====================================================================//
         // Execute Generic WebService Action
         $task = $this->doGeneric(
-            // WebService Configuration
-            $this->getConfiguration(),
-            // Request Service
-            SPL_S_OBJECTS,
-            // Requested Function
-            SPL_F_LIST,
-            // Action Description Translator Tag
-            "Read Objects List",
-            // Request Parameters Array
-            array(
+            $this->getConfiguration(),      // WebService Configuration
+            SplServices::OBJECTS,    // Request Service
+            SplObjectMethods::LIST,   // Requested Function
+            "Read Objects List",       // Action Description Translator Tag
+            array(                          // Request Parameters Array
                 "type" => $objectType,
                 "filters" => $filter,
                 "params" => $params,
@@ -272,16 +260,11 @@ final class SoapConnector extends AbstractConnector implements PrimaryKeysInterf
         //====================================================================//
         // Execute Generic WebService Action
         $task = $this->doGeneric(
-            // WebService Configuration
-            $this->getConfiguration(),
-            // Request Service
-            SPL_S_OBJECTS,
-            // Requested Function
-            SPL_F_IDENTIFY,
-            // Action Description Translator Tag
-            "Identify Object by Primary Keys",
-            // Request Parameters Array
-            array(
+            $this->getConfiguration(),               // WebService Configuration
+            SplServices::OBJECTS,             // Request Service
+            SplObjectMethods::IDENTIFY,        // Requested Function
+            "Identify Object by Primary Keys",  // Action Description Translator Tag
+            array(                                   // Request Parameters Array
                 "type" => $objectType,
                 "keys" => $keys,
             )
@@ -324,10 +307,8 @@ final class SoapConnector extends AbstractConnector implements PrimaryKeysInterf
         //====================================================================//
         // Execute Combo WebService Action
         return $this->doComboRead(
-            // WebService Configuration
-            $this->getConfiguration(),
-            // Request Parameters Array
-            $parameters
+            $this->getConfiguration(),  // WebService Configuration
+            $parameters                 // Request Parameters Array
         );
     }
 
@@ -352,15 +333,15 @@ final class SoapConnector extends AbstractConnector implements PrimaryKeysInterf
         // Execute Generic WebService Action
         $task = $this->doGeneric(
             $this->getConfiguration(),          // WebService Configuration
-            SPL_S_OBJECTS,               // Request Service
-            SPL_F_SET,                    // Requested Function
+            SplServices::OBJECTS,        // Request Service
+            SplObjectMethods::SET,        // Requested Function
             "Write Object Data",           // Action Description Translator Tag
             $parameters                         // Request Parameters Array
         );
         //====================================================================//
         // PhpUnit Helper => Submit Object Commit
         if (!empty($task)) {
-            $action = empty($objectId) ? SPL_A_CREATE : SPL_A_UPDATE;
+            $action = empty($objectId) ? SplOperations::CREATE : SplOperations::UPDATE;
             if (Splash::isDebugMode()) {
                 TestHelper::simObjectCommit(
                     $objectType,
@@ -386,16 +367,11 @@ final class SoapConnector extends AbstractConnector implements PrimaryKeysInterf
         //====================================================================//
         // Execute Generic WebService Action
         $task = $this->doGeneric(
-            // WebService Configuration
-            $this->getConfiguration(),
-            // Request Service
-            SPL_S_OBJECTS,
-            // Requested Function
-            SPL_F_DEL,
-            // Action Description Translator Tag
-            "Delete Object",
-            // Request Parameters Array
-            array(
+            $this->getConfiguration(),          // WebService Configuration
+            SplServices::OBJECTS,        // Request Service
+            SplObjectMethods::DEL,        // Requested Function
+            "Delete Object",               // Action Description Translator Tag
+            array(                              // Request Parameters Array
                 "type" => $objectType,
                 "id" => $objectId,
             )
@@ -405,7 +381,7 @@ final class SoapConnector extends AbstractConnector implements PrimaryKeysInterf
         // PhpUnit Helper => Submit Object Commit
         if ($response) {
             if (Splash::isDebugMode()) {
-                TestHelper::simObjectCommit($objectType, $objectId, SPL_A_DELETE);
+                TestHelper::simObjectCommit($objectType, $objectId, SplOperations::DELETE);
             }
         }
 
@@ -434,16 +410,11 @@ final class SoapConnector extends AbstractConnector implements PrimaryKeysInterf
         //====================================================================//
         // Execute Generic WebService Action
         $task = $this->doGeneric(
-            // WebService Configuration
-            $this->getConfiguration(),
-            // Request Service
-            SPL_S_FILE,
-            // Requested Function
-            SPL_F_GETFILE,
-            // Action Description Translator Tag
-            "Read File",
-            // Request Parameters Array
-            array(
+            $this->getConfiguration(),     // WebService Configuration
+            SplServices::FILE,      // Request Service
+            SplFilesMethods::GET,    // Requested Function
+            "Read File",              // Action Description Translator Tag
+            array(                         // Request Parameters Array
                 "path" => $filePath,
                 "md5" => $fileMd5,
             )
@@ -469,14 +440,10 @@ final class SoapConnector extends AbstractConnector implements PrimaryKeysInterf
         //====================================================================//
         // Execute Generic WebService Action
         $task = $this->doGeneric(
-            // WebService Configuration
-            $this->getConfiguration(),
-            // Request Service
-            SPL_S_WIDGETS,
-            // Requested Function
-            SPL_F_WIDGET_LIST,
-            // Action Description Translator Tag
-            "Read Widgets List"
+            $this->getConfiguration(),      // WebService Configuration
+            SplServices::WIDGETS,    // Request Service
+            SplWidgetsMethods::LIST,  // Requested Function
+            "Read Widgets List"        // Action Description Translator Tag
         );
 
         return Webservice::extractArray($task) ?? array();
@@ -495,16 +462,11 @@ final class SoapConnector extends AbstractConnector implements PrimaryKeysInterf
         //====================================================================//
         // Execute Generic WebService Action
         $task = $this->doGeneric(
-            // WebService Configuration
-            $this->getConfiguration(),
-            // Request Service
-            SPL_S_WIDGETS,
-            // Requested Function
-            SPL_F_WIDGET_DEFINITION,
-            // Action Description Translator Tag
-            "Read Widget Definition",
-            // Request Parameters Array
-            array(
+            $this->getConfiguration(),             // WebService Configuration
+            SplServices::WIDGETS,           // Request Service
+            SplWidgetsMethods::DEFINITION,   // Requested Function
+            "Read Widget Definition",         // Action Description Translator Tag
+            array(                                  // Request Parameters Array
                 "type" => $widgetType,
             )
         );
@@ -525,24 +487,19 @@ final class SoapConnector extends AbstractConnector implements PrimaryKeysInterf
         //====================================================================//
         // Convert Dates to Splash String Format
         if (isset($params["DateStart"]) && is_a($params["DateStart"], "DateTime")) {
-            $params["DateStart"] = $params["DateStart"]->format(SPL_T_DATETIMECAST);
+            $params["DateStart"] = DatesHelper::toDateTimeStr($params["DateStart"]);
         }
         if (isset($params["DateEnd"]) && is_a($params["DateEnd"], "DateTime")) {
-            $params["DateEnd"] = $params["DateEnd"]->format(SPL_T_DATETIMECAST);
+            $params["DateEnd"] = DatesHelper::toDateTimeStr($params["DateEnd"]);
         }
         //====================================================================//
         // Execute Generic WebService Action
         $task = $this->doGeneric(
-            // WebService Configuration
-            $this->getConfiguration(),
-            // Request Service
-            SPL_S_WIDGETS,
-            // Requested Function
-            SPL_F_WIDGET_GET,
-            // Action Description Translator Tag
-            "Read Widget Contents",
-            // Request Parameters Array
-            array(
+            $this->getConfiguration(),       // WebService Configuration
+            SplServices::WIDGETS,     // Request Service
+            SplWidgetsMethods::GET,    // Requested Function
+            "Read Widget Contents",     // Action Description Translator Tag
+            array(                           // Request Parameters Array
                 "type" => $widgetType,
                 "params" => $params,
             )
@@ -697,11 +654,11 @@ final class SoapConnector extends AbstractConnector implements PrimaryKeysInterf
         //====================================================================//
         // Add Task To Queue
         foreach ($parameters as $params) {
-            $webservice->addTask(SPL_F_GET, $params, "Read Object Data");
+            $webservice->addTask(SplObjectMethods::GET, $params, "Read Object Data");
         }
         //====================================================================//
         // Perform Request
-        $response = $webservice->call(SPL_S_OBJECTS);
+        $response = $webservice->call(SplServices::OBJECTS);
         //====================================================================//
         // Verify Response is Ok
         if (empty($response['result']) || empty($response['tasks']) || !is_array($response['tasks'])) {
@@ -736,9 +693,9 @@ final class SoapConnector extends AbstractConnector implements PrimaryKeysInterf
             // WebService Configuration
             $this->getConfiguration(),
             // Request Service
-            SPL_S_OBJECTS,
+            SplServices::OBJECTS,
             // Requested Function
-            SPL_F_GET,
+            SplObjectMethods::GET,
             // Action Description Translator Tag
             "Read Object Data",
             // Request Parameters Array
@@ -772,7 +729,7 @@ final class SoapConnector extends AbstractConnector implements PrimaryKeysInterf
         }
 
         //====================================================================//
-        // Verify Server Key not empty
+        // Verify Server Key is not empty
         if (empty($config['WsEncryptionKey'])) {
             return Splash::log()->err('ErrWsNoKey');
         }

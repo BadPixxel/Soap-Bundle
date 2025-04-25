@@ -18,7 +18,9 @@ namespace Splash\Connectors\Soap\Controller;
 use Exception;
 use SoapServer;
 use Splash\Bundle\Models\AbstractConnector;
-use Splash\Client\Splash;
+use Splash\Core\Client\Splash;
+use Splash\Core\Dictionary\Methods\SplFilesMethods;
+use Splash\Core\Dictionary\Methods\SplObjectMethods;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -219,7 +221,7 @@ class SoapController extends AbstractController
      */
     public function objects(string $webserviceId, string $data): string
     {
-        return $this->doTasks($webserviceId, $data, array(SPL_F_COMMIT));
+        return $this->doTasks($webserviceId, $data, array(SplObjectMethods::COMMIT));
     }
 
     /**
@@ -232,7 +234,7 @@ class SoapController extends AbstractController
      */
     public function files(string $webserviceId, string $data): string
     {
-        return $this->doTasks($webserviceId, $data, array(SPL_F_GETFILE));
+        return $this->doTasks($webserviceId, $data, array(SplFilesMethods::GET));
     }
 
     //====================================================================//
@@ -396,13 +398,13 @@ class SoapController extends AbstractController
             switch ($task["name"]) {
                 //====================================================================//
                 // Execute Object Commit
-                case SPL_F_COMMIT:
+                case SplObjectMethods::COMMIT:
                     $response[$id] = $this->objectCommit($task);
 
                     break;
                     //====================================================================//
-                    // Execute Object Commit
-                case SPL_F_GETFILE:
+                    // Execute Files Read
+                case SplFilesMethods::GET:
                     $response[$id] = $this->fileRead($task);
 
                     break;
