@@ -20,28 +20,55 @@
 
     "autoload": {
         "psr-4": { 
-            "Splash\\Connectors\\Soap\\":     "src/"
+            "Splash\\Connectors\\Soap\\":           "src/"
+        }
+    },
+
+    "autoload-dev": {
+        "psr-4": {
+            "Splash\\Connectors\\Soap\\Tests\\":    "tests/"
         }
     },
 
     "require": {
-        "php":                                          "^8.0",
-        "splash/php-bundle":                            "dev-master",
+        "php":                                          "^8.1",
+        "splash/php-bundle":                            "3.0.x-dev",
         "ext-soap":                                     "*"
     },
     
     "require-dev": {
-        "badpixxel/php-sdk":                            "~2.0",
-        "splash/toolkit":                               "3.0.x-dev"
+        "badpixxel/php-sdk":                            "^2.0|^3.0",
+
+        "splash/faker":                                 "3.0.x-dev",
+        "splash/validator":                             "1.0.x-dev",
+
+        "symfony/http-kernel":                          "^5.4|^6.4|^7.0",
+        "symfony/twig-bundle":                          "^5.4|^6.4|^7.0",
+        "symfony/translation":                          "^5.4|^6.4|^7.0",
+        "symfony/routing":                              "^5.4|^6.4|^7.0",
+        "symfony/form":                                 "^5.4|^6.4|^7.0",
+        "symfony/browser-kit":                          "^5.4|^6.4|^7.0",
+        "symfony/runtime":                              "^5.4|^6.4|^7.0",
+        "symfony/flex":                                 "^1.0|^2.0|^7.0",
+        "symfony/monolog-bundle":                       "*",
+        "symfony/phpunit-bridge":                       "*",
+
+        "doctrine/orm":                                 "^2.6",
+        "doctrine/annotations":                         "^1.0|^2.0",
+        "doctrine/doctrine-bundle":                     "^1.9|^2.0",
+
+        "monolog/monolog":                              "^1.0|^2.0",
+
+        "phpunit/phpunit":                              "^8.0|^9.0"
     },
 
     "scripts": {
-        "auto-scripts": [
-            "php bin/console cache:clear",
-            "php bin/console doctrine:schema:update --force --complete --no-interaction --no-debug",
-            "php bin/console sonata:user:create Toolkit toolkit@splashsync.com toolkit --super-admin || exit 0",
-            "find var/cache/dev/*.xml | while read -r i; do cp \"$i\" var/cache/dev/testContainer.xml; done"
-        ],
+        "auto-scripts": {
+            "cache:clear":  "symfony-cmd",
+            "cache:clear --env=test":  "symfony-cmd",
+            "doctrine:schema:update --force --complete --no-interaction --no-debug":  "symfony-cmd",
+            "find var/cache/dev/*.xml | while read -r i; do cp \"$i\" var/cache/dev/testContainer.xml; done":  "script"
+        },
         "post-install-cmd": [
             "@auto-scripts"
         ],
@@ -52,10 +79,15 @@
     "config": {
         "allow-plugins": {
             "phpro/grumphp": true,
-            "symfony/runtime": true
+            "symfony/runtime": true,
+            "symfony/flex": true
         }
     },
     "extra": {
-        "public-dir": "tests"
+        "config-dir": "tests/config",
+        "public-dir": "tests/public",
+        "symfony": {
+            "require": "6.4.*"
+        }
     }
 }
