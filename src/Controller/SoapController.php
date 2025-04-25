@@ -297,15 +297,14 @@ class SoapController extends AbstractController
                 '[SoapConnector]'.'::'.__FUNCTION__.' request received from '
                 .$webserviceId.'(Unknown!) =>  Connection Refused'
             );
-
-            $this->soapServer->fault("0", '[Splash]  Connection Refused');
+            $this->soapServer->fault("0", '[Splash] Connection Refused');
 
             return null;
         }
         //===================================================================//
         // Server Connection Rejected
         if (null === $identify) {
-            Splash::log()->err('Connection Refused. This Server Is Disabled.');
+            $this->soapServer->fault("0", '[Splash] Connection Refused. This Server Is Disabled.');
 
             return false;
         }
