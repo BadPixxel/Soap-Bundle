@@ -10,26 +10,20 @@
     convertWarningsToExceptions = "true"
     processIsolation            = "false"
     stopOnFailure               = "true"
-    bootstrap                   = "vendor/autoload.php"
+    bootstrap                   = "vendor/autoload_runtime.php"
     verbose                     = "false"
     timeoutForLargeTests        = "10"  
 >
 
     <testsuites>
         <testsuite name="All">
-            <directory>Tests/*</directory>
-            <directory>vendor/splash/phpcore/Tests/*</directory>
+            <directory>vendor/splash/validator/phpunit/*</directory>
         </testsuite>
     </testsuites>
 
-    <filter>
-        <whitelist>
-            <directory>./src</directory>
-        </whitelist>
-    </filter>
-
     <php>
-        <server name="KERNEL_CLASS" value="Splash\Toolkit\Kernel" />
+        <server name="KERNEL_CLASS" value="Splash\Connectors\Soap\Tests\Kernel" />
+        <env    name="APP_ENV" value="test" force="true"/>
         <env    name="SYMFONY_DEPRECATION_HELPER" value="disabled" />
         <server name="SERVER_NAME" value="http://localhost:8000"/>        
         <const  name="SPLASH_DEBUG" value="true" />
