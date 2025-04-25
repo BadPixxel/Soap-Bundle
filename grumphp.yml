@@ -20,7 +20,7 @@
 parameters:
     mode:           "splashsync"
     # Php Stan
-    stan-config:    "%core_dir%/phpstan/sf.%mode%.neon"
+    stan-config:    "%core_dir%/phpstan/sf.badpixxel.neon"
     # For Building Splash Module
     mod-enable:     false
     # For Building Splash Documentation
@@ -33,4 +33,4 @@ parameters:
 imports:
     - { resource: "./vendor/badpixxel/php-sdk/grumphp/generic.yml" }
     - { resource: "./vendor/badpixxel/php-sdk/grumphp/extras.yml" }
-    - { resource: "./vendor/splash/console/src/Resources/grumphp/*.yml" }
+    # - { resource: "./vendor/splash/console/src/Resources/grumphp/*.yml" }
