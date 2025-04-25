@@ -35,7 +35,8 @@ use Splash\Core\Helpers\TestHelper;
 /**
  * Splash Soap Connector
  *
- * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
+ * @SuppressWarnings(ExcessiveClassComplexity)
+ * @SuppressWarnings(CouplingBetweenObjects)
  */
 final class SoapConnector extends AbstractConnector implements PrimaryKeysInterface
 {

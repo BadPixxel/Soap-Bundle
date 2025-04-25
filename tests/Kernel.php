@@ -25,7 +25,7 @@ class Kernel extends BaseKernel
     /**
      * Gets the path to the configuration directory.
      */
-    private function getConfigDir(): string
+    protected function getConfigDir(): string
     {
         return $this->getProjectDir().'/tests/config';
     }
