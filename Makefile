@@ -19,7 +19,7 @@ upgrade:
 .PHONY: verify
 verify:	# Verify Code in All Containers
 	$(MAKE) up
-	$(MAKE) all COMMAND="composer update -q"
+	$(MAKE) all COMMAND="composer update -q || composer update"
 	$(MAKE) all COMMAND="php vendor/bin/grumphp run --testsuite=travis"
 	$(MAKE) all COMMAND="php vendor/bin/grumphp run --testsuite=csfixer"
 	$(MAKE) all COMMAND="php vendor/bin/grumphp run --testsuite=phpstan"
@@ -35,7 +35,7 @@ test: 	## Execute Functional Test in All Containers
 
 .PHONY: all
 all: # Execute a Command in All Containers
-	@$(foreach service,$(shell docker compose config --services), \
+	@$(foreach service,$(shell docker compose config --services | sort), \
 		set -e; \
 		echo "$(COLOR_CYAN) >> Executing '$(COMMAND)' in container: $(service) $(COLOR_RESET)"; \
 		docker compose exec $(service) bash -c "$(COMMAND)"; \
