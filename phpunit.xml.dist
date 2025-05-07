@@ -26,6 +26,7 @@
         <env    name="APP_ENV" value="test" force="true"/>
         <env    name="SYMFONY_DEPRECATION_HELPER" value="disabled" />
         <server name="SERVER_NAME" value="http://localhost:8000"/>        
+        <const  name="SPLASH_SEQUENCE" value="Server 1 (Soap)" />
         <const  name="SPLASH_DEBUG" value="true" />
         <server name="SPLASH_TRAVIS" value="true" />
     </php>

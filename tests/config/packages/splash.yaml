@@ -14,7 +14,7 @@ splash:
         soap:
             id:                 ThisIsSoapWsId
             key:                ThisIsNotASecretKeyForSoap
-            name:               Serveur 2 (Soap)
+            name:               Server 1 (Soap)
             host:               "%env(SPLASH_HOST)%/ws/splash"
             server_host:        "%env(SPLASH_HOST)%"
             connector:          soap
@@ -33,6 +33,6 @@ splash:
         faker:
             id:                 ThisIsFakerWsId
             key:                ThisIsNotASecretKeyForFaker
-            name:               Serveur 1 (Faker)
+            name:               Server 2 (Faker)
             host:               "%env(SPLASH_HOST)%/ws/soap"
             server_host:        "%env(SPLASH_HOST)%"

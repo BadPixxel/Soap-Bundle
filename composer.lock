@@ -63,12 +63,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/SplashSync/Php-Bundle.git",
-                "reference": "c7cb01ebe7276d33071cdc5031c4cfa6fba09095"
+                "reference": "265a80d94767a618473ddbbbca4067f95a3430a7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/SplashSync/Php-Bundle/zipball/c7cb01ebe7276d33071cdc5031c4cfa6fba09095",
-                "reference": "c7cb01ebe7276d33071cdc5031c4cfa6fba09095",
+                "url": "https://api.github.com/repos/SplashSync/Php-Bundle/zipball/265a80d94767a618473ddbbbca4067f95a3430a7",
+                "reference": "265a80d94767a618473ddbbbca4067f95a3430a7",
                 "shasum": ""
             },
             "require": {
@@ -133,7 +133,7 @@
                 "issues": "https://github.com/SplashSync/Php-Bundle/issues",
                 "source": "https://github.com/SplashSync/Php-Bundle/tree/3.0"
             },
-            "time": "2025-05-02T12:43:26+00:00"
+            "time": "2025-05-06T00:22:02+00:00"
         },
         {
             "name": "splash/phpcore",
@@ -141,12 +141,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/SplashSync/Php-Core.git",
-                "reference": "0330332639a315928479bb839c53eb45982bc54c"
+                "reference": "a7cbd404e95e0c5c965db8b4036047141667fa4d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/SplashSync/Php-Core/zipball/0330332639a315928479bb839c53eb45982bc54c",
-                "reference": "0330332639a315928479bb839c53eb45982bc54c",
+                "url": "https://api.github.com/repos/SplashSync/Php-Core/zipball/a7cbd404e95e0c5c965db8b4036047141667fa4d",
+                "reference": "a7cbd404e95e0c5c965db8b4036047141667fa4d",
                 "shasum": ""
             },
             "require": {
@@ -188,7 +188,7 @@
                 "issues": "https://github.com/SplashSync/Php-Core/issues",
                 "source": "https://github.com/SplashSync/Php-Core/tree/3.0"
             },
-            "time": "2025-05-02T14:52:11+00:00"
+            "time": "2025-05-06T11:35:56+00:00"
         },
         {
             "name": "webmozart/assert",
@@ -6858,22 +6858,40 @@
             "source": {
                 "type": "git",
                 "url": "https://gitlab.com/SplashTools/Faker-Bundle.git",
-                "reference": "a916d71269f2fbd3ecdcd05602f16e7d73cc7571"
+                "reference": "5a0f3fb4284594c052032ce4b8baaeae86a00b18"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://gitlab.com/api/v4/projects/SplashTools%2FFaker-Bundle/repository/archive.zip?sha=a916d71269f2fbd3ecdcd05602f16e7d73cc7571",
-                "reference": "a916d71269f2fbd3ecdcd05602f16e7d73cc7571",
+                "url": "https://gitlab.com/api/v4/projects/SplashTools%2FFaker-Bundle/repository/archive.zip?sha=5a0f3fb4284594c052032ce4b8baaeae86a00b18",
+                "reference": "5a0f3fb4284594c052032ce4b8baaeae86a00b18",
                 "shasum": ""
             },
             "require": {
                 "ext-soap": "*",
-                "php": "^8.0"
+                "php": "^8.1",
+                "splash/php-bundle": "^3.0"
             },
             "require-dev": {
-                "badpixxel/php-sdk": "~2.0",
-                "splash/toolkit": "dev-master"
+                "badpixxel/php-sdk": "^3.0",
+                "doctrine/annotations": "^1.0|^2.0",
+                "doctrine/doctrine-bundle": "^1.9|^2.0",
+                "doctrine/orm": "^2.6",
+                "monolog/monolog": "^2.0|^3.0",
+                "phpunit/phpunit": "^8.0|^9.0",
+                "splash/console": "3.0.x-dev",
+                "splash/validator": "1.0.x-dev",
+                "symfony/browser-kit": "^5.4|^6.4|^7.0",
+                "symfony/flex": "^1.0|^2.0",
+                "symfony/form": "^5.4|^6.4|^7.0",
+                "symfony/http-kernel": "^5.4|^6.4|^7.0",
+                "symfony/monolog-bundle": "*",
+                "symfony/phpunit-bridge": "*",
+                "symfony/routing": "^5.4|^6.4|^7.0",
+                "symfony/runtime": "^5.4|^6.4|^7.0",
+                "symfony/translation": "^5.4|^6.4|^7.0",
+                "symfony/twig-bundle": "^5.4|^6.4|^7.0"
             },
+            "default-branch": true,
             "type": "symfony-bundle",
             "extra": {
                 "public-dir": "tests/public"
@@ -6901,7 +6919,7 @@
             "support": {
                 "source": "https://gitlab.com/SplashTools/Faker-Bundle/-/tree/3.0"
             },
-            "time": "2025-04-23T23:08:53+00:00"
+            "time": "2025-05-07T12:09:26+00:00"
         },
         {
             "name": "splash/validator",
