@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "319a3f4237dbe583c97642dd956d84b5",
+    "content-hash": "3790b65dec7ea928b3c11620825bd110",
     "packages": [
         {
             "name": "psr/simple-cache",
@@ -6853,6 +6853,72 @@
             "time": "2023-09-03T09:24:00+00:00"
         },
         {
+            "name": "splash/console",
+            "version": "3.0.x-dev",
+            "source": {
+                "type": "git",
+                "url": "https://gitlab.com/SplashTools/Php-Console.git",
+                "reference": "53bd339c3a3984b14d18e2986a1cd1d696938566"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://gitlab.com/api/v4/projects/SplashTools%2FPhp-Console/repository/archive.zip?sha=53bd339c3a3984b14d18e2986a1cd1d696938566",
+                "reference": "53bd339c3a3984b14d18e2986a1cd1d696938566",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^8.1",
+                "splash/php-bundle": "^3.0",
+                "symfony/console": "^5.4|^6.4|^7.0"
+            },
+            "require-dev": {
+                "badpixxel/php-sdk": "^3.0",
+                "doctrine/annotations": "^2.0",
+                "doctrine/doctrine-bundle": "^2.10",
+                "doctrine/orm": "^2.6",
+                "splash/faker": "3.0.x-dev",
+                "symfony/flex": "^1.0|^2.0",
+                "symfony/http-foundation": "^5.4|^6.4|^7.0",
+                "symfony/http-kernel": "^5.4|^6.4|^7.0",
+                "symfony/monolog-bundle": "*",
+                "symfony/property-info": "^5.4|^6.4|^7.0",
+                "symfony/runtime": "^5.4|^6.4|^7.0",
+                "symfony/twig-bundle": "^5.4|^6.4|^7.0"
+            },
+            "default-branch": true,
+            "bin": [
+                "bin/splash"
+            ],
+            "type": "package",
+            "extra": {
+                "public-dir": "tests/public"
+            },
+            "autoload": {
+                "psr-4": {
+                    "Splash\\Console\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Splash Sync",
+                    "email": "contact@splashsync.com"
+                },
+                {
+                    "name": "Bernard Paquier",
+                    "email": "eshop.bpaquier@gmail.com"
+                }
+            ],
+            "description": "Console Application for All Splash Php Applications",
+            "support": {
+                "source": "https://gitlab.com/SplashTools/Php-Console/-/tree/3.0"
+            },
+            "time": "2025-05-06T18:47:22+00:00"
+        },
+        {
             "name": "splash/faker",
             "version": "3.0.x-dev",
             "source": {
@@ -6927,12 +6993,12 @@
             "source": {
                 "type": "git",
                 "url": "https://gitlab.com/SplashTools/Validator.git",
-                "reference": "f814c8be1f8c59a2f501b77dec4f3c965c37eb44"
+                "reference": "fa84cc07663153251147b73f016d75402c37f8bb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://gitlab.com/api/v4/projects/SplashTools%2FValidator/repository/archive.zip?sha=f814c8be1f8c59a2f501b77dec4f3c965c37eb44",
-                "reference": "f814c8be1f8c59a2f501b77dec4f3c965c37eb44",
+                "url": "https://gitlab.com/api/v4/projects/SplashTools%2FValidator/repository/archive.zip?sha=fa84cc07663153251147b73f016d75402c37f8bb",
+                "reference": "fa84cc07663153251147b73f016d75402c37f8bb",
                 "shasum": ""
             },
             "require": {
@@ -6975,7 +7041,7 @@
                 "issues": "https://gitlab.com/SplashTools/Validator/-/issues",
                 "source": "https://gitlab.com/SplashTools/Validator/-/tree/1.0"
             },
-            "time": "2025-05-05T15:10:15+00:00"
+            "time": "2025-05-07T17:20:33+00:00"
         },
         {
             "name": "squizlabs/php_codesniffer",
@@ -11246,6 +11312,7 @@
     "stability-flags": {
         "splash/php-bundle": 20,
         "splash/faker": 20,
+        "splash/console": 20,
         "splash/validator": 20
     },
     "prefer-stable": true,

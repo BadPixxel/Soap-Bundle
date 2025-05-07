@@ -57,6 +57,9 @@
             "tests/bootstrap.php"
         ]
     },
+    "splash/console": {
+        "version": "3.0.x-dev"
+    },
     "splash/faker": {
         "version": "3.0.x-dev"
     },
