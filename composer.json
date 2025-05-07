@@ -40,6 +40,7 @@
         "badpixxel/php-sdk":                            "^2.0|^3.0",
 
         "splash/faker":                                 "3.0.x-dev",
+        "splash/console":                               "3.0.x-dev",
         "splash/validator":                             "1.0.x-dev",
 
         "symfony/http-kernel":                          "^5.4|^6.4|^7.0",
