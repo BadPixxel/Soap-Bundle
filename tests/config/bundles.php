@@ -15,10 +15,11 @@
 
 return array(
     Symfony\Bundle\FrameworkBundle\FrameworkBundle::class => array('all' => true),
-    Doctrine\Bundle\DoctrineBundle\DoctrineBundle::class => array('all' => true),
+    Symfony\Bundle\TwigBundle\TwigBundle::class => array('all' => true),
     Symfony\Bundle\MonologBundle\MonologBundle::class => array('all' => true),
+    Doctrine\Bundle\DoctrineBundle\DoctrineBundle::class => array('all' => true),
     Splash\Bundle\SplashBundle::class => array('all' => true),
     Splash\Connectors\Faker\FakerBundle::class => array('all' => true),
     Splash\Connectors\Soap\SoapBundle::class => array('all' => true),
-    Symfony\Bundle\TwigBundle\TwigBundle::class => array('all' => true),
+    Splash\Console\ConsoleBundle::class => array('all' => true),
 );
