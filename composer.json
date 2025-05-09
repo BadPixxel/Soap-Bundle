@@ -26,12 +26,12 @@
 
     "require": {
         "php":                                          "^8.0",
-        "splash/php-bundle":                            "dev-master",
+        "splash/php-bundle":                            "^2.0",
         "ext-soap":                                     "*"
     },
     
     "require-dev": {
-        "badpixxel/php-sdk":                            "~2.0",
+        "badpixxel/php-sdk":                            "^2.0",
         "splash/toolkit":                               "2.5.x-dev"
     },
 
