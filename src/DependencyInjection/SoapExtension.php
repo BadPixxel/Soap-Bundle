@@ -28,7 +28,7 @@ class SoapExtension extends Extension
     /**
      * {@inheritdoc}
      *
-     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+     * @SuppressWarnings("PHPMD.UnusedFormalParameter")
      */
     public function load(array $configs, ContainerBuilder $container): void
     {

@@ -18,7 +18,7 @@
 ################################################################
 # Include Pipeline Templates
 include:
-    - remote: 'https://raw.githubusercontent.com/BadPixxel/Php-Sdk/2.0/gitlab/php/connectors.yaml'
+    - remote: 'https://raw.githubusercontent.com/BadPixxel/Php-Sdk/3.0/gitlab/php/connectors.yaml'
 
 ################################################################
 # Defined Pipeline Stages
@@ -29,20 +29,37 @@ stages:
     - Builds
 
 ################################################################
+# Project statistics at the end of each job (SDK v3 `make stats`)
+.stats:     &stats
+    after_script:
+        - make stats
+
+################################################################
+# Web server workers: the image tests make the connector fetch
+# the file back from the very server that is calling it, a single
+# PHP CLI worker deadlocks until the SOAP timeout
+.web:       &web
+    variables:
+        PHP_CLI_SERVER_WORKERS:     "4"
+
+################################################################
 # Quality Tests
 ################################################################
 
 quality:php-8.3:
+    <<: *stats
     extends:    .quality
     stage:      Php-8.3
     image:      registry.gitlab.com/badpixxel-projects/php-sdk:php-8.3
 
 quality:php-8.2:
+    <<: *stats
     extends:    .quality
     stage:      Php-8.2
     image:      registry.gitlab.com/badpixxel-projects/php-sdk:php-8.2
 
 quality:php-8.1:
+    <<: *stats
     extends:    .quality
     stage:      Php-8.1
     image:      registry.gitlab.com/badpixxel-projects/php-sdk:php-8.1
@@ -52,16 +69,19 @@ quality:php-8.1:
 ################################################################
 
 functional:php-8.3:
+    <<: [*stats, *web]
     extends:    .functional-web
     stage:      Php-8.3
     image:      registry.gitlab.com/badpixxel-projects/php-sdk:php-8.3
 
 functional:php-8.2:
+    <<: [*stats, *web]
     extends:    .functional-web
     stage:      Php-8.2
     image:      registry.gitlab.com/badpixxel-projects/php-sdk:php-8.2
 
 functional:php-8.1:
+    <<: [*stats, *web]
     extends:    .functional-web
     stage:      Php-8.1
     image:      registry.gitlab.com/badpixxel-projects/php-sdk:php-8.1

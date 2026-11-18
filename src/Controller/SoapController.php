@@ -266,7 +266,8 @@ class SoapController extends AbstractController
         Splash::log()->setPrefix("Splash");
         //====================================================================//
         // Configure Webservice Component with Minimal Parameters
-        Splash::configuration()->localname = $this->connector->getParameter("Name");
+        $localName = $this->connector->getParameter("Name");
+        Splash::configuration()->localname = $localName;
         Splash::configuration()->WsIdentifier = $this->connector->getParameter("WsIdentifier");
         Splash::configuration()->WsEncryptionKey = $this->connector->getParameter("WsEncryptionKey");
         //====================================================================//
@@ -274,7 +275,7 @@ class SoapController extends AbstractController
         Splash::log()->cleanLog();
         //====================================================================//
         // Add Identify Debug Message
-        Splash::log()->deb('Hello '.Splash::configuration()->localname.' !!');
+        Splash::log()->deb(sprintf("Hello %s !!", is_string($localName) ? $localName : "Splash"));
 
         return $result;
     }

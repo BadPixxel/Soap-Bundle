@@ -89,7 +89,7 @@ final class SoapConnector extends AbstractConnector implements PrimaryKeysInterf
     /**
      * {@inheritdoc}
      *
-     * @SuppressWarnings(PHPMD.ElseExpression)
+     * @SuppressWarnings("PHPMD.ElseExpression")
      */
     public function informations(ArrayObject  $informations) : ArrayObject
     {
@@ -569,7 +569,7 @@ final class SoapConnector extends AbstractConnector implements PrimaryKeysInterf
     /**
      * {@inheritdoc}
      */
-    public function getMasterAction(): ?string
+    public function getMasterAction(): string
     {
         return Controller\SoapController::class."::masterAction";
     }

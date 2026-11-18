@@ -30,7 +30,7 @@ class SimpleSoapType extends AbstractSoapType
      *
      * @return void
      *
-     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+     * @SuppressWarnings("PHPMD.UnusedFormalParameter")
      */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
