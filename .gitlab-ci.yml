@@ -18,7 +18,9 @@
 ################################################################
 # Include Pipeline Templates
 include:
-    - remote: 'https://raw.githubusercontent.com/BadPixxel/Php-Sdk/3.0/gitlab/php/connectors.yaml'
+    - remote: 'https://raw.githubusercontent.com/BadPixxel/Php-Sdk/3.0/gitlab/php/defaults.yaml'
+    - remote: 'https://raw.githubusercontent.com/BadPixxel/Php-Sdk/3.0/gitlab/pages.yaml'
+    - remote: 'https://raw.githubusercontent.com/BadPixxel/Php-Sdk/3.0/gitlab/manifest.yaml'
 
 ################################################################
 # Defined Pipeline Stages
