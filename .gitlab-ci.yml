@@ -23,68 +23,93 @@ include:
 ################################################################
 # Defined Pipeline Stages
 stages:
-    - Php-8.1
-    - Php-8.2
-    - Php-8.3
+    - Symfony-5
+    - Symfony-6
+    - Symfony-7
     - Builds
 
 ################################################################
-# Project statistics at the end of each job (SDK v3 `make stats`)
-.stats:     &stats
+# Web server of the test app: the FrankenPHP images serve
+# SERVER_ROOT on port 80 from their entrypoint, no Symfony CLI
+variables:
+    SERVER_ROOT:        $CI_PROJECT_DIR/tests/public
+
+################################################################
+# Quality & functional tests of one Symfony / PHP pair
+#
+# SDK v3 `.functional` brings composer update, the junit report and
+# the retry; statistics are displayed at the end of each job.
+.tests:     &tests
+    extends:    .functional
+    script:
+        # Execute Grumphp Testsuite
+        - wall-e grumphp:quality
+        - wall-e grumphp:stan
+        # Execute PhpUnit Tests
+        - php vendor/bin/phpunit --log-junit $CI_PROJECT_DIR/full-report.xml
     after_script:
         - make stats
 
 ################################################################
-# Web server workers: the image tests make the connector fetch
-# the file back from the very server that is calling it, a single
-# PHP CLI worker deadlocks until the SOAP timeout
-.web:       &web
+# Tests on Symfony 7
+################################################################
+
+sf7:php-8.5:
+    <<: *tests
+    image:      registry.gitlab.com/badpixxel-projects/php-sdk:php-8.5
+    stage:      Symfony-7
     variables:
-        PHP_CLI_SERVER_WORKERS:     "4"
+        SYMFONY_REQUIRE:    7.4.*
 
-################################################################
-# Quality Tests
-################################################################
+sf7:php-8.4:
+    <<: *tests
+    image:      registry.gitlab.com/badpixxel-projects/php-sdk:php-8.4
+    stage:      Symfony-7
+    variables:
+        SYMFONY_REQUIRE:    7.4.*
 
-quality:php-8.3:
-    <<: *stats
-    extends:    .quality
-    stage:      Php-8.3
+sf7:php-8.3:
+    <<: *tests
     image:      registry.gitlab.com/badpixxel-projects/php-sdk:php-8.3
+    stage:      Symfony-7
+    variables:
+        SYMFONY_REQUIRE:    7.4.*
 
-quality:php-8.2:
-    <<: *stats
-    extends:    .quality
-    stage:      Php-8.2
+sf7:php-8.2:
+    <<: *tests
     image:      registry.gitlab.com/badpixxel-projects/php-sdk:php-8.2
-
-quality:php-8.1:
-    <<: *stats
-    extends:    .quality
-    stage:      Php-8.1
-    image:      registry.gitlab.com/badpixxel-projects/php-sdk:php-8.1
+    stage:      Symfony-7
+    variables:
+        SYMFONY_REQUIRE:    7.4.*
 
 ################################################################
-# Functional Tests
+# Tests on Symfony 6
 ################################################################
 
-functional:php-8.3:
-    <<: [*stats, *web]
-    extends:    .functional-web
-    stage:      Php-8.3
+sf6:php-8.3:
+    <<: *tests
     image:      registry.gitlab.com/badpixxel-projects/php-sdk:php-8.3
+    stage:      Symfony-6
+    variables:
+        SYMFONY_REQUIRE:    6.4.*
 
-functional:php-8.2:
-    <<: [*stats, *web]
-    extends:    .functional-web
-    stage:      Php-8.2
+sf6:php-8.2:
+    <<: *tests
     image:      registry.gitlab.com/badpixxel-projects/php-sdk:php-8.2
+    stage:      Symfony-6
+    variables:
+        SYMFONY_REQUIRE:    6.4.*
 
-functional:php-8.1:
-    <<: [*stats, *web]
-    extends:    .functional-web
-    stage:      Php-8.1
-    image:      registry.gitlab.com/badpixxel-projects/php-sdk:php-8.1
+################################################################
+# Tests on Symfony 5
+################################################################
+
+sf5:php-8.2:
+    <<: *tests
+    image:      registry.gitlab.com/badpixxel-projects/php-sdk:php-8.2
+    stage:      Symfony-5
+    variables:
+        SYMFONY_REQUIRE:    5.4.*
 
 ################################################################
 # Build Documentation
@@ -92,4 +117,3 @@ functional:php-8.1:
 
 pages:
     when: manual
-

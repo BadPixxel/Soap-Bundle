@@ -1,7 +1,7 @@
 
 parameters:
-    # Adds a fallback DATABASE_URL if the env var is not set.
-    env(SPLASH_HOST): 'http://localhost:8000'
+    # Web server of the test app: FrankenPHP serves tests/public on port 80 (SERVER_ROOT)
+    env(SPLASH_HOST): 'http://localhost'
 
 splash:
     ################################################################################

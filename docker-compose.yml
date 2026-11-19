@@ -15,57 +15,35 @@
 #
 ################################################################################
 
+################################################################################
+# Docker Compose File
+#
+# Local environment for the development and the tests of the Soap Bundle,
+# one container per Symfony version, PHP versions from 8.2 to 8.5.
+# FrankenPHP serves the test app (SERVER_ROOT) on port 80 of each container.
+#
+# You can add hosts to /etc/hosts
+#
+#    172.116.0.10       app.soap-bundle.local
+#    172.116.0.74       sf7.soap-bundle.local
+#    172.116.0.64       sf6.soap-bundle.local
+#    172.116.0.54       sf5.soap-bundle.local
+#
+################################################################################
+
 name: splash_soap_bundle
 
-services:
-
-    ################################################################################
-    # PHP 8.3
-    php-8.3:
-        image:          registry.gitlab.com/badpixxel-projects/php-sdk:php-8.3
-        container_name: php-8.3.soap-bundle.local
-        volumes:
-            - ./:/var/www/html
-            - php83-var:/var/www/html/var
-            - php83-vendor:/var/www/html/vendor
-
-    ################################################################################
-    # PHP 8.2
-    php-8.2:
-        image:          registry.gitlab.com/badpixxel-projects/php-sdk:php-8.2
-        container_name: php-8.2.soap-bundle.local
-        volumes:
-            - ./:/var/www/html
-            - php82-var:/var/www/html/var
-            - php82-vendor:/var/www/html/vendor
-
-    ################################################################################
-    # PHP 8.1
-    php-8.1:
-        image:          registry.gitlab.com/badpixxel-projects/php-sdk:php-8.1
-        container_name: php-8.1.soap-bundle.local
-        volumes:
-            - ./:/var/www/html
-            - php81-var:/var/www/html/var
-            - php81-vendor:/var/www/html/vendor
+include:
+    - docker/app.yaml
+    - docker/symfony-7.yaml
+    - docker/symfony-6.yaml
+    - docker/symfony-5.yaml
 
 networks:
     ################################################################################
-    # Default Private Network    
-    soap:
+    # Default Private Network
+    default:
         driver: bridge
         ipam:
             config:
                 - subnet: 172.116.0.0/24
-    ################################################################################
-    # External Splash Network
-    splashsync:
-        external: true
-
-volumes:
-    php83-var: ~
-    php83-vendor: ~
-    php82-var: ~
-    php82-vendor: ~
-    php81-var: ~
-    php81-vendor: ~
