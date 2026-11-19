@@ -1,0 +1,41 @@
+################################################################################
+#
+#  This file is part of SplashSync Project.
+# 
+#  Copyright (C) Splash Sync <www.splashsync.com>
+# 
+#  This program is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+# 
+#  For the full copyright and license information, please view the LICENSE
+#  file that was distributed with this source code.
+# 
+#  @author Bernard Paquier <contact@splashsync.com>
+#
+################################################################################
+
+services:
+
+    ################################################################################
+    # Symfony 5 + PHP 8.2
+    sf5:
+        image:          registry.gitlab.com/badpixxel-projects/php-sdk:php-8.2
+        container_name: sf5.soap-bundle.local
+        hostname:       sf5.soap-bundle.local
+        environment:
+            SYMFONY_REQUIRE:        5.4.*
+            COMPOSER_ROOT_VERSION:  3.0.x-dev
+            COMPOSER_CACHE_DIR:     /tmp/composer-cache
+            SERVER_ROOT:            /var/www/html/tests/public
+        volumes:
+            - ../:/var/www/html
+            - sf5-var:/var/www/html/var
+            - sf5-vendor:/var/www/html/vendor
+            - ${HOME}/.cache/composer:/tmp/composer-cache
+        networks:
+            default:        { ipv4_address: 172.116.0.54, aliases: [ sf5.soap-bundle.local ] }
+
+volumes:
+    sf5-var:        ~
+    sf5-vendor:     ~

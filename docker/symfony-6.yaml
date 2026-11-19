@@ -1,0 +1,41 @@
+################################################################################
+#
+#  This file is part of SplashSync Project.
+# 
+#  Copyright (C) Splash Sync <www.splashsync.com>
+# 
+#  This program is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+# 
+#  For the full copyright and license information, please view the LICENSE
+#  file that was distributed with this source code.
+# 
+#  @author Bernard Paquier <contact@splashsync.com>
+#
+################################################################################
+
+services:
+
+    ################################################################################
+    # Symfony 6 + PHP 8.3
+    sf6:
+        image:          registry.gitlab.com/badpixxel-projects/php-sdk:php-8.3
+        container_name: sf6.soap-bundle.local
+        hostname:       sf6.soap-bundle.local
+        environment:
+            SYMFONY_REQUIRE:        6.4.*
+            COMPOSER_ROOT_VERSION:  3.0.x-dev
+            COMPOSER_CACHE_DIR:     /tmp/composer-cache
+            SERVER_ROOT:            /var/www/html/tests/public
+        volumes:
+            - ../:/var/www/html
+            - sf6-var:/var/www/html/var
+            - sf6-vendor:/var/www/html/vendor
+            - ${HOME}/.cache/composer:/tmp/composer-cache
+        networks:
+            default:        { ipv4_address: 172.116.0.64, aliases: [ sf6.soap-bundle.local ] }
+
+volumes:
+    sf6-var:        ~
+    sf6-vendor:     ~
