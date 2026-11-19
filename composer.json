@@ -69,7 +69,8 @@
             "cache:clear":  "symfony-cmd",
             "cache:clear --env=test":  "symfony-cmd",
             "doctrine:schema:update --force --complete --no-interaction --no-debug":  "symfony-cmd",
-            "find var/cache/dev/*.xml -not -name \"testContainer.xml\" | while read -r i; do cp \"$i\" var/cache/dev/testContainer.xml; done":  "script"
+            "find var/cache/dev/*.xml -not -name \"testContainer.xml\" | while read -r i; do cp \"$i\" var/cache/dev/testContainer.xml; done":  "script",
+            "rm -rf tests/config/reference.php":  "script"
         },
         "post-install-cmd": [
             "@auto-scripts"

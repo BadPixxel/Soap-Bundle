@@ -19,6 +19,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormTypeInterface;
 
 /**
  * Base Form Type for Soap Connectors Servers
@@ -160,12 +161,13 @@ abstract class AbstractSoapType extends AbstractType
     /**
      * Detect CheckBox For Type to use
      *
-     * @return string
+     * @return class-string<FormTypeInterface>
      */
     private static function getCheckBoxClass() : string
     {
-        if (class_exists("ThemeBundle\\Form\\Type\\CheckBoxType")) {
-            return "ThemeBundle\\Form\\Type\\CheckBoxType";
+        $themeType = "ThemeBundle\\Form\\Type\\CheckBoxType";
+        if (class_exists($themeType) && is_subclass_of($themeType, FormTypeInterface::class)) {
+            return $themeType;
         }
 
         return CheckboxType::class;
