@@ -32,7 +32,7 @@
 
     "require": {
         "php":                                          "^8.1",
-        "splash/php-bundle":                            "3.0.x-dev",
+        "splash/php-bundle":                            "^3.0",
         "ext-soap":                                     "*"
     },
     
