@@ -16,6 +16,7 @@
 namespace Splash\Connectors\Soap\Services;
 
 use ArrayObject;
+use Exception;
 use Splash\Bundle\Interfaces\Connectors\PrimaryKeysInterface;
 use Splash\Bundle\Models\AbstractConnector;
 use Splash\Connectors\Soap\Components\Webservice;
@@ -23,14 +24,18 @@ use Splash\Connectors\Soap\Controller;
 use Splash\Connectors\Soap\Form\CompleteSoapType;
 use Splash\Connectors\Soap\Form\SimpleSoapType;
 use Splash\Core\Client\Splash;
+use Splash\Core\Dictionary\AiTools\SplAiToolErrors;
 use Splash\Core\Dictionary\Methods\SplAdminMethods;
 use Splash\Core\Dictionary\Methods\SplFilesMethods;
 use Splash\Core\Dictionary\Methods\SplObjectMethods;
+use Splash\Core\Dictionary\Methods\SplAiToolsMethods;
 use Splash\Core\Dictionary\Methods\SplWidgetsMethods;
 use Splash\Core\Dictionary\SplOperations;
 use Splash\Core\Dictionary\SplServices;
 use Splash\Core\Helpers\DatesHelper;
 use Splash\Core\Helpers\TestHelper;
+use Splash\Core\Models\AiTools\AiToolDescription;
+use Splash\Core\Models\AiTools\AiToolResponse;
 
 /**
  * Splash Soap Connector
@@ -507,6 +512,80 @@ final class SoapConnector extends AbstractConnector implements PrimaryKeysInterf
         );
 
         return Webservice::extractArray($task);
+    }
+
+    //====================================================================//
+    // Tools Interfaces
+    //====================================================================//
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getAvailableAiTools(): array
+    {
+        if (!$this->selfTest()) {
+            return array();
+        }
+        $task = $this->doGeneric(
+            $this->getConfiguration(),
+            SplServices::AI_TOOLS,
+            SplAiToolsMethods::LIST,
+            "Read Tools List"
+        );
+
+        return Webservice::extractArray($task) ?? array();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getAiToolDescription(string $toolType): ?AiToolDescription
+    {
+        if (!$this->selfTest()) {
+            return null;
+        }
+        $task = $this->doGeneric(
+            $this->getConfiguration(),
+            SplServices::AI_TOOLS,
+            SplAiToolsMethods::DEFINITION,
+            "Read Tool Definition",
+            array("type" => $toolType)
+        );
+        $definition = Webservice::extractArray($task);
+
+        try {
+            return $definition ? AiToolDescription::fromArray($definition) : null;
+        } catch (Exception $exception) {
+            Splash::log()->err($exception->getMessage());
+
+            return null;
+        }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function executeAiTool(string $toolType, array $inputs = array()): AiToolResponse
+    {
+        if (!$this->selfTest()) {
+            return AiToolResponse::failure(SplAiToolErrors::EXECUTION_FAILED, "Server self-test failed");
+        }
+        $task = $this->doGeneric(
+            $this->getConfiguration(),
+            SplServices::AI_TOOLS,
+            SplAiToolsMethods::EXECUTE,
+            "Execute Tool",
+            array("type" => $toolType, "inputs" => $inputs)
+        );
+        $response = Webservice::extractArray($task);
+        if (!$response) {
+            return AiToolResponse::failure(
+                SplAiToolErrors::INVALID_RESPONSE,
+                sprintf('Server returned no response for tool "%s"', $toolType)
+            );
+        }
+
+        return AiToolResponse::fromArray($response);
     }
 
     //====================================================================//
